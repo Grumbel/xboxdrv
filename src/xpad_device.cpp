@@ -116,6 +116,7 @@ XPadDevice xpad_devices[] = {
   { GAMEPAD_XBOX360,          0x24c6, 0x5000, "Razer Atrox Arcade Stick" },
   { GAMEPAD_XBOX360,          0x1689, 0xfd00, "Razer Onza Tournament Edition" },
   { GAMEPAD_XBOX360,          0x1689, 0xfd01, "Razer Onza Classic Edition" },
+  { GAMEPAD_XBOX360,          0x1689, 0xfe00, "Razer Sabertooth" },
   { GAMEPAD_XBOX360,          0x1532, 0x0037, "Razer Sabertooth" },
   { GAMEPAD_XBOX360,          0x12ab, 0x0004, "Honey Bee Xbox360 dancepad" },
   { GAMEPAD_XBOX360,          0x15e4, 0x3f0a, "Xbox Airflo wired controller" },
