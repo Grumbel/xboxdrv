@@ -69,7 +69,7 @@ ControllerSlot::disconnect()
 bool
 ControllerSlot::is_connected() const
 {
-  return m_thread;
+  return static_cast<bool>(m_thread);
 }
 
 /* EOF */
