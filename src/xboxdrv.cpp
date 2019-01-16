@@ -212,7 +212,11 @@ Xboxdrv::run_daemon(const Options& opts)
 
   if (opts.usb_debug)
   {
+#if LIBUSB_API_VERSION >= 0x01000106
+    libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, 3);
+#else
     libusb_set_debug(NULL, 3);
+#endif
   }
 
   if (!opts.detach)
