@@ -4,6 +4,7 @@ import os
 import subprocess
 import string
 import re
+import sys
 
 def build_dbus_glue(target, source, env):
     """
@@ -29,7 +30,8 @@ def build_bin2h(target, source, env):
     Takes a list of files and converts them into a C source that can be included
     """
     def c_escape(str): 
-        return str.translate(bytes.maketrans(b"/.-", b"___"))
+        maketrans = bytes.maketrans if hasattr(bytes, 'maketrans') else string.maketrans
+        return str.translate(maketrans(b"/.-", b"___"))
     
     print(target)
     print(source)
@@ -45,7 +47,10 @@ def build_bin2h(target, source, env):
                 data = fin.read()
                 fout.write("// \"%s\"\n" % src.get_path())
                 fout.write("const char %s[] = {" % c_escape(src.get_path()))
-                bytes_arr = ["0x%02x" % c for c in data]
+                if sys.version_info[0] > 2:
+                    bytes_arr = ['0x{:02x}'.format(c) for c in data]
+                else:
+                    bytes_arr = ["0x%02x" % ord(c) for c in data]
                 for i in range(len(bytes_arr)):
                     if i % 13 == 0:
                         fout.write("\n  ")
