@@ -1,6 +1,8 @@
 Xbox/Xbox360 USB Gamepad Driver for Userspace
 =============================================
 
+This fork merges in some changes from [a fixes fork by chewi](https://github.com/chewi/xboxdrv) and [a feature pull request by rhn](https://github.com/xboxdrv/xboxdrv/pull/101).
+
 Xboxdrv is a Xbox/Xbox360 gamepad driver for Linux that works in
 userspace. It is an alternative to the xpad kernel driver and has
 support for Xbox1 gamepads, Xbox360 USB gamepads and Xbox360 wireless
