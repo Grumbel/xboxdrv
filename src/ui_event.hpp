@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <string>
 #include <linux/input.h>
+#include <boost/shared_ptr.hpp>
 #include "xboxmsg.hpp"
 
 enum {
