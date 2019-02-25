@@ -25,6 +25,7 @@
 #include "evdev_helper.hpp"
 #include "force_feedback_handler.hpp"
 #include "raise_exception.hpp"
+#include "controller.hpp"
 
 LinuxUinput::LinuxUinput(DeviceType device_type, const std::string& name_,
                          const struct input_id& usbid_) :
@@ -42,8 +43,9 @@ LinuxUinput::LinuxUinput(DeviceType device_type, const std::string& name_,
   led_bit(false),
   ff_bit(false),
   m_ff_handler(0),
-  m_ff_callback(),
-  needs_sync(true)
+  m_getcontroller_callback(),
+  needs_sync(true),
+  m_force_feedback_enabled(false)
 {
   log_debug(name << " " << usbid.vendor << ":" << usbid.product);
 
@@ -172,6 +174,7 @@ LinuxUinput::add_ff(uint16_t code)
       ff_bit = true;
       assert(m_ff_handler == 0);
       m_ff_handler = new ForceFeedbackHandler();
+      m_ff_handler->set_getcontroller_callback(m_getcontroller_callback);
     }
 
     ioctl(m_fd, UI_SET_FFBIT, code);
@@ -179,9 +182,19 @@ LinuxUinput::add_ff(uint16_t code)
 }
 
 void
-LinuxUinput::set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback)
+LinuxUinput::set_getcontroller_callback(const boost::function<Controller* ()>& callback)
 {
-  m_ff_callback = callback;
+  m_getcontroller_callback = callback;
+  if (m_ff_handler)
+  {
+      m_ff_handler->set_getcontroller_callback(callback);
+  }
+}
+
+void
+LinuxUinput::enable_force_feedback()
+{
+  m_force_feedback_enabled = true;
 }
 
 void
@@ -227,6 +240,18 @@ LinuxUinput::finish()
       break;
   }
 
+  if (m_force_feedback_enabled)
+  {
+    log_debug("force-feedback is enabled in LinuxUinput");
+    assert(m_getcontroller_callback && m_getcontroller_callback());
+
+    Controller* controller = m_getcontroller_callback();
+    for (int i = 0; i < controller->get_ff_features().size(); ++i)
+    {
+      add_ff(controller->get_ff_features()[i]);
+    }
+  }
+
   strncpy(user_dev.name, name.c_str(), UINPUT_MAX_NAME_SIZE);
   user_dev.id.version = usbid.version;
   user_dev.id.bustype = usbid.bustype;
@@ -237,7 +262,7 @@ LinuxUinput::finish()
 
   if (ff_bit)
   {
-    user_dev.ff_effects_max = m_ff_handler->get_max_effects();
+    user_dev.ff_effects_max = m_getcontroller_callback()->get_num_ff_effects();
   }
 
   {
@@ -316,6 +341,7 @@ LinuxUinput::sync()
 void
 LinuxUinput::update(int msec_delta)
 {
+#if 0
   if (ff_bit)
   {
     assert(m_ff_handler);
@@ -330,6 +356,7 @@ LinuxUinput::update(int msec_delta)
                     static_cast<unsigned char>(m_ff_handler->get_weak_magnitude()   / 128));
     }
   }
+#endif
 }
 
 gboolean

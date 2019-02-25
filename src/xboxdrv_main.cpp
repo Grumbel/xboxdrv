@@ -174,6 +174,7 @@ XboxdrvMain::run()
       ControllerSlotConfigPtr config_set = ControllerSlotConfig::create(*m_uinput,
                                                                         0, m_opts.extra_devices,
                                                                         m_opts.get_controller_slot());
+      config_set->set_controller(m_controller.get());
 
       // After all the ControllerConfig registered their events, finish up
       // the device creation

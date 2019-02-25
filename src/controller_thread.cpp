@@ -43,7 +43,7 @@ ControllerThread::ControllerThread(ControllerPtr controller,
   memset(&m_oldrealmsg, 0, sizeof(m_oldrealmsg));
   m_timeout_id = g_timeout_add(m_timeout, &ControllerThread::on_timeout_wrap, this);
   m_controller->set_message_cb(boost::bind(&ControllerThread::on_message, this, _1));
-  m_processor->set_ff_callback(boost::bind(&Controller::set_rumble, m_controller.get(), _1, _2));
+  m_processor->set_controller(m_controller.get());
 }
 
 ControllerThread::~ControllerThread()

@@ -29,6 +29,7 @@
 class Options;
 class MessageProcessor;
 class ControllerThread;
+class Controller;
 
 typedef boost::shared_ptr<ControllerThread> ControllerThreadPtr;
 

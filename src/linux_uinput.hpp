@@ -25,6 +25,7 @@
 #include <stdint.h>
 
 class ForceFeedbackHandler;
+class Controller;
 
 class LinuxUinput
 {
@@ -55,9 +56,10 @@ private:
   bool ff_lst[FF_CNT];
 
   ForceFeedbackHandler* m_ff_handler;
-  boost::function<void (uint8_t, uint8_t)> m_ff_callback;
+  boost::function<Controller* ()> m_getcontroller_callback;
 
   bool needs_sync;
+  bool m_force_feedback_enabled;
 
 public:
   LinuxUinput(DeviceType device_type, const std::string& name,
@@ -76,7 +78,8 @@ public:
 
   void add_ff(uint16_t code);
 
-  void set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback);
+  void set_getcontroller_callback(const boost::function<Controller* ()>& callback);
+  void enable_force_feedback();
 
   /** Finalized the device creation */
   void finish();

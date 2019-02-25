@@ -76,30 +76,8 @@ ControllerSlotConfig::create(UInput& uinput, int slot, bool extra_devices, const
     // FIXME: this should go through the regular resolution process
     uint32_t ff_device = UInput::create_device_id(slot, opts.get_ff_device());
 
-    // basic types
-    uinput.add_ff(ff_device, FF_RUMBLE);
-    uinput.add_ff(ff_device, FF_PERIODIC);
-    uinput.add_ff(ff_device, FF_CONSTANT);
-    uinput.add_ff(ff_device, FF_RAMP);
-
-    // periodic effect subtypes
-    uinput.add_ff(ff_device, FF_SINE);
-    uinput.add_ff(ff_device, FF_TRIANGLE);
-    uinput.add_ff(ff_device, FF_SQUARE);
-    uinput.add_ff(ff_device, FF_SAW_UP);
-    uinput.add_ff(ff_device, FF_SAW_DOWN);
-    uinput.add_ff(ff_device, FF_CUSTOM);
-
-    // gin support
-    uinput.add_ff(ff_device, FF_GAIN);
-
-    // Unsupported effects
-    // uinput.add_ff(ff_device, FF_SPRING);
-    // uinput.add_ff(ff_device, FF_FRICTION);
-    // uinput.add_ff(ff_device, FF_DAMPER);
-    // uinput.add_ff(ff_device, FF_INERTIA);
-
-    uinput.set_ff_callback(ff_device, boost::bind(&ControllerSlotConfig::set_rumble, m_config.get(), _1, _2));
+    uinput.set_getcontroller_callback(ff_device, boost::bind(&ControllerSlotConfig::get_controller, m_config.get()));
+    uinput.enable_force_feedback(ff_device);
   }
 
   return m_config;
@@ -234,7 +212,7 @@ ControllerSlotConfig::create_modifier(const ControllerOptions& opts, std::vector
 ControllerSlotConfig::ControllerSlotConfig() :
   m_config(),
   m_current_config(0),
-  m_rumble_callback()
+  m_controller()
 {
 }
 
@@ -302,19 +280,16 @@ ControllerSlotConfig::add_config(ControllerConfigPtr config)
   m_config.push_back(config);
 }
 
-void
-ControllerSlotConfig::set_rumble(uint8_t strong, uint8_t weak)
+Controller*
+ControllerSlotConfig::get_controller()
 {
-  if (m_rumble_callback)
-  {
-    m_rumble_callback(strong, weak);
-  }
+  return m_controller;
 }
 
 void
-ControllerSlotConfig::set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback)
+ControllerSlotConfig::set_controller(Controller* controller)
 {
-  m_rumble_callback = callback;
+  m_controller = controller;
 }
 
 /* EOF */

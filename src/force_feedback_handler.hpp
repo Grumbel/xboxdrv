@@ -19,8 +19,11 @@
 #ifndef HEADER_FF_HANDLER_HPP
 #define HEADER_FF_HANDLER_HPP
 
+#include <boost/function.hpp>
 #include <linux/input.h>
 #include <map>
+
+class Controller;
 
 class ForceFeedbackEffect
 {
@@ -91,6 +94,7 @@ private:
 
   int weak_magnitude;
   int strong_magnitude;
+  boost::function<Controller* ()> m_getcontroller_callback;
 
 public:
   ForceFeedbackHandler();
@@ -110,6 +114,8 @@ public:
 
   int get_weak_magnitude() const;
   int get_strong_magnitude() const;
+
+  void set_getcontroller_callback(const boost::function<Controller* ()>& callback);
 };
 
 #endif

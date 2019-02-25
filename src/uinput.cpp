@@ -526,11 +526,17 @@ UInput::set_device_names(const std::map<uint32_t, std::string>& device_names)
 }
 
 void
-UInput::set_ff_callback(int device_id, const boost::function<void (uint8_t, uint8_t)>& callback)
+UInput::set_getcontroller_callback(int device_id, const boost::function<Controller* ()>& callback)
 {
-  get_uinput(device_id)->set_ff_callback(callback);
+  get_uinput(device_id)->set_getcontroller_callback(callback);
 }
-
+
+void
+UInput::enable_force_feedback(int device_id)
+{
+  get_uinput(device_id)->enable_force_feedback();
+}
+
 int
 UInput::find_jsdev_number()
 {

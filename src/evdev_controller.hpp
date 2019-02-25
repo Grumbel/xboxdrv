@@ -62,6 +62,14 @@ public:
   void set_rumble_real(uint8_t left, uint8_t right);
   void set_led_real(uint8_t status);
 
+  virtual void upload(const struct ff_effect& effect);
+  virtual void erase(int id);
+
+  virtual void play(int id);
+  virtual void stop(int id);
+
+  virtual void set_gain(int g);
+
   /** @param timeout   timeout in msec, 0 means forever */
   bool read(XboxGenericMsg& msg, int timeout);
 

@@ -23,6 +23,7 @@
 #include <stdint.h>
 
 struct XboxGenericMsg;
+class Controller;
 
 class MessageProcessor
 {
@@ -31,8 +32,7 @@ public:
   virtual ~MessageProcessor() {}
 
   virtual void send(const XboxGenericMsg& msg, int msec_delta) =0;
-  virtual void set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback
-                               = boost::function<void (uint8_t, uint8_t)>()) =0;
+  virtual void set_controller(Controller* controller) =0;
 
 private:
   MessageProcessor(const MessageProcessor&);

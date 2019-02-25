@@ -27,6 +27,7 @@
 class Options;
 class UInput;
 class ControllerSlotConfig;
+class Controller;
 
 typedef boost::shared_ptr<ControllerSlotConfig> ControllerSlotConfigPtr;
 
@@ -43,7 +44,7 @@ private:
 private:
   std::vector<ControllerConfigPtr> m_config;
   int m_current_config;
-  boost::function<void (uint8_t, uint8_t)> m_rumble_callback;
+  Controller* m_controller;
 
 public:
   ControllerSlotConfig();
@@ -61,8 +62,8 @@ public:
 
   bool empty() const { return m_config.empty(); }
 
-  void set_rumble(uint8_t strong, uint8_t weak);
-  void set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback);
+  Controller* get_controller();
+  void set_controller(Controller* controller);
 
 private:
   ControllerSlotConfig(const ControllerSlotConfig&);

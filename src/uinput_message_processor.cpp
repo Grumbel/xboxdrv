@@ -30,7 +30,7 @@ UInputMessageProcessor::UInputMessageProcessor(UInput& uinput,
   m_config_toggle_button(opts.config_toggle_button),
   m_rumble_gain(opts.rumble_gain),
   m_rumble_test(opts.rumble),
-  m_rumble_callback()
+  m_controller()
 {
   memset(&m_oldmsg, 0, sizeof(m_oldmsg));
 }
@@ -99,6 +99,8 @@ UInputMessageProcessor::send(const XboxGenericMsg& msg_in, int msec_delta)
 void
 UInputMessageProcessor::set_rumble(uint8_t lhs, uint8_t rhs)
 {
+  // XXX: STUB!
+#if 0
   if (m_rumble_callback)
   {
     lhs = std::min(lhs * m_rumble_gain / 255, 255);
@@ -106,6 +108,7 @@ UInputMessageProcessor::set_rumble(uint8_t lhs, uint8_t rhs)
 
     m_rumble_callback(lhs, rhs);
   }
+#endif
 }
 
 void
@@ -115,10 +118,10 @@ UInputMessageProcessor::set_config(int num)
 }
 
 void
-UInputMessageProcessor::set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback)
+UInputMessageProcessor::set_controller(Controller* controller)
 {
-  m_rumble_callback = callback;
-  m_config->set_ff_callback(callback);
+  m_controller = controller;
+  m_config->set_controller(controller);
 }
 
 /* EOF */
