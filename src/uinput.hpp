@@ -95,6 +95,7 @@ public:
   void set_device_usbids(const std::map<uint32_t, struct input_id>& device_usbids);
   void set_controller(int device_id, Controller* controller);
   void enable_force_feedback(int device_id);
+  void set_ff_gain(int device_id, int gain);
 
   /** Device construction functions
       @{*/

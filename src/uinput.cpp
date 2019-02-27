@@ -537,6 +537,12 @@ UInput::enable_force_feedback(int device_id)
   get_uinput(device_id)->enable_force_feedback();
 }
 
+void
+UInput::set_ff_gain(int device_id, int gain)
+{
+  get_uinput(device_id)->set_ff_gain(gain);
+}
+
 int
 UInput::find_jsdev_number()
 {

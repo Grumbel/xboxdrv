@@ -78,6 +78,7 @@ ControllerSlotConfig::create(UInput& uinput, int slot, bool extra_devices, const
 
     uinput.set_controller(ff_device, controller);
     uinput.enable_force_feedback(ff_device);
+    uinput.set_ff_gain(ff_device, 0xFFFFUL * opts.get_rumble_gain() / 255);
   }
 
   return m_config;

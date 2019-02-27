@@ -232,12 +232,12 @@ EvdevController::stop(int id)
 }
 
 void
-EvdevController::set_gain(int g)
+EvdevController::set_gain(int gain)
 {
   if (std::find(m_ff_features.begin(), m_ff_features.end(), FF_GAIN) != m_ff_features.end())
   {
     log_debug("FF_GAIN is supported");
-    write_event(m_fd, FF_GAIN, g);
+    write_event(m_fd, FF_GAIN, gain);
   }
 }
 

@@ -80,6 +80,7 @@ public:
 
   void set_controller(Controller* controller);
   void enable_force_feedback();
+  void set_ff_gain(int gain);
 
   /** Finalized the device creation */
   void finish();

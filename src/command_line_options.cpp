@@ -340,7 +340,7 @@ CommandLineParser::init_ini(Options* opts)
     ("led", boost::bind(&Options::set_led, opts, _1))
     ("rumble-l", &opts->rumble_l)
     ("rumble-r", &opts->rumble_r)
-    ("rumble-gain", &opts->rumble_gain)
+    ("rumble-gain", boost::bind(&Options::set_rumble_gain, opts, _1))
     ("controller-id", &opts->controller_id)
     ("wireless-id", &opts->wireless_id)
     ("instant-exit", &opts->instant_exit)
@@ -705,7 +705,7 @@ CommandLineParser::apply_opt(ArgParser::ParsedOption const& opt, Options& opts)
       break;
 
     case OPTION_RUMBLE_GAIN:
-      opts.rumble_gain = to_number(255, opt.argument);
+      opts.set_rumble_gain(opt.argument);
       break;
 
     case OPTION_MODIFIER:

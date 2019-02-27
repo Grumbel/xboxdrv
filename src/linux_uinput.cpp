@@ -187,6 +187,13 @@ LinuxUinput::enable_force_feedback()
 }
 
 void
+LinuxUinput::set_ff_gain(int gain)
+{
+  assert(m_ff_handler);
+  m_ff_handler->set_gain(gain);
+}
+
+void
 LinuxUinput::finish()
 {
   assert(!m_finished);
