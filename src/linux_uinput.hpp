@@ -56,7 +56,7 @@ private:
   bool ff_lst[FF_CNT];
 
   ForceFeedbackHandler* m_ff_handler;
-  boost::function<Controller* ()> m_getcontroller_callback;
+  Controller* m_controller;
 
   bool needs_sync;
   bool m_force_feedback_enabled;
@@ -78,7 +78,7 @@ public:
 
   void add_ff(uint16_t code);
 
-  void set_getcontroller_callback(const boost::function<Controller* ()>& callback);
+  void set_controller(Controller* controller);
   void enable_force_feedback();
 
   /** Finalized the device creation */
@@ -101,6 +101,8 @@ private:
   {
     return static_cast<LinuxUinput*>(userdata)->on_read_data(source, condition);
   }
+
+  void enable_ff();
 
 private:
   LinuxUinput (const LinuxUinput&);

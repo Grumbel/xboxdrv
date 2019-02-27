@@ -43,7 +43,7 @@ LinuxUinput::LinuxUinput(DeviceType device_type, const std::string& name_,
   led_bit(false),
   ff_bit(false),
   m_ff_handler(0),
-  m_getcontroller_callback(),
+  m_controller(),
   needs_sync(true),
   m_force_feedback_enabled(false)
 {
@@ -166,29 +166,18 @@ LinuxUinput::add_ff(uint16_t code)
 {
   if (!ff_lst[code])
   {
+    enable_ff();
     ff_lst[code] = true;
-
-    if (!ff_bit)
-    {
-      ioctl(m_fd, UI_SET_EVBIT, EV_FF);
-      ff_bit = true;
-      assert(m_ff_handler == 0);
-      m_ff_handler = new ForceFeedbackHandler();
-      m_ff_handler->set_getcontroller_callback(m_getcontroller_callback);
-    }
 
     ioctl(m_fd, UI_SET_FFBIT, code);
   }
 }
 
 void
-LinuxUinput::set_getcontroller_callback(const boost::function<Controller* ()>& callback)
+LinuxUinput::set_controller(Controller* controller)
 {
-  m_getcontroller_callback = callback;
-  if (m_ff_handler)
-  {
-      m_ff_handler->set_getcontroller_callback(callback);
-  }
+  m_controller = controller;
+  enable_ff();
 }
 
 void
@@ -243,12 +232,11 @@ LinuxUinput::finish()
   if (m_force_feedback_enabled)
   {
     log_debug("force-feedback is enabled in LinuxUinput");
-    assert(m_getcontroller_callback && m_getcontroller_callback());
+    assert(m_controller);
 
-    Controller* controller = m_getcontroller_callback();
-    for (int i = 0; i < controller->get_ff_features().size(); ++i)
+    for (int i = 0; i < m_controller->get_ff_features().size(); ++i)
     {
-      add_ff(controller->get_ff_features()[i]);
+      add_ff(m_controller->get_ff_features()[i]);
     }
   }
 
@@ -262,7 +250,7 @@ LinuxUinput::finish()
 
   if (ff_bit)
   {
-    user_dev.ff_effects_max = m_getcontroller_callback()->get_num_ff_effects();
+    user_dev.ff_effects_max = m_controller->get_num_ff_effects();
   }
 
   {
@@ -460,6 +448,20 @@ LinuxUinput::on_read_data(GIOChannel* source, GIOCondition condition)
   }
 
   return TRUE;
+}
+
+void
+LinuxUinput::enable_ff()
+{
+  if (!ff_bit)
+  {
+    ff_bit = true;
+    ioctl(m_fd, UI_SET_EVBIT, EV_FF);
+    assert(m_ff_handler == 0);
+    m_ff_handler = new ForceFeedbackHandler();
+    assert(m_controller);
+    m_ff_handler->set_controller(m_controller);
+  }
 }
 
 

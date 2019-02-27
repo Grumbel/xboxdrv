@@ -94,7 +94,7 @@ private:
 
   int weak_magnitude;
   int strong_magnitude;
-  boost::function<Controller* ()> m_getcontroller_callback;
+  Controller* m_controller;
 
 public:
   ForceFeedbackHandler();
@@ -115,7 +115,7 @@ public:
   int get_weak_magnitude() const;
   int get_strong_magnitude() const;
 
-  void set_getcontroller_callback(const boost::function<Controller* ()>& callback);
+  void set_controller(Controller* controller);
 };
 
 #endif

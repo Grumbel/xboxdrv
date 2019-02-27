@@ -121,7 +121,7 @@ void
 UInputMessageProcessor::set_controller(Controller* controller)
 {
   m_controller = controller;
-  m_config->set_controller(controller);
+  // m_config->set_controller(controller);
 }
 
 /* EOF */

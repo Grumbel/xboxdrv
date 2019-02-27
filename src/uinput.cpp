@@ -526,9 +526,9 @@ UInput::set_device_names(const std::map<uint32_t, std::string>& device_names)
 }
 
 void
-UInput::set_getcontroller_callback(int device_id, const boost::function<Controller* ()>& callback)
+UInput::set_controller(int device_id, Controller* controller)
 {
-  get_uinput(device_id)->set_getcontroller_callback(callback);
+  get_uinput(device_id)->set_controller(controller);
 }
 
 void

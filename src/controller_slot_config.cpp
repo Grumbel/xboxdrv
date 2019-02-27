@@ -30,7 +30,7 @@
 #include "axisfilter/deadzone_axis_filter.hpp"
 
 ControllerSlotConfigPtr
-ControllerSlotConfig::create(UInput& uinput, int slot, bool extra_devices, const ControllerSlotOptions& opts)
+ControllerSlotConfig::create(UInput& uinput, int slot, bool extra_devices, const ControllerSlotOptions& opts, Controller* controller)
 {
   ControllerSlotConfigPtr m_config(new ControllerSlotConfig);
 
@@ -76,7 +76,7 @@ ControllerSlotConfig::create(UInput& uinput, int slot, bool extra_devices, const
     // FIXME: this should go through the regular resolution process
     uint32_t ff_device = UInput::create_device_id(slot, opts.get_ff_device());
 
-    uinput.set_getcontroller_callback(ff_device, boost::bind(&ControllerSlotConfig::get_controller, m_config.get()));
+    uinput.set_controller(ff_device, controller);
     uinput.enable_force_feedback(ff_device);
   }
 
@@ -278,18 +278,6 @@ void
 ControllerSlotConfig::add_config(ControllerConfigPtr config)
 {
   m_config.push_back(config);
-}
-
-Controller*
-ControllerSlotConfig::get_controller()
-{
-  return m_controller;
-}
-
-void
-ControllerSlotConfig::set_controller(Controller* controller)
-{
-  m_controller = controller;
 }
 
 /* EOF */

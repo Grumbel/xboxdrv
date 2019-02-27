@@ -36,7 +36,7 @@ class ControllerSlotConfig
 public:
   /** Creates a ControllerSlotConfig from the Options object and connects it to UInput */
   static ControllerSlotConfigPtr create(UInput& uinput, int slot, bool extra_devices,
-                                       const ControllerSlotOptions& opts);
+                                       const ControllerSlotOptions& opts, Controller* controller);
 
 private:
   static void create_modifier(const ControllerOptions& options, std::vector<ModifierPtr>* modifier);
@@ -61,9 +61,6 @@ public:
   ControllerConfigPtr get_config() const;
 
   bool empty() const { return m_config.empty(); }
-
-  Controller* get_controller();
-  void set_controller(Controller* controller);
 
 private:
   ControllerSlotConfig(const ControllerSlotConfig&);

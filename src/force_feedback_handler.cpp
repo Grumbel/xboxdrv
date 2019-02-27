@@ -287,7 +287,8 @@ ForceFeedbackHandler::ForceFeedbackHandler() :
   max_effects(16),
   effects(),
   weak_magnitude(0),
-  strong_magnitude(0)
+  strong_magnitude(0),
+  m_controller()
 {
 
 }
@@ -311,35 +312,40 @@ ForceFeedbackHandler::upload(const struct ff_effect& effect)
             << ", effect_type:" << effect.type
             << ",\n          "  << effect
             << ")");
-  m_getcontroller_callback()->upload(effect);
+  assert(m_controller);
+  m_controller->upload(effect);
 }
 
 void
 ForceFeedbackHandler::erase(int id)
 {
   log_debug("FF_ERASE(effect_id:" << id << ")");
-  m_getcontroller_callback()->erase(id);
+  assert(m_controller);
+  m_controller->erase(id);
 }
 
 void
 ForceFeedbackHandler::play(int id)
 {
   log_debug("FFPlay(effect_id:" << id << ")");
-  m_getcontroller_callback()->play(id);
+  assert(m_controller);
+  m_controller->play(id);
 }
 
 void
 ForceFeedbackHandler::stop(int id)
 {
   log_debug("FFStop(effect_id:" << id << ")");
-  m_getcontroller_callback()->stop(id);
+  assert(m_controller);
+  m_controller->stop(id);
 }
 
 void
-ForceFeedbackHandler::set_gain(int g)
+ForceFeedbackHandler::set_gain(int gain)
 {
-  log_debug("FFGain(g:" << g << ")");
-  m_getcontroller_callback()->set_gain(g);
+  log_debug("FFGain(g:" << gain << ")");
+  assert(m_controller);
+  m_controller->set_gain(gain);
 }
 
 void
@@ -362,9 +368,9 @@ ForceFeedbackHandler::get_strong_magnitude() const
 }
 
 void
-ForceFeedbackHandler::set_getcontroller_callback(const boost::function<Controller* ()>& callback)
+ForceFeedbackHandler::set_controller(Controller* controller)
 {
-  m_getcontroller_callback = callback;
+  m_controller = controller;
 }
 
 /* EOF */

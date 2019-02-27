@@ -93,7 +93,7 @@ public:
 
   void set_device_names(const std::map<uint32_t, std::string>& device_names);
   void set_device_usbids(const std::map<uint32_t, struct input_id>& device_usbids);
-  void set_getcontroller_callback(int device_id, const boost::function<Controller* ()>& callback);
+  void set_controller(int device_id, Controller* controller);
   void enable_force_feedback(int device_id);
 
   /** Device construction functions
