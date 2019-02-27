@@ -41,7 +41,6 @@ LinuxUinput::LinuxUinput(DeviceType device_type, const std::string& name_,
   rel_bit(false),
   abs_bit(false),
   led_bit(false),
-  ff_bit(false),
   m_ff_handler(0),
   m_controller(),
   needs_sync(true),
@@ -166,9 +165,7 @@ LinuxUinput::add_ff(uint16_t code)
 {
   if (!ff_lst[code])
   {
-    enable_ff();
     ff_lst[code] = true;
-
     ioctl(m_fd, UI_SET_FFBIT, code);
   }
 }
@@ -177,13 +174,17 @@ void
 LinuxUinput::set_controller(Controller* controller)
 {
   m_controller = controller;
-  enable_ff();
 }
 
 void
 LinuxUinput::enable_force_feedback()
 {
+  assert(m_controller);
+  assert(m_ff_handler == NULL);
   m_force_feedback_enabled = true;
+
+  ioctl(m_fd, UI_SET_EVBIT, EV_FF);
+  m_ff_handler = new ForceFeedbackHandler(m_controller);
 }
 
 void
@@ -239,7 +240,6 @@ LinuxUinput::finish()
   if (m_force_feedback_enabled)
   {
     log_debug("force-feedback is enabled in LinuxUinput");
-    assert(m_controller);
 
     for (int i = 0; i < m_controller->get_ff_features().size(); ++i)
     {
@@ -255,7 +255,7 @@ LinuxUinput::finish()
 
   log_debug("'" << user_dev.name << "' " << user_dev.id.vendor << ":" << user_dev.id.product);
 
-  if (ff_bit)
+  if (m_force_feedback_enabled)
   {
     user_dev.ff_effects_max = m_controller->get_num_ff_effects();
   }
@@ -455,20 +455,6 @@ LinuxUinput::on_read_data(GIOChannel* source, GIOCondition condition)
   }
 
   return TRUE;
-}
-
-void
-LinuxUinput::enable_ff()
-{
-  if (!ff_bit)
-  {
-    ff_bit = true;
-    ioctl(m_fd, UI_SET_EVBIT, EV_FF);
-    assert(m_ff_handler == 0);
-    m_ff_handler = new ForceFeedbackHandler();
-    assert(m_controller);
-    m_ff_handler->set_controller(m_controller);
-  }
 }
 
 

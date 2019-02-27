@@ -97,7 +97,7 @@ private:
   Controller* m_controller;
 
 public:
-  ForceFeedbackHandler();
+  ForceFeedbackHandler(Controller* controller);
   ~ForceFeedbackHandler();
 
   int get_max_effects();
@@ -114,8 +114,6 @@ public:
 
   int get_weak_magnitude() const;
   int get_strong_magnitude() const;
-
-  void set_controller(Controller* controller);
 };
 
 #endif

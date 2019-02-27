@@ -48,7 +48,6 @@ private:
   bool rel_bit;
   bool abs_bit;
   bool led_bit;
-  bool ff_bit;
 
   bool abs_lst[ABS_CNT];
   bool rel_lst[REL_CNT];
@@ -102,8 +101,6 @@ private:
   {
     return static_cast<LinuxUinput*>(userdata)->on_read_data(source, condition);
   }
-
-  void enable_ff();
 
 private:
   LinuxUinput (const LinuxUinput&);
