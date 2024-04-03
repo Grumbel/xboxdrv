@@ -30,7 +30,7 @@
 extern bool global_exit_xboxdrv;
 
 ControllerThread::ControllerThread(ControllerPtr controller,
-                                   std::auto_ptr<MessageProcessor> processor,
+                                   std::shared_ptr<MessageProcessor> processor,
                                    const Options& opts) :
   m_controller(controller),
   m_processor(processor),

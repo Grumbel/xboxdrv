@@ -30,7 +30,7 @@ KeyAxisEventHandler::from_string(const std::string& str)
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   tokenizer tokens(str, boost::char_separator<char>(":", "", boost::keep_empty_tokens));
 
-  std::auto_ptr<KeyAxisEventHandler> ev(new KeyAxisEventHandler);
+  std::shared_ptr<KeyAxisEventHandler> ev(new KeyAxisEventHandler);
 
   int j = 0;
   for(tokenizer::iterator i = tokens.begin(); i != tokens.end(); ++i, ++j)
@@ -73,7 +73,7 @@ KeyAxisEventHandler::from_string(const std::string& str)
     throw std::runtime_error("AxisEvent::key_from_string(): at least one argument required: " + str);
   }
 
-  return ev.release();
+  return ev.get();
 }
 
 KeyAxisEventHandler::KeyAxisEventHandler() :
