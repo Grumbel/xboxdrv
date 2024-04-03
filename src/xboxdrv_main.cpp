@@ -145,7 +145,7 @@ XboxdrvMain::run()
 {
   m_controller = create_controller();
   m_controller->set_disconnect_cb(boost::bind(&XboxdrvMain::on_controller_disconnect, this));
-  std::auto_ptr<MessageProcessor> message_proc;
+  std::shared_ptr<MessageProcessor> message_proc;
   init_controller(m_controller);
 
   if (m_opts.instant_exit)

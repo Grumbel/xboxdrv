@@ -22,7 +22,7 @@
 extern "C" {
 #include <libudev.h>
 }
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <glib.h>
 
 #include "controller_slot_config.hpp"
@@ -49,7 +49,7 @@ private:
   typedef std::vector<ControllerPtr> Controllers;
   Controllers m_inactive_controllers;
 
-  std::auto_ptr<UInput> m_uinput;
+  std::shared_ptr<UInput> m_uinput;
 
 private:
   static void on_sigint(int);

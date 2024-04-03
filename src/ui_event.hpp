@@ -22,7 +22,7 @@
 #include <stdint.h>
 #include <string>
 #include <linux/input.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "xboxmsg.hpp"
 
 enum {
@@ -76,7 +76,7 @@ int str2slotid(const std::string& slot);
 
 class UIAction;
 
-typedef boost::shared_ptr<UIAction> UIActionPtr;
+typedef std::shared_ptr<UIAction> UIActionPtr;
 
 class UIAction
 {

@@ -88,7 +88,7 @@ public:
   EvdevAbsMap evdev_absmap;
   bool evdev_grab;
   bool evdev_debug;
-  typedef boost::shared_ptr<UIAction> UIActionPtr;
+  typedef std::shared_ptr<UIAction> UIActionPtr;
   std::map<int, UIActionPtr> evdev_keymap;
 
   // controller options
