@@ -18,6 +18,7 @@
 
 #include "axismap_modifier.hpp"
 
+#include <algorithm>
 #include <boost/tokenizer.hpp>
 #include <sstream>
 
@@ -124,7 +125,7 @@ AxismapModifier::update(int msec_delta, XboxGenericMsg& msg)
       // but doesn't work for half axis which have their center at
       // -1.0f
       float rhs = get_axis_float(newmsg, i->rhs);
-      set_axis_float(newmsg, i->rhs, Math::clamp(-1.0f, lhs + rhs, 1.0f));
+      set_axis_float(newmsg, i->rhs, std::clamp(lhs + rhs, -1.0f, 1.0f));
     }
   }
   msg = newmsg;
