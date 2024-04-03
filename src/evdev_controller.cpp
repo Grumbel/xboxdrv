@@ -18,6 +18,7 @@
 
 #include "evdev_controller.hpp"
 
+#include <algorithm>
 #include <boost/format.hpp>
 #include <errno.h>
 #include <err.h>
@@ -298,7 +299,7 @@ EvdevController::parse(const struct input_event& ev, XboxGenericMsg &msg_inout) 
         m_absmap.process(msg_inout, ev.code,
                          // some buggy USB devices report values
                          // outside the given range, so we clamp it
-                         Math::clamp(absinfo.minimum, ev.value, absinfo.maximum),
+                         std::clamp(ev.value, absinfo.minimum, absinfo.maximum),
                          absinfo.minimum, absinfo.maximum);
         return true; // FIXME: wrong
         break;

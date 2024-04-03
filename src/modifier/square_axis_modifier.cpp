@@ -18,6 +18,7 @@
 
 #include "square_axis_modifier.hpp"
 
+#include <algorithm>
 #include <math.h>
 #include <sstream>
 
@@ -40,8 +41,8 @@ void squarify_axis(int& x_inout, int& y_inout)
     y *= v;
 
     // Convert values to int
-    x_inout = static_cast<int>(Math::clamp(-32768, static_cast<int>((x < 0) ? x * 32768 : x * 32767), 32767));
-    y_inout = static_cast<int>(Math::clamp(-32768, static_cast<int>((y < 0) ? y * 32768 : y * 32767), 32767));
+    x_inout = static_cast<int>(std::clamp(static_cast<int>((x < 0) ? x * 32768 : x * 32767), -32768, 32767));
+    y_inout = static_cast<int>(std::clamp(static_cast<int>((y < 0) ? y * 32768 : y * 32767), -32768, 32767));
   }
 }
 
