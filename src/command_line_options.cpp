@@ -1044,7 +1044,7 @@ void
 CommandLineParser::print_version() const
 {
   std::cout
-    << "xboxdrv " PACKAGE_VERSION " - http://pingus.seul.org/~grumbel/xboxdrv/\n"
+    << "xboxdrv " PACKAGE_VERSION "\n"
     << "Copyright © 2008-2011 Ingo Ruhnke <grumbel@gmail.com>\n"
     << "Licensed under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\n"
     << "This program comes with ABSOLUTELY NO WARRANTY.\n"

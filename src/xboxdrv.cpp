@@ -179,7 +179,7 @@ void
 Xboxdrv::print_copyright() const
 {
   WordWrap wrap(get_terminal_width());
-  wrap.para("xboxdrv " PACKAGE_VERSION " - http://pingus.seul.org/~grumbel/xboxdrv/");
+  wrap.para("xboxdrv " PACKAGE_VERSION);
   wrap.para("Copyright © 2008-2011 Ingo Ruhnke <grumbel@gmail.com>");
   wrap.para("Licensed under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>");
   wrap.para("This program comes with ABSOLUTELY NO WARRANTY.");
