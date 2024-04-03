@@ -18,6 +18,8 @@
 
 #include "usb_interface.hpp"
 
+#include <cassert>
+
 #include "raise_exception.hpp"
 #include "usb_helper.hpp"
 

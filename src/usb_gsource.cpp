@@ -18,7 +18,7 @@
 
 #include "usb_gsource.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <poll.h>
 #include <libusb.h>
 #include <stdlib.h>

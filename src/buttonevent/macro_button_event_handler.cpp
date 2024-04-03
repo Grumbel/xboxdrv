@@ -19,6 +19,7 @@
 #include "buttonevent/macro_button_event_handler.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 #include <fstream>
 #include <linux/input.h>
 #include <vector>

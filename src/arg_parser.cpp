@@ -18,6 +18,7 @@
 
 #include "arg_parser.hpp"
 
+#include <cassert>
 #include <stdio.h>
 #include <ostream>
 

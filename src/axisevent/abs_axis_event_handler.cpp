@@ -19,6 +19,7 @@
 #include "abs_axis_event_handler.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 
 #include "evdev_helper.hpp"
 #include "uinput.hpp"

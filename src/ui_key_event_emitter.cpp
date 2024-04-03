@@ -18,6 +18,8 @@
 
 #include "ui_key_event_emitter.hpp"
 
+#include <cassert>
+
 #include "ui_key_event_collector.hpp"
 
 UIKeyEventEmitter::UIKeyEventEmitter(UIKeyEventCollector& collector) :

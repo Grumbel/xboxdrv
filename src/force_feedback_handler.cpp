@@ -18,6 +18,8 @@
 
 #include "force_feedback_handler.hpp"
 
+#include <cassert>
+
 #include "log.hpp"
 #include "options.hpp"
 #include "controller.hpp"

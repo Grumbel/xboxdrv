@@ -18,6 +18,8 @@
 
 #include "ui_key_event_collector.hpp"
 
+#include <cassert>
+
 #include "log.hpp"
 #include "uinput.hpp"
 

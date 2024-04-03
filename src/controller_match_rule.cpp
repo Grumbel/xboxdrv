@@ -18,8 +18,8 @@
 
 #include "controller_match_rule.hpp"
 
-#include <assert.h>
 #include <boost/tokenizer.hpp>
+#include <cassert>
 
 #include "raise_exception.hpp"
 
