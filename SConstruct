@@ -96,28 +96,6 @@ Help(opts.GenerateHelpText(env))
 
 env.Append(CPPPATH=["src/"])
 
-if 'BUILD' in env and env['BUILD'] == 'development':
-    env.Append(CXXFLAGS = [ "-O3",
-                            "-g3",
-                            "-ansi",
-                            "-pedantic",
-                            "-Wall",
-                            "-Wextra",
-                            "-Werror",
-                            "-Wnon-virtual-dtor",
-                            "-Weffc++",
-                            # "-Wunreachable-code",
-                            # "-Wconversion",
-                            "-Wold-style-cast",
-                            "-Wshadow",
-                            "-Wcast-qual",
-                            "-Winit-self", # only works with >= -O1
-                            "-Wno-unused-parameter"])
-elif 'BUILD' in env and env['BUILD'] == 'custom':
-    pass
-else:
-    env.Append(CPPFLAGS = ['-g', '-O3', '-Wall', '-ansi', '-pedantic'])
-
 env.ParseConfig(env['PKG_CONFIG'] + " --cflags --libs dbus-glib-1 | sed 's/-I/-isystem/g'")
 env.ParseConfig(env['PKG_CONFIG'] + " --cflags --libs glib-2.0 | sed 's/-I/-isystem/g'")
 env.ParseConfig(env['PKG_CONFIG'] + " --cflags --libs gthread-2.0 | sed 's/-I/-isystem/g'")
