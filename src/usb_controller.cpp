@@ -19,6 +19,7 @@
 #include "usb_controller.hpp"
 
 #include <boost/format.hpp>
+#include <cassert>
 
 #include "log.hpp"
 #include "raise_exception.hpp"

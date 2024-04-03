@@ -20,6 +20,7 @@
 
 #include <sstream>
 #include <boost/format.hpp>
+#include <cassert>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"

@@ -18,6 +18,7 @@
 
 #include "buttonevent/cycle_key_sequence.hpp"
 
+#include <cassert>
 #include <stdexcept>
 
 #include "raise_exception.hpp"

@@ -19,6 +19,7 @@
 #include "uinput.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 #include <iostream>
 #include <math.h>
 #include <stdexcept>

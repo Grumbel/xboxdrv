@@ -18,10 +18,10 @@
 
 #include "helper.hpp"
 
-#include <assert.h>
 #include <boost/format.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
+#include <cassert>
 #include <stdio.h>
 #include <sys/time.h>
 #include <sys/ioctl.h>

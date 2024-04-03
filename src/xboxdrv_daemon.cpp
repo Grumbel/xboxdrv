@@ -20,6 +20,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
+#include <cassert>
 #include <memory>
 #include <fstream>
 #include <dbus/dbus-glib.h>

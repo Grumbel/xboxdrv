@@ -19,6 +19,7 @@
 #include "linux_uinput.hpp"
 
 #include <boost/format.hpp>
+#include <cassert>
 #include <errno.h>
 #include <fcntl.h>
 

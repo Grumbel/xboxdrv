@@ -23,6 +23,7 @@
 
 #include <boost/function.hpp>
 #include <memory>
+#include <vector>
 
 extern "C" {
 #include <libudev.h>

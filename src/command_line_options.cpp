@@ -18,6 +18,7 @@
 
 #include "command_line_options.hpp"
 
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <boost/bind.hpp>

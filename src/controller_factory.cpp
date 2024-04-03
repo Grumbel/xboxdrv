@@ -18,6 +18,7 @@
 
 #include "controller_factory.hpp"
 
+#include <cassert>
 #include <stdexcept>
 
 #include "firestorm_dual_controller.hpp"

@@ -21,6 +21,7 @@
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
 #include <boost/tokenizer.hpp>
+#include <cassert>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"
