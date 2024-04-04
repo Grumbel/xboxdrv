@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ bool get_usb_path(udev_device* device, int* bus, int* dev)
   }
   else
   {
-    *bus = boost::lexical_cast<int>(busnum_str);
+    *bus = str2int(busnum_str);
   }
 
   const char* devnum_str = udev_device_get_property_value(device, "DEVNUM");
@@ -89,7 +89,7 @@ bool get_usb_path(udev_device* device, int* bus, int* dev)
   }
   else
   {
-    *dev = boost::lexical_cast<int>(devnum_str);
+    *dev = str2int(devnum_str);
   }
 
   return true;
@@ -150,7 +150,14 @@ XboxdrvDaemon::run()
         case Options::kDBusAuto:
           if (getuid() == 0)
           {
-            dbus_bus_type = DBUS_BUS_SYSTEM;
+            if (getenv("DISPLAY"))
+            {
+              dbus_bus_type = DBUS_BUS_SESSION;
+            }
+            else
+            {
+              dbus_bus_type = DBUS_BUS_SYSTEM;
+            }
           }
           else
           {
@@ -252,6 +259,7 @@ XboxdrvDaemon::init_uinput()
 
     m_uinput.reset(new UInput(m_opts.extra_events));
     m_uinput->set_device_names(m_opts.uinput_device_names);
+    m_uinput->set_device_usbids(m_opts.uinput_device_usbids);
 
     // create controller slots
     int slot_count = 0;

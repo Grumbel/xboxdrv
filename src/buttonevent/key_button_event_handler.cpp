@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <linux/input.h>
 
 #include "evdev_helper.hpp"
+#include "helper.hpp"
 #include "uinput.hpp"
 
 KeyButtonEventHandler*
@@ -54,7 +55,7 @@ KeyButtonEventHandler::from_string(const std::string& str)
 
       case 2:
         {
-          ev->m_hold_threshold = boost::lexical_cast<int>(*i);
+          ev->m_hold_threshold = str2int(*i);
         }
         break;
 

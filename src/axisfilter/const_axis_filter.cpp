@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
 
 #include "axisfilter/const_axis_filter.hpp"
 
-#include <boost/lexical_cast.hpp>
 #include <sstream>
+
+#include "helper.hpp"
 
 ConstAxisFilter*
 ConstAxisFilter::from_string(const std::string& rest)
 {
-  return new ConstAxisFilter(boost::lexical_cast<int>(rest));
+  return new ConstAxisFilter(str2int(rest));
 }
 
 ConstAxisFilter::ConstAxisFilter(int value) :

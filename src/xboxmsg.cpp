@@ -1,6 +1,6 @@
 /*
 **  Xbox/Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -64,8 +64,14 @@ std::string gamepadtype_to_string(const GamepadType& type)
     case GAMEPAD_FIRESTORM_VSB:
       return "firestorm-vsb";
 
+    case GAMEPAD_T_WIRELESS:
+      return "t-wireless";
+
     case GAMEPAD_SAITEK_P2500:
       return "saitek-p2500";
+
+    case GAMEPAD_SAITEK_P3600:
+      return "saitek-p3600";
 
     case GAMEPAD_PLAYSTATION3_USB:
       return "playstation3-usb";
@@ -91,7 +97,9 @@ std::string gamepadtype_to_macro_string(const GamepadType& type)
     case GAMEPAD_XBOX360_GUITAR: return "GAMEPAD_XBOX360_GUITAR";
     case GAMEPAD_FIRESTORM: return "GAMEPAD_FIRESTORM";
     case GAMEPAD_FIRESTORM_VSB: return "GAMEPAD_FIRESTORM_VSB";
+    case GAMEPAD_T_WIRELESS: return "GAMEPAD_T_WIRELESS";
     case GAMEPAD_SAITEK_P2500: return "GAMEPAD_SAITEK_P2500";
+    case GAMEPAD_SAITEK_P3600: return "GAMEPAD_SAITEK_P3600";
     case GAMEPAD_PLAYSTATION3_USB: return "GAMEPAD_PLAYSTATION3_USB";
     case GAMEPAD_GENERIC_USB: return "GAMEPAD_GENERIC_USB";
     default:
@@ -127,8 +135,14 @@ std::ostream& operator<<(std::ostream& out, const GamepadType& type)
     case GAMEPAD_FIRESTORM_VSB:
       return out << "Firestorm Dual Power (vsb)";
 
+    case GAMEPAD_T_WIRELESS:
+      return out << "T-Wireless";
+
     case GAMEPAD_SAITEK_P2500:
       return out << "Saitek P2500";
+
+    case GAMEPAD_SAITEK_P3600:
+      return out << "Saitek P3600";
 
     case GAMEPAD_PLAYSTATION3_USB:
       return out << "Playstation 3 USB";
@@ -1276,13 +1290,13 @@ XboxButton string2btn(const std::string& str_)
   else if (str == "tr" || str == "r3")
     return XBOX_BTN_THUMB_R;
 
-  else if (str == "du" || str == "up")
+  else if (str == "du" || str == "up" || str == "dpad_up")
     return XBOX_DPAD_UP;
-  else if (str == "dd" || str == "down")
+  else if (str == "dd" || str == "down" || str == "dpad_down")
     return XBOX_DPAD_DOWN;
-  else if (str == "dl" || str == "left")
+  else if (str == "dl" || str == "left" || str == "dpad_left")
     return XBOX_DPAD_LEFT;
-  else if (str == "dr" || str == "right")
+  else if (str == "dr" || str == "right" || str == "dpad_right")
     return XBOX_DPAD_RIGHT;
 
   else

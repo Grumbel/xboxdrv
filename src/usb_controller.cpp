@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -79,19 +79,25 @@ USBController::USBController(libusb_device* dev) :
 
 USBController::~USBController()
 {
+  m_is_disconnected = true;
+
   // cancel all transfers
   for(std::set<libusb_transfer*>::iterator it = m_transfers.begin(); it != m_transfers.end(); ++it)
   {
     libusb_cancel_transfer(*it);
   }
 
+  struct timeval to;
+  to.tv_sec = 1;
+  to.tv_usec = 0;
+
   // wait for cancel to succeed
   while (!m_transfers.empty())
   {
-    int ret = libusb_handle_events(NULL);
+    int ret = libusb_handle_events_timeout_completed(NULL, &to, NULL);
     if (ret != 0)
     {
-      log_error("libusb_handle_events() failure: " << ret);
+      log_error("libusb_handle_events_timeout_completed() failure: " << ret);
     }
   }
 
@@ -123,9 +129,21 @@ USBController::get_name() const
   return m_name;
 }
 
+bool
+USBController::parse(uint8_t* data, int len, XboxGenericMsg* msg_out)
+{
+  // dummy method for destructor
+  return false;
+}
+
 void
 USBController::usb_submit_read(int endpoint, int len)
 {
+  if (m_is_disconnected)
+  {
+    return;
+  }
+
   libusb_transfer* transfer = libusb_alloc_transfer(0);
 
   uint8_t* data = static_cast<uint8_t*>(malloc(sizeof(uint8_t) * len));
@@ -151,6 +169,11 @@ USBController::usb_submit_read(int endpoint, int len)
 void
 USBController::usb_write(int endpoint, uint8_t* data_in, int len)
 {
+  if (m_is_disconnected)
+  {
+    return;
+  }
+
   libusb_transfer* transfer = libusb_alloc_transfer(0);
   transfer->flags |= LIBUSB_TRANSFER_FREE_BUFFER;
 
@@ -182,6 +205,11 @@ USBController::usb_control(uint8_t  bmRequestType, uint8_t  bRequest,
                            uint16_t wValue, uint16_t wIndex,
                            uint8_t* data_in, uint16_t wLength)
 {
+  if (m_is_disconnected)
+  {
+    return;
+  }
+
   libusb_transfer* transfer = libusb_alloc_transfer(0);
   transfer->flags |= LIBUSB_TRANSFER_FREE_BUFFER;
 
@@ -218,10 +246,21 @@ USBController::on_control(libusb_transfer* transfer)
 void
 USBController::on_write_data(libusb_transfer* transfer)
 {
-  if (transfer->status != LIBUSB_TRANSFER_COMPLETED)
+  if (transfer->status == LIBUSB_TRANSFER_COMPLETED)
   {
-    if (transfer->status != LIBUSB_TRANSFER_CANCELLED)
-      log_error("USB write failure: " << transfer->length << ": " << usb_transfer_strerror(transfer->status));
+    // ok
+  }
+  else if (transfer->status == LIBUSB_TRANSFER_CANCELLED)
+  {
+    // ok
+  }
+  else if (transfer->status == LIBUSB_TRANSFER_NO_DEVICE)
+  {
+    send_disconnect();
+  }
+  else
+  {
+    log_error("USB write failure: " << transfer->length << ": " << usb_transfer_strerror(transfer->status));
   }
 
   m_transfers.erase(transfer);
@@ -233,31 +272,42 @@ USBController::on_read_data(libusb_transfer* transfer)
 {
   assert(transfer);
 
-  if (transfer->status != LIBUSB_TRANSFER_COMPLETED)
+  switch(transfer->status)
   {
-    if (transfer->status != LIBUSB_TRANSFER_CANCELLED)
-      log_error("USB read failure: " << transfer->length << ": " << usb_transfer_strerror(transfer->status));
+    case LIBUSB_TRANSFER_COMPLETED:
+      // process data
+      XboxGenericMsg msg;
+      if (parse(transfer->buffer, transfer->actual_length, &msg))
+      {
+        submit_msg(msg);
+      }
+      break;
 
+    case LIBUSB_TRANSFER_NO_DEVICE:
+      m_transfers.erase(transfer);
+      libusb_free_transfer(transfer);
+      send_disconnect();
+      return;
+
+    default:
+      log_error("USB read failure: " << transfer->length << ": " << usb_transfer_strerror(transfer->status));
+      break;
+  }
+
+  if (m_is_disconnected)
+  {
     m_transfers.erase(transfer);
     libusb_free_transfer(transfer);
   }
   else
   {
-    // process data
-    XboxGenericMsg msg;
-    if (parse(transfer->buffer, transfer->actual_length, &msg))
-    {
-      submit_msg(msg);
-    }
-
     int ret;
     ret = libusb_submit_transfer(transfer);
     if (ret != LIBUSB_SUCCESS) // could also check for LIBUSB_ERROR_NO_DEVICE
     {
       log_error("failed to resubmit USB transfer: " << usb_strerror(ret));
-
+      m_transfers.erase(transfer);
       libusb_free_transfer(transfer);
-
       send_disconnect();
     }
   }

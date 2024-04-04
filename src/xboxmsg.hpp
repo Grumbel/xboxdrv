@@ -1,6 +1,6 @@
 /*
 **  Xbox/Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,9 @@ enum GamepadType {
   GAMEPAD_XBOX360_GUITAR,
   GAMEPAD_FIRESTORM,
   GAMEPAD_FIRESTORM_VSB,
+  GAMEPAD_T_WIRELESS,
   GAMEPAD_SAITEK_P2500,
+  GAMEPAD_SAITEK_P3600,
   GAMEPAD_PLAYSTATION3_USB,
   GAMEPAD_GENERIC_USB
 };

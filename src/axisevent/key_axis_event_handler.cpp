@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ KeyAxisEventHandler::from_string(const std::string& str)
           if (is_number(*i))
           {
             // bit of hackery to handle simplified syntax for trigger button that don't need up/down events
-            ev->m_threshold = boost::lexical_cast<int>(*i);
+            ev->m_threshold = str2int(*i);
             ev->m_down_codes = ev->m_up_codes;
             ev->m_up_codes.clear();
           }
@@ -60,7 +60,7 @@ KeyAxisEventHandler::from_string(const std::string& str)
         break;
 
       case 2:
-        ev->m_threshold = boost::lexical_cast<int>(*i);
+        ev->m_threshold = str2int(*i);
         break;
 
       default:

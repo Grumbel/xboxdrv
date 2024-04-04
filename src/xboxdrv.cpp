@@ -1,6 +1,6 @@
 /*
 **  Xbox/Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -181,7 +181,7 @@ Xboxdrv::print_copyright() const
 {
   WordWrap wrap(get_terminal_width());
   wrap.para("xboxdrv " PACKAGE_VERSION " - http://pingus.seul.org/~grumbel/xboxdrv/");
-  wrap.para("Copyright © 2008-2011 Ingo Ruhnke <grumbel@gmx.de>");
+  wrap.para("Copyright © 2008-2011 Ingo Ruhnke <grumbel@gmail.com>");
   wrap.para("Licensed under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>");
   wrap.para("This program comes with ABSOLUTELY NO WARRANTY.");
   wrap.para("This is free software, and you are welcome to redistribute it under certain "
@@ -212,11 +212,16 @@ Xboxdrv::run_daemon(const Options& opts)
 
   if (opts.usb_debug)
   {
+#if LIBUSB_API_VERSION >= 0x01000106
+    libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, 3);
+#else
     libusb_set_debug(NULL, 3);
+#endif
   }
 
   if (!opts.detach)
   {
+    USBSubsystem usb_subsystem;
     XboxdrvDaemon daemon(opts);
     daemon.run();
   }

@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 #include "sensitivity_axis_filter.hpp"
 
 #include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
 #include <math.h>
+#include <sstream>
 
 #include "helper.hpp"
 
@@ -37,7 +37,7 @@ SensitivityAxisFilter::from_string(const std::string& str)
   {
     switch(j)
     {
-      case 0: sensitivity = boost::lexical_cast<float>(*i); break;
+      case 0: sensitivity = str2float(*i); break;
       default: throw std::runtime_error("to many arguments");
     };
   }

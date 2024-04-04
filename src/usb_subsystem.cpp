@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <boost/format.hpp>
 
+#include "helper.hpp"
 #include "options.hpp"
 #include "raise_exception.hpp"
 #include "usb_gsource.hpp"
@@ -108,8 +109,8 @@ bool
 USBSubsystem::find_controller_by_path(const std::string& busid_str, const std::string& devid_str,
                                  libusb_device** xbox_device)
 {
-  int busid = boost::lexical_cast<int>(busid_str);
-  int devid = boost::lexical_cast<int>(devid_str);
+  int busid = str2int(busid_str);
+  int devid = str2int(devid_str);
 
   libusb_device** list;
   ssize_t num_devices = libusb_get_device_list(NULL, &list);

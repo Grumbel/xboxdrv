@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #include "axisfilter/relative_axis_filter.hpp"
 
 #include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
 
 #include "helper.hpp"
 
@@ -35,7 +35,7 @@ RelativeAxisFilter::from_string(const std::string& str)
   {
     switch(idx)
     {
-      case 0: speed = boost::lexical_cast<int>(*t); break;
+      case 0: speed = str2int(*t); break;
       default: throw std::runtime_error("to many arguments"); break;
     }
   }

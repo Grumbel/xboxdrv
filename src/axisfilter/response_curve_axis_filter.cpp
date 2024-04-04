@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@
 #include "response_curve_axis_filter.hpp"
 
 #include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
+
+#include "helper.hpp"
 
 ResponseCurveAxisFilter*
 ResponseCurveAxisFilter::from_string(const std::string& str)
@@ -31,7 +33,7 @@ ResponseCurveAxisFilter::from_string(const std::string& str)
   int idx = 0;
   for(tokenizer::iterator t = tokens.begin(); t != tokens.end(); ++t, ++idx)
   {
-    samples.push_back(boost::lexical_cast<int>(*t));
+    samples.push_back(str2int(*t));
   }
 
   return new ResponseCurveAxisFilter(samples);

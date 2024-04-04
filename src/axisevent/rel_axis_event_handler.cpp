@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <math.h>
 
 #include "evdev_helper.hpp"
+#include "helper.hpp"
 #include "uinput.hpp"
 
 RelAxisEventHandler*
@@ -42,11 +43,11 @@ RelAxisEventHandler::from_string(const std::string& str)
         break;
 
       case 1:
-        ev->m_value = boost::lexical_cast<float>(*i);
+        ev->m_value = str2float(*i);
         break;
 
       case 2:
-        ev->m_repeat = boost::lexical_cast<int>(*i);
+        ev->m_repeat = str2int(*i);
         break;
 
       default:

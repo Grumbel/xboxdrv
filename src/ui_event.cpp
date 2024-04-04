@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2010 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2010 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "ui_event.hpp"
 
 #include "evdev_helper.hpp"
+#include "helper.hpp"
 #include "uinput.hpp"
 
 bool
@@ -174,7 +175,7 @@ int str2deviceid(const std::string& device)
   }
   else
   {
-    return boost::lexical_cast<int>(device);
+    return str2int(device);
   }
 }
 
@@ -186,7 +187,7 @@ int str2slotid(const std::string& slot)
   }
   else
   {
-    return boost::lexical_cast<int>(slot);
+    return str2int(slot);
   }
 }
 

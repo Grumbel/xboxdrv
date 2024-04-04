@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2010 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2010 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 
 #include "axis_filter.hpp"
 
-#include <boost/lexical_cast.hpp>
 #include <stdexcept>
+#include <sstream>
 
 #include "axisfilter/calibration_axis_filter.hpp"
 #include "axisfilter/const_axis_filter.hpp"

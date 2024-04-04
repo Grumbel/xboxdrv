@@ -1,6 +1,6 @@
 /*
 **  Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2011 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -18,12 +18,14 @@
 
 #include "buttonfilter/delay_button_filter.hpp"
 
-#include <boost/lexical_cast.hpp>
+#include <sstream>
+
+#include "helper.hpp"
 
 DelayButtonFilter*
 DelayButtonFilter::from_string(const std::string& str)
 {
-  return new DelayButtonFilter(boost::lexical_cast<int>(str));
+  return new DelayButtonFilter(str2int(str));
 }
 
 DelayButtonFilter::DelayButtonFilter(int delay) :

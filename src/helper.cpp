@@ -1,6 +1,6 @@
 /*
 **  Xbox/Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -45,6 +45,48 @@ int hexstr2int(const std::string& str)
   else
   {
     raise_exception(std::runtime_error, "couldn't convert '" << str << "' to int");
+  }
+}
+
+bool str2bool(std::string const& str)
+{
+  try
+  {
+    return boost::lexical_cast<bool>(str);
+  }
+  catch(boost::bad_lexical_cast const& err)
+  {
+    std::ostringstream out;
+    out << "str2bool(): couldn't convert '" << str << "' to bool";
+    throw std::runtime_error(out.str());
+  }
+}
+
+int str2int(std::string const& str)
+{
+  try
+  {
+    return boost::lexical_cast<int>(str);
+  }
+  catch(boost::bad_lexical_cast const& err)
+  {
+    std::ostringstream out;
+    out << "str2int(): couldn't convert '" << str << "' to int";
+    throw std::runtime_error(out.str());
+  }
+}
+
+float str2float(std::string const& str)
+{
+  try
+  {
+    return boost::lexical_cast<float>(str);
+  }
+  catch(boost::bad_lexical_cast const& err)
+  {
+    std::ostringstream out;
+    out << "str2float(): couldn't convert '" << str << "' to float";
+    throw std::runtime_error(out.str());
   }
 }
 
@@ -119,12 +161,12 @@ int to_number(int range, const std::string& str)
   {
     if (str[str.size() - 1] == '%')
     {
-      int percent = boost::lexical_cast<int>(str.substr(0, str.size()-1));
+      int percent = str2int(str.substr(0, str.size()-1));
       return range * percent / 100;
     }
     else
     {
-      return boost::lexical_cast<int>(str);
+      return str2int(str);
     }
   }
 }
@@ -155,10 +197,9 @@ float to_float_no_range_check(int value, int min, int max)
 
 float to_float(int value, int min, int max)
 {
-  assert(value >= min);
-  assert(value <= max);
-
-  return to_float_no_range_check(value, min, max);
+  return Math::clamp(-1.0f,
+                     to_float_no_range_check(value, min, max),
+                     1.0f);
 }
 
 int from_float(float value, int min, int max)
