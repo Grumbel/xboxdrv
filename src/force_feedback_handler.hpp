@@ -19,7 +19,6 @@
 #ifndef HEADER_FF_HANDLER_HPP
 #define HEADER_FF_HANDLER_HPP
 
-#include <boost/function.hpp>
 #include <linux/input.h>
 #include <map>
 

@@ -19,13 +19,15 @@
 #include "controller_thread.hpp"
 
 #include <iostream>
-#include <boost/bind.hpp>
+#include <functional>
 #include <glib.h>
 
 #include "helper.hpp"
 #include "log.hpp"
 #include "controller.hpp"
 #include "message_processor.hpp"
+
+using namespace std::placeholders;
 
 extern bool global_exit_xboxdrv;
 
@@ -42,7 +44,7 @@ ControllerThread::ControllerThread(ControllerPtr controller,
 {
   memset(&m_oldrealmsg, 0, sizeof(m_oldrealmsg));
   m_timeout_id = g_timeout_add(m_timeout, &ControllerThread::on_timeout_wrap, this);
-  m_controller->set_message_cb(boost::bind(&ControllerThread::on_message, this, _1));
+  m_controller->set_message_cb(std::bind(&ControllerThread::on_message, this, _1));
   m_processor->set_controller(m_controller.get());
 }
 

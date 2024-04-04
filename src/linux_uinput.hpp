@@ -19,7 +19,6 @@
 #ifndef HEADER_LINUX_UINPUT_HPP
 #define HEADER_LINUX_UINPUT_HPP
 
-#include <boost/function.hpp>
 #include <linux/uinput.h>
 #include <glib.h>
 #include <stdint.h>

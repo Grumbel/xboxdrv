@@ -18,7 +18,7 @@
 
 #include "controller.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "log.hpp"
 #include "message_processor.hpp"
@@ -114,7 +114,7 @@ Controller::set_udev_device(udev_device* udev_dev)
 }
 
 void
-Controller::set_message_cb(const boost::function<void(const XboxGenericMsg&)>& msg_cb)
+Controller::set_message_cb(const std::function<void(const XboxGenericMsg&)>& msg_cb)
 {
   m_msg_cb = msg_cb;
 }
@@ -140,7 +140,7 @@ Controller::set_active(bool v)
 }
 
 void
-Controller::set_activation_cb(const boost::function<void ()>& callback)
+Controller::set_activation_cb(const std::function<void ()>& callback)
 {
   m_activation_cb = callback;
 }
@@ -152,7 +152,7 @@ Controller::is_disconnected() const
 }
 
 void
-Controller::set_disconnect_cb(const boost::function<void ()>& callback)
+Controller::set_disconnect_cb(const std::function<void ()>& callback)
 {
   m_disconnect_cb = callback;
 }

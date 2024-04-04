@@ -19,7 +19,6 @@
 #ifndef HEADER_XBOXDRV_MESSAGE_PROCESSOR_HPP
 #define HEADER_XBOXDRV_MESSAGE_PROCESSOR_HPP
 
-#include <boost/function.hpp>
 #include <stdint.h>
 
 struct XboxGenericMsg;

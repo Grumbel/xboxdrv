@@ -18,17 +18,18 @@
 
 #include "ini_schema.hpp"
 
+#include <functional>
 #include <sstream>
 
 class INIPairSchemaBoolCallback : public INIPairSchema
 {
 private:
-  boost::function<void ()> m_true_callback;
-  boost::function<void ()> m_false_callback;
+  std::function<void ()> m_true_callback;
+  std::function<void ()> m_false_callback;
 
 public:
-  INIPairSchemaBoolCallback(boost::function<void ()> true_callback,
-                            boost::function<void ()> false_callback) :
+  INIPairSchemaBoolCallback(std::function<void ()> true_callback,
+                            std::function<void ()> false_callback) :
     m_true_callback(true_callback),
     m_false_callback(false_callback)
   {}
@@ -180,10 +181,10 @@ private:
 class INIPairSchemaCallback : public INIPairSchema
 {
 private:
-  boost::function<void (const std::string&)> m_callback;
+  std::function<void (const std::string&)> m_callback;
 
 public:
-  INIPairSchemaCallback(boost::function<void (const std::string&)> callback) :
+  INIPairSchemaCallback(std::function<void (const std::string&)> callback) :
     m_callback(callback)
   {}
 
@@ -200,7 +201,7 @@ public:
   }
 };
 
-INISchemaSection::INISchemaSection(boost::function<void (const std::string&, const std::string&)> callback) :
+INISchemaSection::INISchemaSection(std::function<void (const std::string&, const std::string&)> callback) :
   m_schema(),
   m_callback(callback)
 {
@@ -259,15 +260,15 @@ INISchemaSection::operator()(const std::string& name, std::string* value)
 
 INISchemaSection&
 INISchemaSection::operator()(const std::string& name,
-                             boost::function<void ()> true_callback,
-                             boost::function<void ()> false_callback)
+                             std::function<void ()> true_callback,
+                             std::function<void ()> false_callback)
 {
   add(name, new INIPairSchemaBoolCallback(true_callback, false_callback));
   return *this;
 }
 
 INISchemaSection&
-INISchemaSection::operator()(const std::string& name, boost::function<void (const std::string&)> callback)
+INISchemaSection::operator()(const std::string& name, std::function<void (const std::string&)> callback)
 {
   add(name, new INIPairSchemaCallback(callback));
   return *this;
@@ -318,7 +319,7 @@ INISchema::clear()
 
 INISchemaSection&
 INISchema::section(const std::string& name,
-                   boost::function<void (const std::string&, const std::string&)> callback)
+                   std::function<void (const std::string&, const std::string&)> callback)
 {
   Sections::iterator i = m_sections.find(name);
   if (i != m_sections.end())
