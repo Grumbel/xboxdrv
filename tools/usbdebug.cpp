@@ -15,7 +15,7 @@ class EndpointListenerThread;
 
 void print_raw_data(std::ostream& out, uint8_t* data, int len);
 bool global_interrupt = false;
-
+
 struct usb_device*
 find_usb_device(uint16_t idVendor, uint16_t idProduct)
 {
@@ -34,7 +34,7 @@ find_usb_device(uint16_t idVendor, uint16_t idProduct)
     }
   return 0;
 }
-
+
 class USBDevice
 {
 private:
@@ -185,7 +185,7 @@ public:
 };
 
 USBDevice* USBDevice::current_ = 0;
-
+
 class EndpointListenerThread
 {
 private:
@@ -240,7 +240,7 @@ public:
       }
   }
 };
-
+
 void
 USBDevice::launch_listener_thread(int endpoint)
 {
@@ -252,7 +252,7 @@ USBDevice::launch_listener_thread(int endpoint)
     std::cout << "Error: " << err.what() << std::endl;
   }
 }
-
+
 bool has_prefix(const std::string& lhs, const std::string rhs)
 {
   if (lhs.length() < rhs.length())
@@ -397,7 +397,7 @@ void console_info_cmd(const std::vector<std::string>& args)
 {
   USBDevice::current()->print_info();
 }
-
+
 class Sequence
 {
 private:
@@ -456,7 +456,7 @@ public:
     return str.str();
   }
 };
-
+
 class SequenceGenerator
 {
 private:
@@ -543,7 +543,7 @@ public:
     return str.str();
   }
 };
-
+
 bool eol(std::vector<SequenceGenerator>& sequences)
 {
   if (sequences.empty())

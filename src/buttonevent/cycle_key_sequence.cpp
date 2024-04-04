@@ -43,7 +43,7 @@ CycleKeySequence::from_range(std::vector<std::string>::const_iterator beg,
     return CycleKeySequencePtr(new CycleKeySequence(keys, wrap_around));
   }
 }
-
+
 CycleKeySequence::CycleKeySequence(const Keys& keys, bool wrap_around) :
   m_keys(keys),
   m_wrap_around(wrap_around),

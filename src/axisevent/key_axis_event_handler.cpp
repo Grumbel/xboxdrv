@@ -23,7 +23,7 @@
 #include "evdev_helper.hpp"
 #include "helper.hpp"
 #include "uinput.hpp"
-
+
 KeyAxisEventHandler*
 KeyAxisEventHandler::from_string(const std::string& str)
 {
@@ -164,5 +164,5 @@ KeyAxisEventHandler::str() const
   out << m_up_codes.str() << ":" << m_down_codes.str() << ":" << m_threshold;
   return out.str();
 }
-
+
 /* EOF */

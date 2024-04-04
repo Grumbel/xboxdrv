@@ -33,7 +33,7 @@
 #include "buttonevent/key_button_event_handler.hpp"
 #include "buttonevent/macro_button_event_handler.hpp"
 #include "buttonevent/rel_button_event_handler.hpp"
-
+
 ButtonEventPtr
 ButtonEvent::invalid()
 {
@@ -135,7 +135,7 @@ ButtonEvent::from_string(const std::string& str, const std::string& directory)
     }
   }
 }
-
+
 ButtonEvent::ButtonEvent(ButtonEventHandler* handler) :
   m_last_send_state(false),
   m_last_raw_state(false),
@@ -203,5 +203,5 @@ ButtonEvent::str() const
 {
   return m_handler->str();
 }
-
+
 /* EOF */

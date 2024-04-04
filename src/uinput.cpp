@@ -31,7 +31,7 @@
 #include "helper.hpp"
 #include "log.hpp"
 #include "raise_exception.hpp"
-
+
 struct input_id
 UInput::parse_input_id(const std::string& str)
 {
@@ -102,7 +102,7 @@ UInput::parse_device_id(const std::string& str)
 
   return UInput::create_device_id(slot_id, device_id);
 }
-
+
 UInput::UInput(bool extra_events) :
   m_uinput_devs(),
   m_device_names(),
@@ -572,5 +572,5 @@ UInput::find_evdev_number()
       return i;
   }
 }
-
+
 /* EOF */

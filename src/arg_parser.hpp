@@ -21,7 +21,7 @@
 
 #include <vector>
 #include <string>
-
+
 class ArgParser
 {
 private:
@@ -110,7 +110,7 @@ private:
   /** Find the Option structure that matches \a long_option */
   Option* lookup_long_option (const std::string& long_option);
 };
-
+
 #endif
 
 /* EOF */

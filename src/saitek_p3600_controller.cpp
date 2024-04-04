@@ -26,7 +26,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <bitset>
-
+
 struct SaitekP3600Msg
 {
   int dummy :8; // data[0]
@@ -65,7 +65,7 @@ struct SaitekP3600Msg
   unsigned int dpad :4;
 
 } __attribute__((__packed__));
-
+
 SaitekP3600Controller::SaitekP3600Controller(libusb_device* dev, bool try_detach) :
   USBController(dev),
   left_rumble(-1),
@@ -228,5 +228,5 @@ SaitekP3600Controller::parse(uint8_t* data, int len, XboxGenericMsg* msg_out)
     return false;
   }
 }
-
+
 /* EOF */

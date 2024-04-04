@@ -28,7 +28,7 @@ StatisticModifier::from_string(const std::vector<std::string>& args)
 {
   return new StatisticModifier;
 }
-
+
 StatisticModifier::StatisticModifier() :
   m_button_state(XBOX_BTN_MAX),
   m_press_count(XBOX_BTN_MAX)

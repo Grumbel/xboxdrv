@@ -209,7 +209,7 @@ ControllerSlotConfig::create_modifier(const ControllerOptions& opts, std::vector
 
   modifier->insert(modifier->end(), opts.modifier.begin(), opts.modifier.end());
 }
-
+
 ControllerSlotConfig::ControllerSlotConfig() :
   m_config(),
   m_current_config(0),

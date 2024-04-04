@@ -20,7 +20,7 @@
 
 #include "raise_exception.hpp"
 #include "usb_helper.hpp"
-
+
 struct USBReadCallback
 {
   USBInterface* iface;
@@ -52,7 +52,7 @@ private:
   USBWriteCallback(const USBWriteCallback&);
   USBWriteCallback& operator=(const USBWriteCallback&);
 };
-
+
 USBInterface::USBInterface(libusb_device_handle* handle, int interface, bool try_detach) :
   m_handle(handle),
   m_interface(interface),
@@ -239,7 +239,7 @@ USBInterface::on_write_data(USBWriteCallback* callback, libusb_transfer* transfe
     m_endpoints.erase(transfer->endpoint);
   }
 }
-
+
 void
 USBInterface::on_read_data_wrap(libusb_transfer* transfer)
 {
@@ -253,5 +253,5 @@ USBInterface::on_write_data_wrap(libusb_transfer* transfer)
   USBWriteCallback* cb = static_cast<USBWriteCallback*>(transfer->user_data);
   cb->iface->on_write_data(cb, transfer);
 }
-
+
 /* EOF */

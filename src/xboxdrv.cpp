@@ -47,7 +47,7 @@
 
 // Some ugly global variables, needed for sigint catching
 bool global_exit_xboxdrv = false;
-
+
 void
 Xboxdrv::run_list_controller()
 {
@@ -113,7 +113,7 @@ Xboxdrv::run_list_controller()
 
   libusb_free_device_list(list, 1 /* unref_devices */);
 }
-
+
 void
 Xboxdrv::run_list_supported_devices()
 {
@@ -126,7 +126,7 @@ Xboxdrv::run_list_supported_devices()
       % xpad_devices[i].name;
   }
 }
-
+
 bool xpad_device_sorter(const XPadDevice& lhs, const XPadDevice& rhs)
 {
   if (lhs.idVendor < rhs.idVendor)
@@ -159,7 +159,7 @@ Xboxdrv::run_list_supported_devices_xpad()
       % gamepadtype_to_macro_string(sorted_devices[i].type);
   }
 }
-
+
 void
 Xboxdrv::run_help_devices()
 {
@@ -174,7 +174,7 @@ Xboxdrv::run_help_devices()
               << std::endl;
   }
 }
-
+
 void
 Xboxdrv::print_copyright() const
 {
@@ -200,7 +200,7 @@ Xboxdrv::run_main(const Options& opts)
   XboxdrvMain xboxdrv_main(opts);
   xboxdrv_main.run();
 }
-
+
 void
 Xboxdrv::run_daemon(Options& opts)
 {
@@ -333,7 +333,7 @@ Xboxdrv::run_list_enums(uint32_t enums)
     wrap.newline();
   }
 }
-
+
 Xboxdrv::Xboxdrv()
 {
 }
@@ -431,5 +431,5 @@ Xboxdrv::main(int argc, char** argv)
 
   return 0;
 }
-
+
 /* EOF */

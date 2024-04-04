@@ -28,7 +28,7 @@
 #include "message_processor.hpp"
 
 extern bool global_exit_xboxdrv;
-
+
 ControllerThread::ControllerThread(ControllerPtr controller,
                                    std::shared_ptr<MessageProcessor> processor,
                                    const Options& opts) :
@@ -84,5 +84,5 @@ ControllerThread::on_message(const XboxGenericMsg& msg)
     m_processor->send(msg, msec_delta);
   }
 }
-
+
 /* EOF */

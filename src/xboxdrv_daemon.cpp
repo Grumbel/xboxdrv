@@ -96,7 +96,7 @@ bool get_usb_path(udev_device* device, int* bus, int* dev)
 }
 
 } // namespace
-
+
 XboxdrvDaemon::XboxdrvDaemon(const Options& opts) :
   m_opts(opts),
   m_gmain(),

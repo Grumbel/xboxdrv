@@ -22,7 +22,7 @@
 #include <libusb.h>
 #include "xboxmsg.hpp"
 #include "usb_controller.hpp"
-
+
 class FirestormDualController : public USBController
 {
 private:
@@ -45,7 +45,7 @@ private:
   FirestormDualController(const FirestormDualController&);
   FirestormDualController& operator=(const FirestormDualController&);
 };
-
+
 #endif
 
 /* EOF */

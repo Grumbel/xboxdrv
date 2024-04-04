@@ -22,7 +22,7 @@
 #include <sstream>
 
 #include "helper.hpp"
-
+
 RelativeAxisFilter*
 RelativeAxisFilter::from_string(const std::string& str)
 {
@@ -42,7 +42,7 @@ RelativeAxisFilter::from_string(const std::string& str)
 
   return new RelativeAxisFilter(speed);
 }
-
+
 RelativeAxisFilter::RelativeAxisFilter(int speed) :
   m_speed(speed),
   m_float_speed(0.0f),
@@ -75,5 +75,5 @@ RelativeAxisFilter::str() const
   out << "relativeaxis:" << m_speed;
   return out.str();
 }
-
+
 /* EOF */

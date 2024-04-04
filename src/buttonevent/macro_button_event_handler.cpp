@@ -28,7 +28,7 @@
 #include "log.hpp"
 #include "raise_exception.hpp"
 #include "uinput.hpp"
-
+
 MacroButtonEventHandler*
 MacroButtonEventHandler::from_string(const std::string& filename)
 {
@@ -133,7 +133,7 @@ MacroButtonEventHandler::macro_event_from_string(const std::string& str)
     return event;
   }
 }
-
+
 MacroButtonEventHandler::MacroButtonEventHandler(const std::vector<MacroEvent>& events) :
   m_events(events),
   m_send_in_progress(false),
@@ -277,5 +277,5 @@ MacroButtonEventHandler::str() const
 {
   return "macro";
 }
-
+
 /* EOF */

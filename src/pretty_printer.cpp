@@ -19,7 +19,7 @@
 #include "pretty_printer.hpp"
 
 #include <iostream>
-
+
 PrettyPrinter::PrettyPrinter(int terminal_width_)
   : terminal_width(terminal_width_)
 {
@@ -124,7 +124,7 @@ PrettyPrinter::print(const std::string& indent_str, const std::string& left, con
   std::cout << std::endl;
 }
 
-
+
 #ifdef __TEST__
 
 int main(int argc, char** argv)
@@ -144,5 +144,5 @@ int main(int argc, char** argv)
 }
 
 #endif
-
+
 /* EOF */

@@ -30,7 +30,7 @@ class ButtonEvent;
 class ButtonEventHandler;
 
 typedef std::shared_ptr<ButtonEvent> ButtonEventPtr;
-
+
 class ButtonEvent
 {
 public:
@@ -61,7 +61,7 @@ private:
   std::shared_ptr<ButtonEventHandler> m_handler;
   std::vector<ButtonFilterPtr> m_filters;
 };
-
+
 class ButtonEventHandler
 {
 public:
@@ -72,7 +72,7 @@ public:
   virtual void update(UInput& uinput, int msec_delta) =0;
   virtual std::string str() const =0;
 };
-
+
 #endif
 
 /* EOF */

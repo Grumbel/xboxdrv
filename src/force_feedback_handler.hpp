@@ -24,7 +24,7 @@
 #include <map>
 
 class Controller;
-
+
 class ForceFeedbackEffect
 {
 public:
@@ -82,7 +82,7 @@ public:
   void play();
   void stop();
 };
-
+
 /** */
 class ForceFeedbackHandler
 {
@@ -115,7 +115,7 @@ public:
   int get_weak_magnitude() const;
   int get_strong_magnitude() const;
 };
-
+
 #endif
 
 /* EOF */

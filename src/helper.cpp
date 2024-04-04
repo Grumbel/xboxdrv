@@ -30,7 +30,7 @@
 #include <iostream>
 
 #include "raise_exception.hpp"
-
+
 int hexstr2int(const std::string& str)
 {
   unsigned int value = 0;
@@ -89,7 +89,7 @@ float str2float(std::string const& str)
     throw std::runtime_error(out.str());
   }
 }
-
+
 std::string raw2str(uint8_t* data, int len)
 {
   std::ostringstream out;
@@ -101,7 +101,7 @@ std::string raw2str(uint8_t* data, int len)
 
   return out.str();
 }
-
+
 std::string to_lower(const std::string &str)
 {
   std::string lower_impl = str;
@@ -115,7 +115,7 @@ std::string to_lower(const std::string &str)
 
   return lower_impl;
 }
-
+
 void split_string_at(const std::string& str, char c, std::string* lhs, std::string* rhs)
 {
   std::string::size_type p = str.find(c);
@@ -142,7 +142,7 @@ void process_name_value_string(const std::string& str, const boost::function<voi
     func(lhs, rhs);
   }
 }
-
+
 bool is_number(const std::string& str)
 {
   for(std::string::const_iterator i = str.begin(); i != str.end(); ++i)
@@ -150,7 +150,7 @@ bool is_number(const std::string& str)
       return false;
   return true;
 }
-
+
 int to_number(int range, const std::string& str)
 {
   if (str.empty())
@@ -170,14 +170,14 @@ int to_number(int range, const std::string& str)
     }
   }
 }
-
+
 uint32_t get_time()
 {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return tv.tv_sec * 1000 + tv.tv_usec/1000;
 }
-
+
 float to_float_no_range_check(int value, int min, int max)
 {
   // FIXME: '+1' is kind of a hack to
@@ -206,7 +206,7 @@ int from_float(float value, int min, int max)
 {
   return (value + 1.0f) / 2.0f * static_cast<float>(max - min) + min;
 }
-
+
 int get_terminal_width()
 {
   struct winsize w;
@@ -250,5 +250,5 @@ pid_t spawn_exe(const std::vector<std::string>& args)
 
   return pid;
 }
-
+
 /* EOF */

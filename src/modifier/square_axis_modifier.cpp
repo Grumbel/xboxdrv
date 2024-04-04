@@ -22,7 +22,7 @@
 #include <sstream>
 
 #include "helper.hpp"
-
+
 namespace {
 
 void squarify_axis(int& x_inout, int& y_inout)
@@ -47,7 +47,7 @@ void squarify_axis(int& x_inout, int& y_inout)
 
 } // namespace
 
-
+
 SquareAxisModifier*
 SquareAxisModifier::from_string(const std::vector<std::string>& args)
 {
@@ -61,7 +61,7 @@ SquareAxisModifier::from_string(const std::vector<std::string>& args)
                                   string2axis(args[1]));
   }
 }
-
+
 SquareAxisModifier::SquareAxisModifier(XboxAxis xaxis, XboxAxis yaxis) :
   m_xaxis(xaxis),
   m_yaxis(yaxis)
@@ -90,5 +90,5 @@ SquareAxisModifier::str() const
       << axis2string(m_yaxis);
   return out.str();
 }
-
+
 /* EOF */

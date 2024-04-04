@@ -5,7 +5,7 @@ import subprocess
 import string
 import re
 import sys
-
+
 def build_dbus_glue(target, source, env):
     """
     C++ doesn't allow casting from void* to a function pointer,
@@ -24,7 +24,7 @@ def build_dbus_glue(target, source, env):
 
     with open(target[0].get_path(), "w") as f:
         f.write(xml)
-
+
 def build_bin2h(target, source, env):
     """
     Takes a list of files and converts them into a C source that can be included
@@ -68,7 +68,7 @@ def build_bin2h(target, source, env):
 
         fout.write("/* EOF */\n")
 
-
+
 env = Environment(ENV=os.environ, BUILDERS = {
     'DBusGlue' : Builder(action = build_dbus_glue),
     'Bin2H'    : Builder(action = build_bin2h)
@@ -131,7 +131,7 @@ f.close()
 env.Append(CPPDEFINES = { 'PACKAGE_VERSION': "'\"%s\"'" % package_version })
 
 conf = Configure(env)
-
+
 if not conf.env['CXX']:
     print('g++ must be installed!')
     Exit(1)

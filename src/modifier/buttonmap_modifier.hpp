@@ -23,7 +23,7 @@
 
 #include "button_filter.hpp"
 #include "modifier.hpp"
-
+
 struct ButtonMapping
 {
   static ButtonMapping from_string(const std::string& lhs, const std::string& rhs);
@@ -38,7 +38,7 @@ struct ButtonMapping
     filters()
   {}
 };
-
+
 class ButtonmapModifier : public Modifier
 {
 public:
@@ -56,7 +56,7 @@ public:
 public:
   std::vector<ButtonMapping> m_buttonmap;
 };
-
+
 #endif
 
 /* EOF */

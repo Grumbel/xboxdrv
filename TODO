@@ -18,7 +18,7 @@ git archive --format=tar --prefix="xboxdrv-linux-${VERSION}/" ${TAG} | bzip2 -c 
 
 git push --tags
 
-
+
 Ubuntu Package:
 ===============
 
@@ -68,7 +68,7 @@ git checkout stable-lts
 git-buildpackage --git-no-create-orig --git-debian-branch=stable-lts --git-tag --git-builder="debuild -S" --git-debian-tag="stable/0.6.6-1_lucid2"
 sudo pbuilder --build --basetgz /var/cache/pbuilder/base-lucid.tgz ../xboxdrv-stable_0.6.6-1~lucid2.dsc
 
-
+
 Target for 0.8.3
 ================
 
@@ -119,7 +119,7 @@ libusb:warning [libusb_close] internal signalling write failed, closing anyway
 
   - single button inventory: next, hold to activate
 
-
+
 Target for 0.9.0
 ================
 
@@ -149,7 +149,7 @@ Target for 0.9.0
 * OR all output buttons and axis together
 
 * native REL events
-
+
 * get rid of UIEvent::resolve_device_id() if possible
 
 * implement filter that removes glitched button events, i.e. events
@@ -389,7 +389,7 @@ disable LT and RT -> already fixed, check it
 
 * LED isn't set proper when wireless controllers wake up from power-down
 
-
+
 == Unsolved/WontFix ==
 
 * after every thread cleanup, do an enumeration over all USB devices,
@@ -416,7 +416,7 @@ disable LT and RT -> already fixed, check it
   -> hard to avoid, as wireless controllers are only picked up when
      active, which they always become later then the wired ones, which
      are active by default)
-
+
 * BTN_A@joystick.1 doesn't work for a single joystick, why? (joystick isn't id=0, why?)
 
 * improve output on which uinput devices are created (even with udev
@@ -537,7 +537,7 @@ Other Stuff
   -> send_rel_repetitive() doesn't work with multi-axis REL events (mouse emulation)
 
 * boost::lexical_cast<> error messages are useless, make some better ones
-
+
 Daemon Match Rules
 ==================
 
@@ -564,7 +564,7 @@ Daemon Match Rules
 
 * extend usbid match rule to bcd device
 
-
+
 Stuff to do before 0.7.3 release:
 =================================
 
@@ -594,7 +594,7 @@ Stuff to do before 0.7.3 release:
     check for conflicts and necessary modifications?
   - Options::finish() to do final things?
 
-
+
 Stuff to do before 0.7.x release:
 =================================
 
@@ -670,7 +670,7 @@ http://sourceforge.net/tracker/download.php?group_id=286545&atid=1214224&file_id
 http://www.x.org/docs/XKB/XKBlib.pdf
 
 http://www.mp3car.com/vbulletin/input-devices/108554-xbox360-chatpad-awsome-backlit-mini-keyboard-16.html#post1256444
-
+
 * change default axis/button map depending on controller type (tricky as
   type is only really known after the axis/buttonmap as already been
   build):
@@ -680,7 +680,7 @@ http://www.mp3car.com/vbulletin/input-devices/108554-xbox360-chatpad-awsome-back
 * guitar handling was changed in a4e1003cba0ff925358ce5ed84d2bf9a728e93d6 
 
 * REL_ events could need acceleration support, as mouse emulation is currently kind of imprecise
-
+
 Stuff to do before 0.7.x release:
 =================================
 
@@ -718,12 +718,12 @@ Feature
 
 * test TR:Anniversary with max effect 16
 
-
+
 fixme:dinput:joy_polldev joystick cannot handle type 21 event (code 0) <- 21 == EV_FF (status report?) 
 
 http://www.immersion.com/developer/downloads/ImmFundamentals/HTML/
 http://msdn.microsoft.com/en-us/library/bb219655(VS.85).aspx
-
+
 Later versions:
 ===============
 
@@ -753,7 +753,7 @@ Orange	LB1	+32767
 
 * add support for LED messages (can this be used by anything?)
 
-
+
 Stuff to do before 0.8.0 release:
 =================================
 
@@ -796,7 +796,7 @@ Stuff to do before 0.8.0 release:
 
 * Wiimote support (either native or via libcwiid
 
-
+
 Random Stuff
 ============
 http://lists.libsdl.org/pipermail/sdl-libsdl.org/2007-March/060263.html

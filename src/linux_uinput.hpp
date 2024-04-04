@@ -23,7 +23,7 @@
 #include <linux/uinput.h>
 #include <glib.h>
 #include <stdint.h>
-
+
 class ForceFeedbackHandler;
 class Controller;
 
@@ -106,7 +106,7 @@ private:
   LinuxUinput (const LinuxUinput&);
   LinuxUinput& operator= (const LinuxUinput&);
 };
-
+
 #endif
 
 /* EOF */
