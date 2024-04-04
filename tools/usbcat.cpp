@@ -17,7 +17,7 @@
 */
 
 #include <usb.h>
-#include <boost/format.hpp>
+#include <format>
 #include <iostream>
 #include <math.h>
 #include <cstring>
@@ -38,9 +38,9 @@ std::ostream& operator<<(std::ostream& out, struct usb_device* dev)
           usb_close(handle);
         }
 
-      return out << boost::format("idVendor: 0x%04hx  idProduct: 0x%04hx  iProduct: %s")
-        % uint16_t(dev->descriptor.idVendor) % uint16_t(dev->descriptor.idProduct)
-        % iProduct_buf;
+      return out << std::format("idVendor: {:#04x}  idProduct: {:#04x}  iProduct: {}",
+                                uint16_t(dev->descriptor.idVendor), uint16_t(dev->descriptor.idProduct),
+                                iProduct_buf);
     }
   else
     {
@@ -216,7 +216,7 @@ cat_usb_device(struct usb_device* dev, int interface, int endpoint)
 
               for(int j = 0; j < ret; ++j)
                 {
-                  std::cout << boost::format("0x%02x ") % int(data[j]);
+                  std::cout << std::format("{:#02x} ", int(data[j]));
                 }
               //std::cout << "\r" << std::flush;
               std::cout << std::endl;
@@ -263,7 +263,7 @@ cat_usb_device(struct usb_device* dev, int interface, int endpoint)
 
                               for(int j = 0; j < ret; ++j)
                                 {
-                                  std::cout << boost::format("0x%02x ") % int(data[j]);
+                                  std::cout << std::format("{:#02x} ", int(data[j]));
                                 }
                               //std::cout << "\r" << std::flush;
                               std::cout << std::endl;
@@ -305,8 +305,8 @@ list_usb_devices()
     {
       for (struct usb_device* dev = bus->devices; dev; dev = dev->next)
         {
-          std::cout << boost::format("Bus %s Device %s ") % bus->dirname % dev->filename
-                    << " " << dev << std::endl;
+          std::cout << std::format("Bus {} Device {}  {}", bus->dirname, dev->filename, dev)
+                    << std::endl;
         }
       bus_idx += 1;
     }
@@ -350,8 +350,8 @@ int main(int argc, char** argv)
           struct usb_device* dev = find_usb_device(idVendor, idProduct);
           if (!dev)
             {
-              std::cout << "Error: Device (" << boost::format("idVendor: 0x%04hx, idProduct: 0x%04hx")
-                % idVendor % idProduct << ") not found" << std::endl;
+              std::cout << std::format("Error: Device (idVendor: {:#04x}, idProduct: {:#04x}) not found",
+                                       idVendor, idProduct) << std::endl;
             }
           else
             {

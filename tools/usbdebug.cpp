@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <cstring>
-#include <boost/format.hpp>
+#include <format>
 #include <signal.h>
 #include <usb.h>
 #include <sstream>
@@ -300,7 +300,7 @@ void print_raw_data(std::ostream& out, uint8_t* data, int len)
 
   for(int i = 0; i < len; ++i)
     {
-      std::cout << boost::format("0x%02x") % int(data[i]);
+      std::cout << std::format("{:#02x}", int(data[i]));
       if (i != len-1)
         std::cout << ", ";
     }
@@ -942,7 +942,7 @@ int main(int argc, char** argv)
 
           if (dev)
             {
-              std::cout << boost::format("Opening device with idVendor: 0x%h04x, idProduct: 0x%h04x") % idVendor % idProduct << std::endl;
+              std::cout << std::format("Opening device with idVendor: {:#04x}, idProduct: {:#04x}", idVendor, idProduct) << std::endl;
               USBDevice* usbdev = new USBDevice(dev);
               signal(SIGINT, signal_callback);
               run_console();

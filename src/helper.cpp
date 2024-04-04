@@ -19,7 +19,7 @@
 #include "helper.hpp"
 
 #include <algorithm>
-#include <boost/format.hpp>
+#include <format>
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
@@ -102,7 +102,7 @@ std::string raw2str(uint8_t* data, int len)
       << " data: ";
 
   for(int i = 0; i < len; ++i)
-    out << boost::format("%02x ") % int(data[i]);
+    out << std::format("{:#02x} ", int(data[i]));
 
   return out.str();
 }

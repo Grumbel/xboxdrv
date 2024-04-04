@@ -19,7 +19,7 @@
 #include "usb_subsystem.hpp"
 
 #include <stdexcept>
-#include <boost/format.hpp>
+#include <format>
 #include <string>
 
 #include "helper.hpp"
@@ -85,8 +85,7 @@ USBSubsystem::find_controller(libusb_device** dev, XPadDevice& dev_type, const O
     {
       if (!find_controller_by_id(opts.controller_id, opts.vendor_id, opts.product_id, dev))
       {
-        raise_exception(std::runtime_error, "couldn't find device with "
-                        << (boost::format("%04x:%04x") % opts.vendor_id % opts.product_id));
+        raise_exception(std::runtime_error, std::format("couldn't find device with {:#04x}:{:#04x}", opts.vendor_id, opts.product_id));
       }
       else
       {

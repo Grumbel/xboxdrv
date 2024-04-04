@@ -18,7 +18,7 @@
 
 #include "linux_uinput.hpp"
 
-#include <boost/format.hpp>
+#include <format>
 #include <cassert>
 #include <cstring>
 #include <errno.h>
@@ -347,7 +347,7 @@ LinuxUinput::update(int msec_delta)
 
     m_ff_handler->update(msec_delta);
 
-    log_info(boost::format("%5d %5d") % m_ff_handler->get_strong_magnitude() % m_ff_handler->get_weak_magnitude());
+    log_info(std::format("{:5d} {:5d}", m_ff_handler->get_strong_magnitude(), m_ff_handler->get_weak_magnitude()));
 
     if (m_ff_callback)
     {
