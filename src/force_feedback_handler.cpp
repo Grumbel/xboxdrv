@@ -18,9 +18,12 @@
 
 #include "force_feedback_handler.hpp"
 
+#include <cassert>
+
 #include "log.hpp"
 #include "options.hpp"
-
+#include "controller.hpp"
+
 std::ostream& operator<<(std::ostream& out, const struct ff_envelope& envelope)
 {
   out << "Envelope(attack_length:" << envelope.attack_length
@@ -107,7 +110,7 @@ std::ostream& operator<<(std::ostream& out, const struct ff_effect& effect)
 
   return out;
 }
-
+
 ForceFeedbackEffect::ForceFeedbackEffect() :
   delay(),
   length(),
@@ -217,40 +220,52 @@ ForceFeedbackEffect::update(int msec_delta)
 {
   if (playing)
   {
-    count += msec_delta;
-
-    if (count > delay)
+    if(length == 0)
     {
-      int t = count - delay;
-      if (t < envelope.attack_length)
-      { // attack
-        strong_magnitude = get_pos(start_strong_magnitude, end_strong_magnitude, t, length);
-        weak_magnitude   = get_pos(start_weak_magnitude,   end_weak_magnitude,   t, length);
+      strong_magnitude = (start_strong_magnitude) ? start_strong_magnitude : end_strong_magnitude;
+      weak_magnitude = (start_weak_magnitude) ? start_weak_magnitude : end_weak_magnitude;
+    }
+    else
+    {
+      count += msec_delta;
 
-        // apply envelope
-        strong_magnitude = ((envelope.attack_level * t) + strong_magnitude * (envelope.attack_length - t)) / envelope.attack_length;
-        weak_magnitude   = ((envelope.attack_level * t) + weak_magnitude   * (envelope.attack_length - t)) / envelope.attack_length;
-      }
-      else if  (t < length - envelope.fade_length)
-      { // sustain
-        strong_magnitude = get_pos(start_strong_magnitude, end_strong_magnitude, t, length);
-        weak_magnitude   = get_pos(start_weak_magnitude,   end_weak_magnitude,   t, length);
-      }
-      else if (t < length)
-      { // fade
-        strong_magnitude = get_pos(start_strong_magnitude, end_strong_magnitude, t, length);
-        weak_magnitude   = get_pos(start_weak_magnitude,   end_weak_magnitude,   t, length);
+      if (count > delay)
+      {
+        int t = count - delay;
+        if (t < envelope.attack_length)
+        { // attack
+          strong_magnitude = get_pos(start_strong_magnitude, end_strong_magnitude, t, length);
+          weak_magnitude   = get_pos(start_weak_magnitude,   end_weak_magnitude,   t, length);
 
-        // apply envelope
-        int dt = t - (length - envelope.fade_length);
-        strong_magnitude = ((envelope.fade_level * dt) + strong_magnitude * (envelope.fade_length - dt)) / envelope.fade_length;
-        weak_magnitude   = ((envelope.fade_level * dt) + weak_magnitude   * (envelope.fade_length - dt)) / envelope.fade_length;
-      }
-      else
-      { // effect ended
-        stop();
+          // apply envelope
+          strong_magnitude = ((envelope.attack_level * t) + strong_magnitude * (envelope.attack_length - t)) / envelope.attack_length;
+          weak_magnitude   = ((envelope.attack_level * t) + weak_magnitude   * (envelope.attack_length - t)) / envelope.attack_length;
+        }
+        else if  (t < length - envelope.fade_length)
+        { // sustain
+          strong_magnitude = get_pos(start_strong_magnitude, end_strong_magnitude, t, length);
+          weak_magnitude   = get_pos(start_weak_magnitude,   end_weak_magnitude,   t, length);
+        }
+        else if (t < length)
+        { // fade
+          strong_magnitude = get_pos(start_strong_magnitude, end_strong_magnitude, t, length);
+          weak_magnitude   = get_pos(start_weak_magnitude,   end_weak_magnitude,   t, length);
+
+          // apply envelope
+          int dt = t - (length - envelope.fade_length);
+          strong_magnitude = ((envelope.fade_level * dt) + strong_magnitude * (envelope.fade_length - dt)) / envelope.fade_length;
+          weak_magnitude   = ((envelope.fade_level * dt) + weak_magnitude   * (envelope.fade_length - dt)) / envelope.fade_length;
+        }
+        else
+        { // effect ended
+          stop();
+        }
       }
     }
+  }
+  else
+  {
+      stop();
   }
 }
 
@@ -268,15 +283,16 @@ ForceFeedbackEffect::stop()
   weak_magnitude   = 0;
   strong_magnitude = 0;
 }
-
-ForceFeedbackHandler::ForceFeedbackHandler() :
+
+ForceFeedbackHandler::ForceFeedbackHandler(Controller* controller) :
   gain(0xFFFF),
   max_effects(16),
   effects(),
   weak_magnitude(0),
-  strong_magnitude(0)
+  strong_magnitude(0),
+  m_controller(controller)
 {
-
+  assert(m_controller);
 }
 
 ForceFeedbackHandler::~ForceFeedbackHandler()
@@ -298,80 +314,35 @@ ForceFeedbackHandler::upload(const struct ff_effect& effect)
             << ", effect_type:" << effect.type
             << ",\n          "  << effect
             << ")");
-
-  std::map<int, ForceFeedbackEffect>::iterator i = effects.find(effect.id);
-  if (i == effects.end())
-  {
-    effects[effect.id] = ForceFeedbackEffect(effect);
-  }
-  else
-  {
-    ForceFeedbackEffect old_effect = i->second;
-    ForceFeedbackEffect new_effect(effect);
-
-    // We the copy state variables of the effect , so we can update
-    // the effect while it is playing
-    new_effect.playing          = old_effect.playing;
-    new_effect.count            = old_effect.count;
-    new_effect.weak_magnitude   = old_effect.weak_magnitude;
-    new_effect.strong_magnitude = old_effect.strong_magnitude;
-
-    effects[effect.id] = effect;
-  }
+  m_controller->upload(effect);
 }
 
 void
 ForceFeedbackHandler::erase(int id)
 {
   log_debug("FF_ERASE(effect_id:" << id << ")");
-
-  std::map<int, ForceFeedbackEffect>::iterator i = effects.find(id);
-  if (i != effects.end())
-  {
-    effects.erase(i);
-  }
-  else
-  {
-    log_warn("unknown id " << id);
-  }
+  m_controller->erase(id);
 }
 
 void
 ForceFeedbackHandler::play(int id)
 {
   log_debug("FFPlay(effect_id:" << id << ")");
-
-  std::map<int, ForceFeedbackEffect>::iterator i = effects.find(id);
-  if (i != effects.end())
-  {
-    i->second.play();
-  }
-  else
-  {
-    log_warn("unknown id " << id);
-  }
+  m_controller->play(id);
 }
 
 void
 ForceFeedbackHandler::stop(int id)
 {
   log_debug("FFStop(effect_id:" << id << ")");
-
-  std::map<int, ForceFeedbackEffect>::iterator i = effects.find(id);
-  if (i != effects.end())
-  {
-    i->second.stop();
-  }
-  else
-  {
-    log_warn("unknown id " << id);
-  }
+  m_controller->stop(id);
 }
 
 void
-ForceFeedbackHandler::set_gain(int g)
+ForceFeedbackHandler::set_gain(int gain)
 {
-  gain = g;
+  log_debug("FFGain(g:" << gain << ")");
+  m_controller->set_gain(gain);
 }
 
 void
@@ -379,20 +350,6 @@ ForceFeedbackHandler::update(int msec_delta)
 {
   weak_magnitude   = 0;
   strong_magnitude = 0;
-
-  if (!effects.empty())
-  {
-    for(Effects::iterator i = effects.begin(); i != effects.end(); ++i)
-    {
-      i->second.update(msec_delta);
-
-      weak_magnitude   += i->second.get_weak_magnitude();
-      strong_magnitude += i->second.get_strong_magnitude();
-    }
-
-    weak_magnitude   = std::min(weak_magnitude,   0x7fff);
-    strong_magnitude = std::min(strong_magnitude, 0x7fff);
-  }
 }
 
 int
@@ -406,5 +363,5 @@ ForceFeedbackHandler::get_strong_magnitude() const
 {
   return strong_magnitude * gain / 0xffff;
 }
-
+
 /* EOF */

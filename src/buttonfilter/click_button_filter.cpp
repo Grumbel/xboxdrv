@@ -18,6 +18,9 @@
 
 #include "buttonfilter/click_button_filter.hpp"
 
+#include <cassert>
+#include <string>
+
 ClickButtonFilter::ClickButtonFilter(Mode mode) :
   m_mode(mode),
   m_last_value(false)

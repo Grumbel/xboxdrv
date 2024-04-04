@@ -19,14 +19,15 @@
 #ifndef HEADER_MODIFIER_HPP
 #define HEADER_MODIFIER_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
+#include <string>
 
 #include "xboxmsg.hpp"
 
 class Modifier;
 class Options;
-
-typedef boost::shared_ptr<Modifier> ModifierPtr;
+
+typedef std::shared_ptr<Modifier> ModifierPtr;
 
 class Modifier
 {
@@ -39,7 +40,7 @@ public:
 
   virtual std::string str() const = 0;
 };
-
+
 #endif
 
 /* EOF */

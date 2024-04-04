@@ -19,11 +19,12 @@
 #ifndef HEADER_XBOXDRV_MODIFIER_BUTTON_MAP_MODIFIER_HPP
 #define HEADER_XBOXDRV_MODIFIER_BUTTON_MAP_MODIFIER_HPP
 
+#include <string>
 #include <vector>
 
 #include "button_filter.hpp"
 #include "modifier.hpp"
-
+
 struct ButtonMapping
 {
   static ButtonMapping from_string(const std::string& lhs, const std::string& rhs);
@@ -38,7 +39,7 @@ struct ButtonMapping
     filters()
   {}
 };
-
+
 class ButtonmapModifier : public Modifier
 {
 public:
@@ -56,7 +57,7 @@ public:
 public:
   std::vector<ButtonMapping> m_buttonmap;
 };
-
+
 #endif
 
 /* EOF */

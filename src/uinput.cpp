@@ -19,10 +19,13 @@
 #include "uinput.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 #include <iostream>
 #include <math.h>
+#include <memory>
 #include <stdexcept>
 #include <stdio.h>
+#include <string>
 
 #include "ui_abs_event_collector.hpp"
 #include "ui_key_event_collector.hpp"
@@ -31,7 +34,7 @@
 #include "helper.hpp"
 #include "log.hpp"
 #include "raise_exception.hpp"
-
+
 struct input_id
 UInput::parse_input_id(const std::string& str)
 {
@@ -102,7 +105,7 @@ UInput::parse_device_id(const std::string& str)
 
   return UInput::create_device_id(slot_id, device_id);
 }
-
+
 UInput::UInput(bool extra_events) :
   m_uinput_devs(),
   m_device_names(),
@@ -314,8 +317,8 @@ UInput::create_uinput_device(uint32_t device_id)
     }
 
     std::string dev_name = get_device_name(device_id);
-    boost::shared_ptr<LinuxUinput> dev(new LinuxUinput(device_type, dev_name, get_device_usbid(device_id)));
-    m_uinput_devs.insert(std::pair<int, boost::shared_ptr<LinuxUinput> >(device_id, dev));
+    std::shared_ptr<LinuxUinput> dev(new LinuxUinput(device_type, dev_name, get_device_usbid(device_id)));
+    m_uinput_devs.insert(std::pair<int, std::shared_ptr<LinuxUinput> >(device_id, dev));
 
     log_debug("created uinput device: " << device_id << " - '" << dev_name << "'");
 
@@ -526,11 +529,23 @@ UInput::set_device_names(const std::map<uint32_t, std::string>& device_names)
 }
 
 void
-UInput::set_ff_callback(int device_id, const boost::function<void (uint8_t, uint8_t)>& callback)
+UInput::set_controller(int device_id, Controller* controller)
 {
-  get_uinput(device_id)->set_ff_callback(callback);
+  get_uinput(device_id)->set_controller(controller);
 }
-
+
+void
+UInput::enable_force_feedback(int device_id)
+{
+  get_uinput(device_id)->enable_force_feedback();
+}
+
+void
+UInput::set_ff_gain(int device_id, int gain)
+{
+  get_uinput(device_id)->set_ff_gain(gain);
+}
+
 int
 UInput::find_jsdev_number()
 {
@@ -560,5 +575,5 @@ UInput::find_evdev_number()
       return i;
   }
 }
-
+
 /* EOF */

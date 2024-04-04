@@ -18,12 +18,15 @@
 
 #include "arg_parser.hpp"
 
+#include <cassert>
 #include <stdio.h>
 #include <ostream>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 #include "pretty_printer.hpp"
-
+
 ArgParser::ArgParser() :
   programm(),
   options()
@@ -353,7 +356,7 @@ ArgParser::add_option(int key,
 
   return *this;
 }
-
+
 #ifdef __TEST__
 
 // g++ src/arg_parser.cpp -o arg_parser_test -Wall -O2 -Werror -D__TEST__
@@ -384,5 +387,5 @@ int main(int argc, char** argv)
 }
 
 #endif
-
+
 /* EOF */

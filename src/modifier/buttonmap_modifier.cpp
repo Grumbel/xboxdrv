@@ -20,7 +20,8 @@
 
 #include <boost/tokenizer.hpp>
 #include <sstream>
-
+#include <string>
+
 ButtonMapping
 ButtonMapping::from_string(const std::string& lhs, const std::string& rhs)
 {
@@ -52,7 +53,7 @@ ButtonMapping::from_string(const std::string& lhs, const std::string& rhs)
 
   return mapping;
 }
-
+
 ButtonmapModifier::ButtonmapModifier() :
   m_buttonmap()
 {
@@ -137,5 +138,5 @@ ButtonmapModifier::str() const
   }
   return out.str();
 }
-
+
 /* EOF */

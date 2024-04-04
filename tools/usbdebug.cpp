@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <string.h>
-#include <boost/format.hpp>
+#include <cstring>
+#include <format>
 #include <signal.h>
 #include <usb.h>
 #include <sstream>
@@ -15,7 +15,7 @@ class EndpointListenerThread;
 
 void print_raw_data(std::ostream& out, uint8_t* data, int len);
 bool global_interrupt = false;
-
+
 struct usb_device*
 find_usb_device(uint16_t idVendor, uint16_t idProduct)
 {
@@ -34,7 +34,7 @@ find_usb_device(uint16_t idVendor, uint16_t idProduct)
     }
   return 0;
 }
-
+
 class USBDevice
 {
 private:
@@ -185,7 +185,7 @@ public:
 };
 
 USBDevice* USBDevice::current_ = 0;
-
+
 class EndpointListenerThread
 {
 private:
@@ -240,7 +240,7 @@ public:
       }
   }
 };
-
+
 void
 USBDevice::launch_listener_thread(int endpoint)
 {
@@ -252,7 +252,7 @@ USBDevice::launch_listener_thread(int endpoint)
     std::cout << "Error: " << err.what() << std::endl;
   }
 }
-
+
 bool has_prefix(const std::string& lhs, const std::string rhs)
 {
   if (lhs.length() < rhs.length())
@@ -300,7 +300,7 @@ void print_raw_data(std::ostream& out, uint8_t* data, int len)
 
   for(int i = 0; i < len; ++i)
     {
-      std::cout << boost::format("0x%02x") % int(data[i]);
+      std::cout << std::format("{:#02x}", int(data[i]));
       if (i != len-1)
         std::cout << ", ";
     }
@@ -397,7 +397,7 @@ void console_info_cmd(const std::vector<std::string>& args)
 {
   USBDevice::current()->print_info();
 }
-
+
 class Sequence
 {
 private:
@@ -456,7 +456,7 @@ public:
     return str.str();
   }
 };
-
+
 class SequenceGenerator
 {
 private:
@@ -543,7 +543,7 @@ public:
     return str.str();
   }
 };
-
+
 bool eol(std::vector<SequenceGenerator>& sequences)
 {
   if (sequences.empty())
@@ -942,7 +942,7 @@ int main(int argc, char** argv)
 
           if (dev)
             {
-              std::cout << boost::format("Opening device with idVendor: 0x%h04x, idProduct: 0x%h04x") % idVendor % idProduct << std::endl;
+              std::cout << std::format("Opening device with idVendor: {:#04x}, idProduct: {:#04x}", idVendor, idProduct) << std::endl;
               USBDevice* usbdev = new USBDevice(dev);
               signal(SIGINT, signal_callback);
               run_console();

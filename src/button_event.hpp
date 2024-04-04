@@ -19,7 +19,8 @@
 #ifndef HEADER_XBOXDRV_BUTTON_EVENT_HPP
 #define HEADER_XBOXDRV_BUTTON_EVENT_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
+#include <string>
 #include <vector>
 
 #include "button_filter.hpp"
@@ -29,8 +30,8 @@ class UInput;
 class ButtonEvent;
 class ButtonEventHandler;
 
-typedef boost::shared_ptr<ButtonEvent> ButtonEventPtr;
-
+typedef std::shared_ptr<ButtonEvent> ButtonEventPtr;
+
 class ButtonEvent
 {
 public:
@@ -58,10 +59,10 @@ public:
 private:
   bool m_last_send_state;
   bool m_last_raw_state;
-  boost::scoped_ptr<ButtonEventHandler> m_handler;
+  std::shared_ptr<ButtonEventHandler> m_handler;
   std::vector<ButtonFilterPtr> m_filters;
 };
-
+
 class ButtonEventHandler
 {
 public:
@@ -72,7 +73,7 @@ public:
   virtual void update(UInput& uinput, int msec_delta) =0;
   virtual std::string str() const =0;
 };
-
+
 #endif
 
 /* EOF */

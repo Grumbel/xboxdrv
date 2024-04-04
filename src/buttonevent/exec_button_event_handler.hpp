@@ -19,6 +19,8 @@
 #ifndef HEADER_XBOXDRV_BUTTONEVENT_EXEC_BUTTON_EVENT_HANDLER_HPP
 #define HEADER_XBOXDRV_BUTTONEVENT_EXEC_BUTTON_EVENT_HANDLER_HPP
 
+#include <string>
+
 #include "button_event.hpp"
 
 class ExecButtonEventHandler : public ButtonEventHandler

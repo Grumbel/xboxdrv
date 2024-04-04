@@ -34,8 +34,7 @@ int main(int argc, char** argv)
           struct usb_device* dev = find_usb_device(idVendor, idProduct);
           if (!dev)
             {
-              std::cout << "Error: Device (" << boost::format("idVendor: 0x%04hx, idProduct: 0x%04hx")
-                % idVendor % idProduct << ") not found" << std::endl;
+              std::cout << std::format("Error: Device (idVendor: {:#04x}, idProduct: {:#04x}) not found", idVendor, idProduct) << std::endl;
             }
           else
             {

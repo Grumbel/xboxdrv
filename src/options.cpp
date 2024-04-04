@@ -18,13 +18,19 @@
 
 #include "options.hpp"
 
-#include <boost/bind.hpp>
-#include <boost/format.hpp>
+#include <functional>
+#include <format>
 #include <boost/tokenizer.hpp>
+#include <cassert>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"
 #include "uinput.hpp"
+
+using namespace std::placeholders;
 
 Options* g_options;
 
@@ -32,7 +38,7 @@ Options::GenericUSBSpec
 Options::GenericUSBSpec::from_string(const std::string& str)
 {
   GenericUSBSpec spec;
-  process_name_value_string(str, boost::bind(&GenericUSBSpec::apply_pair, boost::ref(spec), _1, _2));
+  process_name_value_string(str, std::bind(&GenericUSBSpec::apply_pair, std::ref(spec), _1, _2));
   return spec;
 }
 
@@ -345,6 +351,12 @@ Options::set_ff_device(const std::string& value)
 }
 
 void
+Options::set_rumble_gain(const std::string& value)
+{
+  get_controller_slot().set_rumble_gain(to_number(255, value));
+}
+
+void
 Options::set_mimic_xpad()
 {
   // BTN_BACK is recognized as mouse button, so we have to disallow
@@ -404,15 +416,15 @@ Options::add_match(const std::string& lhs, const std::string& rhs)
 void
 Options::set_match(const std::string& str)
 {
-  process_name_value_string(str, boost::bind(&Options::add_match, this, _1, _2));
+  process_name_value_string(str, std::bind(&Options::add_match, this, _1, _2));
 }
 
 void
 Options::set_match_group(const std::string& str)
 {
-  boost::shared_ptr<ControllerMatchRuleGroup> group(new ControllerMatchRuleGroup);
+  std::shared_ptr<ControllerMatchRuleGroup> group(new ControllerMatchRuleGroup);
 
-  process_name_value_string(str, boost::bind(&ControllerMatchRuleGroup::add_rule_from_string, group, _1, _2));
+  process_name_value_string(str, std::bind(&ControllerMatchRuleGroup::add_rule_from_string, group, _1, _2));
 
   get_controller_slot().add_match_rule(group);
 }
@@ -432,8 +444,8 @@ Options::find_generic_usb_spec(int vendor_id_, int product_id_) const
     }
   }
 
-  raise_exception(std::runtime_error, "no matching GenericUSBSpec found for "
-                  << boost::format("%04x:%04x") % static_cast<int>(vendor_id_) % static_cast<int>(product_id_));
+  raise_exception(std::runtime_error,
+                  std::format("no matching GenericUSBSpec found for {:#04x}:{:#04x}", static_cast<int>(vendor_id_), static_cast<int>(product_id_)));
 }
 
 void

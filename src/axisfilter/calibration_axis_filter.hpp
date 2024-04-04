@@ -19,6 +19,8 @@
 #ifndef HEADER_XBOXDRV_AXISFILTER_CALIBRATION_AXIS_FILTER_HPP
 #define HEADER_XBOXDRV_AXISFILTER_CALIBRATION_AXIS_FILTER_HPP
 
+#include <string>
+
 #include "axis_filter.hpp"
 
 class CalibrationAxisFilter : public AxisFilter

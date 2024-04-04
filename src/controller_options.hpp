@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "uinput_options.hpp"
 
@@ -36,8 +37,8 @@ public:
   std::vector<ModifierPtr> modifier;
 
   // everything below gets later converted into modifier
-  boost::shared_ptr<ButtonmapModifier> buttonmap;
-  boost::shared_ptr<AxismapModifier>   axismap;
+  std::shared_ptr<ButtonmapModifier> buttonmap;
+  std::shared_ptr<AxismapModifier>   axismap;
 
   int  deadzone;
   int  deadzone_trigger;

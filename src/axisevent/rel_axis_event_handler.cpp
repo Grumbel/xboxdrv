@@ -20,6 +20,9 @@
 
 #include <boost/tokenizer.hpp>
 #include <math.h>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"
@@ -31,7 +34,7 @@ RelAxisEventHandler::from_string(const std::string& str)
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   tokenizer tokens(str, boost::char_separator<char>(":", "", boost::keep_empty_tokens));
 
-  std::auto_ptr<RelAxisEventHandler> ev(new RelAxisEventHandler);
+  std::shared_ptr<RelAxisEventHandler> ev(new RelAxisEventHandler);
 
   int j = 0;
   for(tokenizer::iterator i = tokens.begin(); i != tokens.end(); ++i, ++j)
@@ -60,7 +63,7 @@ RelAxisEventHandler::from_string(const std::string& str)
     throw std::runtime_error("AxisEvent::rel_from_string(): at least one argument required: " + str);
   }
 
-  return ev.release();
+  return ev.get();
 }
 
 RelAxisEventHandler::RelAxisEventHandler() :

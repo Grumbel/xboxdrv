@@ -19,8 +19,11 @@
 #include "buttonevent/macro_button_event_handler.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 #include <fstream>
 #include <linux/input.h>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "evdev_helper.hpp"
@@ -28,7 +31,7 @@
 #include "log.hpp"
 #include "raise_exception.hpp"
 #include "uinput.hpp"
-
+
 MacroButtonEventHandler*
 MacroButtonEventHandler::from_string(const std::string& filename)
 {
@@ -133,7 +136,7 @@ MacroButtonEventHandler::macro_event_from_string(const std::string& str)
     return event;
   }
 }
-
+
 MacroButtonEventHandler::MacroButtonEventHandler(const std::vector<MacroEvent>& events) :
   m_events(events),
   m_send_in_progress(false),
@@ -277,5 +280,5 @@ MacroButtonEventHandler::str() const
 {
   return "macro";
 }
-
+
 /* EOF */

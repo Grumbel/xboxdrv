@@ -18,13 +18,15 @@
 
 #include "xboxdrv_main.hpp"
 
+#include <cassert>
 #include <glib.h>
 #include <stdio.h>
 #include <libusb.h>
 #include <stdexcept>
 #include <iostream>
-#include <boost/format.hpp>
-#include <boost/bind.hpp>
+#include <format>
+#include <functional>
+#include <memory>
 
 #include "controller_factory.hpp"
 #include "evdev_controller.hpp"
@@ -144,8 +146,8 @@ void
 XboxdrvMain::run()
 {
   m_controller = create_controller();
-  m_controller->set_disconnect_cb(boost::bind(&XboxdrvMain::on_controller_disconnect, this));
-  std::auto_ptr<MessageProcessor> message_proc;
+  m_controller->set_disconnect_cb(std::bind(&XboxdrvMain::on_controller_disconnect, this));
+  std::shared_ptr<MessageProcessor> message_proc;
   init_controller(m_controller);
 
   if (m_opts.instant_exit)
@@ -173,7 +175,8 @@ XboxdrvMain::run()
       log_debug("creating ControllerSlotConfig");
       ControllerSlotConfigPtr config_set = ControllerSlotConfig::create(*m_uinput,
                                                                         0, m_opts.extra_devices,
-                                                                        m_opts.get_controller_slot());
+                                                                        m_opts.get_controller_slot(),
+                                                                        m_controller.get());
 
       // After all the ControllerConfig registered their events, finish up
       // the device creation
@@ -241,11 +244,11 @@ XboxdrvMain::print_info(libusb_device* dev, const XPadDevice& dev_type, const Op
   }
 
   std::cout << "Controller:        " << dev_type.name << std::endl;
-  std::cout << "Vendor/Product:    " << boost::format("%04x:%04x")
-    % uint16_t(desc.idVendor) % uint16_t(desc.idProduct) << std::endl;
-  std::cout << "USB Path:          " << boost::format("%03d:%03d")
-    % static_cast<int>(libusb_get_bus_number(dev))
-    % static_cast<int>(libusb_get_device_address(dev)) << std::endl;
+  std::cout << "Vendor/Product:    " << std::format("{:#04x}:{:#04x}",
+    uint16_t(desc.idVendor), uint16_t(desc.idProduct)) << std::endl;
+  std::cout << "USB Path:          " << std::format("{:03d}:{:03d}",
+    static_cast<int>(libusb_get_bus_number(dev)),
+    static_cast<int>(libusb_get_device_address(dev))) << std::endl;
   if (dev_type.type == GAMEPAD_XBOX360_WIRELESS)
     std::cout << "Wireless Port:     " << opts.wireless_id << std::endl;
   std::cout << "Controller Type:   " << dev_type.type << std::endl;

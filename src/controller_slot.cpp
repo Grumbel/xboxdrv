@@ -19,6 +19,8 @@
 #include "controller_slot.hpp"
 
 #include <boost/format.hpp>
+#include <cassert>
+#include <memory>
 
 #include "uinput_message_processor.hpp"
 #include "dummy_message_processor.hpp"
@@ -43,7 +45,7 @@ ControllerSlot::connect(ControllerPtr controller)
 {
   assert(!m_thread);
 
-  std::auto_ptr<MessageProcessor> message_proc;
+  std::shared_ptr<MessageProcessor> message_proc;
   if (m_uinput)
   {
     message_proc.reset(new UInputMessageProcessor(*m_uinput, m_config, m_opts));
@@ -69,7 +71,7 @@ ControllerSlot::disconnect()
 bool
 ControllerSlot::is_connected() const
 {
-  return m_thread;
+  return static_cast<bool>(m_thread);
 }
 
 /* EOF */

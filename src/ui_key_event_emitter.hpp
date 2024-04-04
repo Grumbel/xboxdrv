@@ -21,6 +21,8 @@
 
 #include "ui_event_emitter.hpp"
 
+#include <memory>
+
 class UIKeyEventCollector;
 
 class UIKeyEventEmitter : public UIEventEmitter
@@ -39,7 +41,7 @@ private:
   UIKeyEventEmitter& operator=(const UIKeyEventEmitter&);
 };
 
-typedef boost::shared_ptr<UIKeyEventEmitter> UIKeyEventEmitterPtr;
+typedef std::shared_ptr<UIKeyEventEmitter> UIKeyEventEmitterPtr;
 
 #endif
 

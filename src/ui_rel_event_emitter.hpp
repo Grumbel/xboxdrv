@@ -21,6 +21,8 @@
 
 #include "ui_event_emitter.hpp"
 
+#include <memory>
+
 class UIRelEventCollector;
 
 class UIRelEventEmitter : public UIEventEmitter
@@ -38,7 +40,7 @@ private:
   UIRelEventEmitter& operator=(const UIRelEventEmitter&);
 };
 
-typedef boost::shared_ptr<UIRelEventEmitter> UIRelEventEmitterPtr;
+typedef std::shared_ptr<UIRelEventEmitter> UIRelEventEmitterPtr;
 
 #endif
 

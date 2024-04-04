@@ -17,7 +17,7 @@
 */
 
 #include "xpad_device.hpp"
-
+
 // FIXME: We shouldn't check device-ids, but device class or so, to
 // automatically catch all third party stuff
 XPadDevice xpad_devices[] = {
@@ -113,9 +113,11 @@ XPadDevice xpad_devices[] = {
   { GAMEPAD_XBOX360,          0x15e4, 0x3f10, "Batarang Xbox 360 controller" },
   { GAMEPAD_XBOX360_WIRELESS, 0x045e, 0x0291, "Xbox 360 Wireless Receiver (XBOX)" }, // RF Module from the Xbox360
   { GAMEPAD_XBOX360_WIRELESS, 0x045e, 0x0719, "Xbox 360 Wireless Receiver" }, // official Wireless Receiver
+  { GAMEPAD_XBOX360_WIRELESS, 0x045e, 0x02a9, "Xbox 360 Wireless Receiver (unofficial)" }, // fake but fully compatible
   { GAMEPAD_XBOX360,          0x24c6, 0x5000, "Razer Atrox Arcade Stick" },
   { GAMEPAD_XBOX360,          0x1689, 0xfd00, "Razer Onza Tournament Edition" },
   { GAMEPAD_XBOX360,          0x1689, 0xfd01, "Razer Onza Classic Edition" },
+  { GAMEPAD_XBOX360,          0x1689, 0xfe00, "Razer Sabertooth" },
   { GAMEPAD_XBOX360,          0x1532, 0x0037, "Razer Sabertooth" },
   { GAMEPAD_XBOX360,          0x12ab, 0x0004, "Honey Bee Xbox360 dancepad" },
   { GAMEPAD_XBOX360,          0x15e4, 0x3f0a, "Xbox Airflo wired controller" },
@@ -126,6 +128,7 @@ XPadDevice xpad_devices[] = {
   { GAMEPAD_XBOX360,          0x24c6, 0x5d04, "Razer Sabertooth" },
   { GAMEPAD_XBOX360,          0x0e6f, 0x011f, "Rock Candy Gamepad Wired Controller" },
   { GAMEPAD_XBOX360,          0x0e6f, 0x021f, "Rock Candy Gamepad for Xbox 360" },
+  { GAMEPAD_XBOX360,          0x0079, 0x18d4, "GPD WIN 2" },
 
   { GAMEPAD_XBOX_MAT,         0x0738, 0x4540, "Mad Catz Beat Pad" },
   { GAMEPAD_XBOX_MAT,         0x0738, 0x6040, "Mad Catz Beat Pad Pro" },
@@ -135,6 +138,7 @@ XPadDevice xpad_devices[] = {
 
   { GAMEPAD_FIRESTORM,        0x044f, 0xb304, "ThrustMaster, Inc. Firestorm Dual Power" },
   { GAMEPAD_FIRESTORM_VSB,    0x044f, 0xb312, "ThrustMaster, Inc. Firestorm Dual Power (vs b)" },
+  { GAMEPAD_T_WIRELESS,       0x044f, 0xd007, "ThrustMaster, Inc. T-Wireless" },
 
   { GAMEPAD_SAITEK_P2500,     0x06a3, 0xff0c, "Saitek P2500" },
   { GAMEPAD_SAITEK_P3600,     0x06a3, 0xf51a, "Saitek P3600 (Cyborg Rumble)" },
@@ -157,5 +161,5 @@ bool find_xpad_device(uint16_t idVendor, uint16_t idProduct, XPadDevice* dev_typ
   }
   return false;
 }
-
+
 /* EOF */

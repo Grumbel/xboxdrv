@@ -20,6 +20,8 @@
 
 #include <boost/tokenizer.hpp>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 #include "buttonfilter/autofire_button_filter.hpp"
 #include "buttonfilter/click_button_filter.hpp"

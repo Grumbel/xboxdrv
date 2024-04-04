@@ -21,6 +21,8 @@
 
 #include "axis_event.hpp"
 
+#include <string>
+
 #include "ui_event_sequence.hpp"
 
 class KeyAxisEventHandler : public AxisEventHandler

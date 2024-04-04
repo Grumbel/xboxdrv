@@ -18,7 +18,7 @@
 
 #include "ui_event_emitter.hpp"
 
-#include <assert.h>
+#include <cassert>
 
 #include "log.hpp"
 #include "uinput.hpp"

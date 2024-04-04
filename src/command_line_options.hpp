@@ -19,6 +19,7 @@
 #ifndef HEADER_COMMAND_LINE_OPTIONS_HPP
 #define HEADER_COMMAND_LINE_OPTIONS_HPP
 
+#include <string>
 #include <vector>
 
 #include "arg_parser.hpp"
@@ -29,7 +30,7 @@ class Options;
 class Xboxdrv;
 class ButtonMap;
 class AxisMap;
-
+
 class CommandLineParser
 {
 public:
@@ -55,9 +56,9 @@ private:
   void set_device_usbid(const std::string& name, const std::string& value);
 
   void set_ui_buttonmap(ButtonMap& btn_map, const std::string& name, const std::string& value);
-  void set_ui_buttonmap(const std::string& name, const std::string& value);
+  void set_ui_buttonmap_helper(const std::string& name, const std::string& value);
   void set_ui_axismap(AxisMap& axis_map, const std::string& name, const std::string& value);
-  void set_ui_axismap(const std::string& name, const std::string& value);
+  void set_ui_axismap_helper(const std::string& name, const std::string& value);
   void set_modifier(const std::string& name, const std::string& value);
 
   void set_axismap(const std::string& name, const std::string& value);
@@ -111,7 +112,7 @@ private:
 };
 
 extern Options* g_options;
-
+
 #endif
 
 /* EOF */

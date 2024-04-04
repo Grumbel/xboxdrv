@@ -19,6 +19,8 @@
 #include "modifier.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <stdexcept>
+#include <string>
 
 #include "modifier/dpad_restrictor_modifier.hpp"
 #include "modifier/dpad_rotation_modifier.hpp"

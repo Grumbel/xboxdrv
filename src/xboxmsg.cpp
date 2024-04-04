@@ -18,7 +18,11 @@
 
 #include "xboxmsg.hpp"
 
-#include <boost/format.hpp>
+#include <algorithm>
+#include <format>
+#include <cassert>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"
@@ -35,7 +39,7 @@ int16_t u8_to_s16(uint8_t value)
     return (value-128) * 32767 / 127;
   }
 }
-
+
 std::string gamepadtype_to_string(const GamepadType& type)
 {
   switch (type)
@@ -64,6 +68,9 @@ std::string gamepadtype_to_string(const GamepadType& type)
     case GAMEPAD_FIRESTORM_VSB:
       return "firestorm-vsb";
 
+    case GAMEPAD_T_WIRELESS:
+      return "t-wireless";
+
     case GAMEPAD_SAITEK_P2500:
       return "saitek-p2500";
 
@@ -80,7 +87,7 @@ std::string gamepadtype_to_string(const GamepadType& type)
       assert(!"Unknown gamepad type supplied");
   }
 }
-
+
 
 std::string gamepadtype_to_macro_string(const GamepadType& type)
 {
@@ -94,6 +101,7 @@ std::string gamepadtype_to_macro_string(const GamepadType& type)
     case GAMEPAD_XBOX360_GUITAR: return "GAMEPAD_XBOX360_GUITAR";
     case GAMEPAD_FIRESTORM: return "GAMEPAD_FIRESTORM";
     case GAMEPAD_FIRESTORM_VSB: return "GAMEPAD_FIRESTORM_VSB";
+    case GAMEPAD_T_WIRELESS: return "GAMEPAD_T_WIRELESS";
     case GAMEPAD_SAITEK_P2500: return "GAMEPAD_SAITEK_P2500";
     case GAMEPAD_SAITEK_P3600: return "GAMEPAD_SAITEK_P3600";
     case GAMEPAD_PLAYSTATION3_USB: return "GAMEPAD_PLAYSTATION3_USB";
@@ -102,7 +110,7 @@ std::string gamepadtype_to_macro_string(const GamepadType& type)
       assert(!"Unknown gamepad type supplied");
   }
 }
-
+
 std::ostream& operator<<(std::ostream& out, const GamepadType& type)
 {
   switch (type)
@@ -131,6 +139,9 @@ std::ostream& operator<<(std::ostream& out, const GamepadType& type)
     case GAMEPAD_FIRESTORM_VSB:
       return out << "Firestorm Dual Power (vsb)";
 
+    case GAMEPAD_T_WIRELESS:
+      return out << "T-Wireless";
+
     case GAMEPAD_SAITEK_P2500:
       return out << "Saitek P2500";
 
@@ -147,7 +158,7 @@ std::ostream& operator<<(std::ostream& out, const GamepadType& type)
       return out << "unknown" << std::endl;
   }
 }
-
+
 std::ostream& operator<<(std::ostream& out, const XboxGenericMsg& msg)
 {
   switch (msg.type)
@@ -165,54 +176,51 @@ std::ostream& operator<<(std::ostream& out, const XboxGenericMsg& msg)
       return out << "Error: Unhandled XboxGenericMsg type: " << msg.type;
   }
 }
-
+
 std::ostream& operator<<(std::ostream& out, const Playstation3USBMsg& msg)
 {
-  out << boost::format("X1:%3d Y1:%3d")
-    % int(msg.x1) % int(msg.y1);
+  out << std::format("X1:{:3d} Y1:{:3d}",
+    int(msg.x1), int(msg.y1));
 
-  out << boost::format("  X2:%3d Y2:%3d")
-    % int(msg.x2) % int(msg.y2);
+  out << std::format("  X2:{:3d} Y2:{:3d}",
+    int(msg.x2), int(msg.y2));
 
-  out << boost::format("  du:%3d dd:%3d dl:%3d dr:%3d")
-    % int(msg.a_dpad_up)
-    % int(msg.a_dpad_down)
-    % int(msg.a_dpad_left)
-    % int(msg.a_dpad_right);
+  out << std::format("  du:{:3d} dd:{:3d} dl:{:3d} dr:{:3d}",
+    int(msg.a_dpad_up),
+    int(msg.a_dpad_down),
+    int(msg.a_dpad_left),
+    int(msg.a_dpad_right));
 
   out << "  select:" << msg.select;
   out << " ps:" << msg.playstation;
   out << " start:" << msg.start;
 
-  out << boost::format("  L3:%d R3:%d") % static_cast<int>(msg.l3) % static_cast<int>(msg.r3);
+  out << std::format("  L3:{:d} R3:{:d}", static_cast<int>(msg.l3), static_cast<int>(msg.r3));
 
-  out << boost::format("  /\\:%3d O:%3d X:%3d []:%3d  L1:%3d R1:%3d")
-    % static_cast<int>(msg.a_triangle)
-    % static_cast<int>(msg.a_circle)
-    % static_cast<int>(msg.a_cross)
-    % static_cast<int>(msg.a_square)
-    % static_cast<int>(msg.a_l1)
-    % static_cast<int>(msg.a_r1);
+  out << std::format("  /\\:{:3d} O:{:3d} X:{:3d} []:{:3d}  L1:{:3d} R1:{:3d}",
+    static_cast<int>(msg.a_triangle),
+    static_cast<int>(msg.a_circle),
+    static_cast<int>(msg.a_cross),
+    static_cast<int>(msg.a_square),
+    static_cast<int>(msg.a_l1),
+    static_cast<int>(msg.a_r1));
 
-  out << boost::format("  L2:%3d R2:%3d")
-    % int(msg.a_l2) % int(msg.a_r2);
+  out << std::format("  L2:{:3d} R2:{:3d}", int(msg.a_l2), int(msg.a_r2));
 
   return out;
 }
-
+
 std::ostream& operator<<(std::ostream& out, const Xbox360Msg& msg)
 {
-  out << boost::format("X1:%6d Y1:%6d")
-    % int(msg.x1) % int(msg.y1);
+  out << std::format("X1:{:6d} Y1:{:6d}", int(msg.x1), int(msg.y1));
 
-  out << boost::format("  X2:%6d Y2:%6d")
-    % int(msg.x2) % int(msg.y2);
+  out << std::format("  X2:{:6d} Y2:{:6d}", int(msg.x2), int(msg.y2));
 
-  out << boost::format("  du:%d dd:%d dl:%d dr:%d")
-    % int(msg.dpad_up)
-    % int(msg.dpad_down)
-    % int(msg.dpad_left)
-    % int(msg.dpad_right);
+  out << std::format("  du:{:d} dd:{:d} dl:{:d} dr:{:d}",
+    int(msg.dpad_up),
+    int(msg.dpad_down),
+    int(msg.dpad_left),
+    int(msg.dpad_right));
 
   out << "  back:" << msg.back;
   out << " guide:" << msg.guide;
@@ -229,53 +237,52 @@ std::ostream& operator<<(std::ostream& out, const Xbox360Msg& msg)
   out << "  LB:" << msg.lb;
   out << " RB:" <<  msg.rb;
 
-  out << boost::format("  LT:%3d RT:%3d")
-    % int(msg.lt) % int(msg.rt);
+  out << std::format("  LT:{:3d} RT:{:3d}", int(msg.lt), int(msg.rt));
 
   // out << " Dummy: " << msg.dummy1 << " " << msg.dummy2 << " " << msg.dummy3;
 
   return out;
 }
-
+
 std::ostream& operator<<(std::ostream& out, const XboxMsg& msg)
 {
-  out << boost::format(" X1:%6d Y1:%6d  X2:%6d Y2:%6d "
-                       " du:%d dd:%d dl:%d dr:%d "
-                       " start:%d back:%d "
-                       " TL:%d TR:%d "
-                       " A:%3d B:%3d X:%3d Y:%3d "
-                       " black:%3d white:%3d "
-                       " LT:%3d RT:%3d ")
-    % int(msg.x1) % int(msg.y1)
-    % int(msg.x2) % int(msg.y2)
+  out << std::format(" X1:{:6d} Y1:{:6d}  X2:{:6d} Y2:{:6d} "
+                       " du:{:d} dd:{:d} dl:{:d} dr:{:d} "
+                       " start:{:d} back:{:d} "
+                       " TL:{:d} TR:{:d} "
+                       " A:{:3d} B:{:3d} X:{:3d} Y:{:3d} "
+                       " black:{:3d} white:{:3d} "
+                       " LT:{:3d} RT:{:3d} ",
+    int(msg.x1), int(msg.y1),
+    int(msg.x2), int(msg.y2),
 
-    % int(msg.dpad_up)
-    % int(msg.dpad_down)
-    % int(msg.dpad_left)
-    % int(msg.dpad_right)
+    int(msg.dpad_up),
+    int(msg.dpad_down),
+    int(msg.dpad_left),
+    int(msg.dpad_right),
 
-    % int(msg.start)
-    % int(msg.back)
+    int(msg.start),
+    int(msg.back),
 
-    % int(msg.thumb_l)
-    % int(msg.thumb_r)
+    int(msg.thumb_l),
+    int(msg.thumb_r),
 
-    % int(msg.a)
-    % int(msg.b)
-    % int(msg.x)
-    % int(msg.y)
+    int(msg.a),
+    int(msg.b),
+    int(msg.x),
+    int(msg.y),
 
-    % int(msg.black)
-    % int(msg.white)
+    int(msg.black),
+    int(msg.white),
 
-    % int(msg.lt)
-    % int(msg.rt);
+    int(msg.lt),
+    int(msg.rt));
 
   // out << " Dummy: " << msg.dummy;
 
   return out;
 }
-
+
 int get_button(XboxGenericMsg& msg, XboxButton button)
 {
   switch(msg.type)
@@ -375,7 +382,7 @@ int get_button(XboxGenericMsg& msg, XboxButton button)
   }
   return 0;
 }
-
+
 void set_button(XboxGenericMsg& msg, XboxButton button, bool v)
 {
   switch(msg.type)
@@ -476,7 +483,7 @@ void set_button(XboxGenericMsg& msg, XboxButton button, bool v)
       break;
   }
 }
-
+
 int get_axis(XboxGenericMsg& msg, XboxAxis axis)
 {
   switch(msg.type)
@@ -643,7 +650,7 @@ int get_axis(XboxGenericMsg& msg, XboxAxis axis)
   }
   return 0;
 }
-
+
 float s16_to_float(int16_t value)
 {
   if (value >= 0)
@@ -665,7 +672,7 @@ float u8_to_float(uint8_t value)
   return static_cast<float>(value) / 255.0f * 2.0f - 1.0f;
 }
 
-
+
 int16_t float_to_s16(float v)
 {
   if (v >= 0.0f)
@@ -684,9 +691,9 @@ int16_t float_to_s16(float v)
 */
 uint8_t float_to_u8(float v)
 {
-  return static_cast<uint8_t>(Math::clamp(0.0f, (v + 1.0f) / 2.0f, 1.0f) * 255.0f);
+  return static_cast<uint8_t>(std::clamp((v + 1.0f) / 2.0f, 0.0f, 1.0f) * 255.0f);
 }
-
+
 float get_axis_float(XboxGenericMsg& msg, XboxAxis axis)
 {
   switch(msg.type)
@@ -851,7 +858,7 @@ float get_axis_float(XboxGenericMsg& msg, XboxAxis axis)
   }
   return 0;
 }
-
+
 void set_axis_float(XboxGenericMsg& msg, XboxAxis axis, float v)
 {
   switch(msg.type)
@@ -1049,7 +1056,7 @@ void set_axis_float(XboxGenericMsg& msg, XboxAxis axis, float v)
       break;
   }
 }
-
+
 void set_axis(XboxGenericMsg& msg, XboxAxis axis, int v)
 {
   switch(msg.type)
@@ -1247,7 +1254,7 @@ void set_axis(XboxGenericMsg& msg, XboxAxis axis, int v)
       break;
   }
 }
-
+
 XboxButton string2btn(const std::string& str_)
 {
   std::string str = to_lower(str_);
@@ -1283,19 +1290,19 @@ XboxButton string2btn(const std::string& str_)
   else if (str == "tr" || str == "r3")
     return XBOX_BTN_THUMB_R;
 
-  else if (str == "du" || str == "up")
+  else if (str == "du" || str == "up" || str == "dpad_up")
     return XBOX_DPAD_UP;
-  else if (str == "dd" || str == "down")
+  else if (str == "dd" || str == "down" || str == "dpad_down")
     return XBOX_DPAD_DOWN;
-  else if (str == "dl" || str == "left")
+  else if (str == "dl" || str == "left" || str == "dpad_left")
     return XBOX_DPAD_LEFT;
-  else if (str == "dr" || str == "right")
+  else if (str == "dr" || str == "right" || str == "dpad_right")
     return XBOX_DPAD_RIGHT;
 
   else
     raise_exception(std::runtime_error, "couldn't convert string \"" + str + "\" to XboxButton");
 }
-
+
 XboxAxis string2axis(const std::string& str_)
 {
   std::string str = to_lower(str_);
@@ -1343,7 +1350,7 @@ XboxAxis string2axis(const std::string& str_)
   else
     raise_exception(std::runtime_error, "couldn't convert string \"" + str + "\" to XboxAxis");
 }
-
+
 std::string axis2string(XboxAxis axis)
 {
   switch(axis)
@@ -1374,7 +1381,7 @@ std::string axis2string(XboxAxis axis)
   }
   return "unknown";
 }
-
+
 std::string btn2string(XboxButton btn)
 {
   switch (btn)
@@ -1407,7 +1414,7 @@ std::string btn2string(XboxButton btn)
   }
   return "unknown";
 }
-
+
 int get_axis_min(XboxAxis axis)
 {
   switch(axis)
@@ -1465,5 +1472,5 @@ int get_axis_max(XboxAxis axis)
     default: assert(!"never reached");
   }
 }
-
+
 /* EOF */

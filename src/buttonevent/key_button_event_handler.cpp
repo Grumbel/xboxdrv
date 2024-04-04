@@ -20,6 +20,9 @@
 
 #include <boost/tokenizer.hpp>
 #include <linux/input.h>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"
@@ -30,7 +33,7 @@ KeyButtonEventHandler::from_string(const std::string& str)
 {
   //std::cout << " KeyButtonEventHandler::from_string: " << str << std::endl;
 
-  std::auto_ptr<KeyButtonEventHandler> ev;
+  std::shared_ptr<KeyButtonEventHandler> ev;
 
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   tokenizer tokens(str, boost::char_separator<char>(":", "", boost::keep_empty_tokens));
@@ -69,7 +72,7 @@ KeyButtonEventHandler::from_string(const std::string& str)
     }
   }
 
-  return ev.release();
+  return ev.get();
 }
 
 KeyButtonEventHandler::KeyButtonEventHandler() :

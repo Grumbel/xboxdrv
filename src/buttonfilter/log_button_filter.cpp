@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 
 LogButtonFilter*
 LogButtonFilter::from_string(const std::string& str)

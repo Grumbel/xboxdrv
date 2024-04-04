@@ -19,6 +19,9 @@
 #include "chatpad.hpp"
 
 #include <algorithm>
+#include <cassert>
+#include <cstring>
+#include <stdexcept>
 
 #include "helper.hpp"
 #include "linux_uinput.hpp"
@@ -503,7 +506,7 @@ Chatpad::process(const ChatpadKeyMsg& msg)
 }
 
 #if 0
-
+
 void
 Chatpad::read_thread()
 {
@@ -636,7 +639,7 @@ Chatpad::send_init()
   libusb_control_transfer(m_handle, 0x41, 0x0, 0x1b, 0x02, 0, 0, 0);
   log_debug("0x1b");
 }
-
+
 #endif
 
 /* EOF */

@@ -19,7 +19,9 @@
 #include "dpad_restrictor_modifier.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 #include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
 
@@ -50,7 +52,7 @@ DpadRestrictorModifier::from_string(const std::vector<std::string>& args)
     }
   }
 }
-
+
 DpadRestrictorModifier::DpadRestrictorModifier(Mode mode) :
   m_mode(mode),
   m_last_unpressed_axis(XBOX_AXIS_DPAD_X)

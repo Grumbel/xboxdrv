@@ -18,9 +18,13 @@
 
 #include "xboxdrv_daemon.hpp"
 
-#include <boost/bind.hpp>
-#include <boost/format.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <functional>
+#include <format>
+#include <cassert>
+#include <cstring>
+#include <memory>
+#include <stdexcept>
+#include <string>
 #include <fstream>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
@@ -39,6 +43,8 @@
 #include "udev_subsystem.hpp"
 #include "dbus_subsystem.hpp"
 #include "usb_subsystem.hpp"
+
+using namespace std::placeholders;
 
 XboxdrvDaemon* XboxdrvDaemon::s_current = 0;
 
@@ -96,7 +102,7 @@ bool get_usb_path(udev_device* device, int* bus, int* dev)
 }
 
 } // namespace
-
+
 XboxdrvDaemon::XboxdrvDaemon(const Options& opts) :
   m_opts(opts),
   m_gmain(),
@@ -138,9 +144,9 @@ XboxdrvDaemon::run()
     init_uinput();
 
     UdevSubsystem udev_subsystem;
-    udev_subsystem.set_device_callback(boost::bind(&XboxdrvDaemon::process_match, this, _1));
+    udev_subsystem.set_device_callback(std::bind(&XboxdrvDaemon::process_match, this, _1));
 
-    boost::scoped_ptr<DBusSubsystem> dbus_subsystem;
+    std::shared_ptr<DBusSubsystem> dbus_subsystem;
     if (m_opts.dbus != Options::kDBusDisabled)
     {
       DBusBusType dbus_bus_type;
@@ -216,8 +222,7 @@ XboxdrvDaemon::process_match(struct udev_device* device)
     XPadDevice dev_type;
     if (!find_xpad_device(vendor, product, &dev_type))
     {
-      log_debug("ignoring " << boost::format("%04x:%04x") % vendor % product <<
-                " not a valid Xboxdrv device");
+      log_debug(std::format("ignoring {:#04x}:{:#04x} not a valid Xboxdrv device", vendor, product));
     }
     else
     {
@@ -272,7 +277,8 @@ XboxdrvDaemon::init_uinput()
         ControllerSlotPtr(new ControllerSlot(m_controller_slots.size(),
                                              ControllerSlotConfig::create(*m_uinput, slot_count,
                                                                           m_opts.extra_devices,
-                                                                          controller->second),
+                                                                          controller->second,
+                                                                          NULL),
                                              controller->second.get_match_rules(),
                                              controller->second.get_led_status(),
                                              m_opts,
@@ -360,8 +366,8 @@ XboxdrvDaemon::launch_controller_thread(udev_device* udev_dev,
     {
       ControllerPtr& controller = *i;
 
-      controller->set_disconnect_cb(boost::bind(&g_idle_add, &XboxdrvDaemon::on_controller_disconnect_wrap, this));
-      controller->set_activation_cb(boost::bind(&g_idle_add, &XboxdrvDaemon::on_controller_activate_wrap, this));
+      controller->set_disconnect_cb(std::bind(&g_idle_add, &XboxdrvDaemon::on_controller_disconnect_wrap, this));
+      controller->set_activation_cb(std::bind(&g_idle_add, &XboxdrvDaemon::on_controller_activate_wrap, this));
 
       // FIXME: Little dirty hack
       controller->set_udev_device(udev_dev);
@@ -372,13 +378,12 @@ XboxdrvDaemon::launch_controller_thread(udev_device* udev_dev,
         ControllerSlotPtr slot = find_free_slot(udev_dev);
         if (!slot)
         {
-          log_error("no free controller slot found, controller will be ignored: "
-                    << boost::format("%03d:%03d %04x:%04x '%s'")
-                    % static_cast<int>(busnum)
-                    % static_cast<int>(devnum)
-                    % dev_type.idVendor
-                    % dev_type.idProduct
-                    % dev_type.name);
+          log_error(std::format("no free controller slot found, controller will be ignored: {:03d}:{:03d} {:#04x}:{:#04x} '{}'",
+                    static_cast<int>(busnum),
+                    static_cast<int>(devnum),
+                    dev_type.idVendor,
+                    dev_type.idProduct,
+                    dev_type.name));
         }
         else
         {
@@ -510,7 +515,7 @@ XboxdrvDaemon::on_controller_disconnect()
 
   // cleanup inactive controllers
   m_inactive_controllers.erase(std::remove_if(m_inactive_controllers.begin(), m_inactive_controllers.end(),
-                                              boost::bind(&Controller::is_disconnected, _1)),
+                                              std::bind(&Controller::is_disconnected, _1)),
                                m_inactive_controllers.end());
 }
 
@@ -569,34 +574,34 @@ XboxdrvDaemon::status()
 {
   std::ostringstream out;
 
-  out << boost::format("SLOT  CFG  NCFG    USBID    USBPATH  NAME\n");
+  out << std::format("SLOT  CFG  NCFG    USBID    USBPATH  NAME\n");
   for(ControllerSlots::iterator i = m_controller_slots.begin(); i != m_controller_slots.end(); ++i)
   {
     if ((*i)->get_controller())
     {
-      out << boost::format("%4d  %3d  %4d  %5s  %7s  %s\n")
-        % (i - m_controller_slots.begin())
-        % (*i)->get_config()->get_current_config()
-        % (*i)->get_config()->config_count()
-        % (*i)->get_controller()->get_usbid()
-        % (*i)->get_controller()->get_usbpath()
-        % (*i)->get_controller()->get_name();
+      out << std::format("{:4d}  {:3d}  {:4d}  {:5s}  {:7s}  {}\n",
+        (i - m_controller_slots.begin()),
+        (*i)->get_config()->get_current_config(),
+        (*i)->get_config()->config_count(),
+        (*i)->get_controller()->get_usbid(),
+        (*i)->get_controller()->get_usbpath(),
+        (*i)->get_controller()->get_name());
     }
     else
     {
-      out << boost::format("%4d  %3d  %4d      -         -\n")
-        % (i - m_controller_slots.begin())
-        % (*i)->get_config()->get_current_config()
-        % (*i)->get_config()->config_count();
+      out << std::format("{:4d}  {:3d}  {:4d}      -         -\n",
+        (i - m_controller_slots.begin()),
+        (*i)->get_config()->get_current_config(),
+        (*i)->get_config()->config_count());
     }
   }
 
   for(Controllers::iterator i = m_inactive_controllers.begin(); i != m_inactive_controllers.end(); ++i)
   {
-    out << boost::format("   -             %5s  %7s  %s\n")
-      % (*i)->get_usbid()
-      % (*i)->get_usbpath()
-      % (*i)->get_name();
+    out << std::format("   -             {:5s}  {:7s}  {}\n",
+      (*i)->get_usbid(),
+      (*i)->get_usbpath(),
+      (*i)->get_name());
   }
 
   return out.str();

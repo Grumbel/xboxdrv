@@ -20,6 +20,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 #include "ui_event_sequence.hpp"
@@ -133,7 +134,7 @@ CycleKeyButtonEventHandler::lookup(const std::string& name)
     return it->second;
   }
 }
-
+
 CycleKeyButtonEventHandler::CycleKeyButtonEventHandler(CycleKeySequencePtr sequence,
                                                        Direction direction,
                                                        bool send_press) :

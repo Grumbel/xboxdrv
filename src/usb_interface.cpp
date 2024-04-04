@@ -18,16 +18,21 @@
 
 #include "usb_interface.hpp"
 
+#include <cassert>
+#include <cstring>
+#include <functional>
+#include <stdexcept>
+
 #include "raise_exception.hpp"
 #include "usb_helper.hpp"
-
+
 struct USBReadCallback
 {
   USBInterface* iface;
-  boost::function<bool (uint8_t*, int)> callback;
+  std::function<bool (uint8_t*, int)> callback;
 
   USBReadCallback(USBInterface* iface_,
-                  boost::function<bool (uint8_t*, int)> callback_) :
+                  std::function<bool (uint8_t*, int)> callback_) :
     iface(iface_),
     callback(callback_)
   {}
@@ -40,10 +45,10 @@ private:
 struct USBWriteCallback
 {
   USBInterface* iface;
-  boost::function<bool (libusb_transfer*)> callback;
+  std::function<bool (libusb_transfer*)> callback;
 
   USBWriteCallback(USBInterface* iface_,
-                   boost::function<bool (libusb_transfer*)> callback_) :
+                   std::function<bool (libusb_transfer*)> callback_) :
     iface(iface_),
     callback(callback_)
   {}
@@ -52,7 +57,7 @@ private:
   USBWriteCallback(const USBWriteCallback&);
   USBWriteCallback& operator=(const USBWriteCallback&);
 };
-
+
 USBInterface::USBInterface(libusb_device_handle* handle, int interface, bool try_detach) :
   m_handle(handle),
   m_interface(interface),
@@ -106,7 +111,7 @@ USBInterface::~USBInterface()
 
 void
 USBInterface::submit_read(int endpoint, int len,
-                          const boost::function<bool (uint8_t*, int)>& callback)
+                          const std::function<bool (uint8_t*, int)>& callback)
 {
   assert(m_endpoints.find(endpoint) == m_endpoints.end());
   libusb_transfer* transfer = libusb_alloc_transfer(0);
@@ -136,7 +141,7 @@ USBInterface::submit_read(int endpoint, int len,
 
 void
 USBInterface::submit_write(int endpoint, uint8_t* data_in, int len,
-                           const boost::function<bool (libusb_transfer*)>& callback)
+                           const std::function<bool (libusb_transfer*)>& callback)
 {
   libusb_transfer* transfer = libusb_alloc_transfer(0);
   transfer->flags |= LIBUSB_TRANSFER_FREE_BUFFER;
@@ -239,7 +244,7 @@ USBInterface::on_write_data(USBWriteCallback* callback, libusb_transfer* transfe
     m_endpoints.erase(transfer->endpoint);
   }
 }
-
+
 void
 USBInterface::on_read_data_wrap(libusb_transfer* transfer)
 {
@@ -253,5 +258,5 @@ USBInterface::on_write_data_wrap(libusb_transfer* transfer)
   USBWriteCallback* cb = static_cast<USBWriteCallback*>(transfer->user_data);
   cb->iface->on_write_data(cb, transfer);
 }
-
+
 /* EOF */

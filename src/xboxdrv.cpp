@@ -20,12 +20,15 @@
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/format.hpp>
-#include <boost/scoped_array.hpp>
+#include <cstring>
+#include <format>
 #include <errno.h>
 #include <iostream>
 #include <sched.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdexcept>
+#include <string>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -47,7 +50,7 @@
 
 // Some ugly global variables, needed for sigint catching
 bool global_exit_xboxdrv = false;
-
+
 void
 Xboxdrv::run_list_controller()
 {
@@ -81,24 +84,24 @@ Xboxdrv::run_list_controller()
           {
             for(int wid = 0; wid < 4; ++wid)
             {
-              std::cout << boost::format(" %2d |  %2d |   0x%04x |    0x%04x | %s (Port: %s)")
-                % id
-                % wid
-                % int(xpad_devices[i].idVendor)
-                % int(xpad_devices[i].idProduct)
-                % xpad_devices[i].name
-                % wid
+              std::cout << std::format(" {:2d} |  {:2d} |   {:#04x} |    {:#04x} | {} (Port: {})",
+                id,
+                wid,
+                int(xpad_devices[i].idVendor),
+                int(xpad_devices[i].idProduct),
+                xpad_devices[i].name,
+                wid)
                         << std::endl;
             }
           }
           else
           {
-            std::cout << boost::format(" %2d |  %2d |   0x%04x |    0x%04x | %s")
-              % id
-              % 0
-              % int(xpad_devices[i].idVendor)
-              % int(xpad_devices[i].idProduct)
-              % xpad_devices[i].name
+            std::cout << std::format(" {:2d} |  {:2d} |   {:#04x} |    {:#04x} | {}",
+              id,
+              0,
+              int(xpad_devices[i].idVendor),
+              int(xpad_devices[i].idProduct),
+              xpad_devices[i].name)
                       << std::endl;
           }
           id += 1;
@@ -113,20 +116,20 @@ Xboxdrv::run_list_controller()
 
   libusb_free_device_list(list, 1 /* unref_devices */);
 }
-
+
 void
 Xboxdrv::run_list_supported_devices()
 {
   for(int i = 0; i < xpad_devices_count; ++i)
   {
-    std::cout << boost::format("%s 0x%04x 0x%04x %s\n")
-      % gamepadtype_to_string(xpad_devices[i].type)
-      % int(xpad_devices[i].idVendor)
-      % int(xpad_devices[i].idProduct)
-      % xpad_devices[i].name;
+    std::cout << std::format("{} {:#04x} {:#04x} {}\n",
+      gamepadtype_to_string(xpad_devices[i].type),
+      int(xpad_devices[i].idVendor),
+      int(xpad_devices[i].idProduct),
+      xpad_devices[i].name);
   }
 }
-
+
 bool xpad_device_sorter(const XPadDevice& lhs, const XPadDevice& rhs)
 {
   if (lhs.idVendor < rhs.idVendor)
@@ -146,21 +149,20 @@ bool xpad_device_sorter(const XPadDevice& lhs, const XPadDevice& rhs)
 void
 Xboxdrv::run_list_supported_devices_xpad()
 {
-  boost::scoped_array<XPadDevice> sorted_devices(new XPadDevice[xpad_devices_count]);
-  memcpy(sorted_devices.get(), xpad_devices, sizeof(XPadDevice) * xpad_devices_count);
-
-  std::sort(sorted_devices.get(), sorted_devices.get() + xpad_devices_count, xpad_device_sorter);
+  std::vector<XPadDevice> sorted_devices(xpad_devices_count);
+  std::copy_n(xpad_devices, xpad_devices_count, sorted_devices.begin());
+  std::sort(sorted_devices.begin(), sorted_devices.end(), xpad_device_sorter);
 
   for(int i = 0; i < xpad_devices_count; ++i)
   {
-    std::cout << boost::format("{ 0x%04x, 0x%04x, \"%s\", %s },\n")
-      % int(sorted_devices[i].idVendor)
-      % int(sorted_devices[i].idProduct)
-      % sorted_devices[i].name
-      % gamepadtype_to_macro_string(sorted_devices[i].type);
+    std::cout << std::format("{{ {:#04x}, {:#04x}, \"{}\", {} }},\n",
+      int(sorted_devices[i].idVendor),
+      int(sorted_devices[i].idProduct),
+      sorted_devices[i].name,
+      gamepadtype_to_macro_string(sorted_devices[i].type));
   }
 }
-
+
 void
 Xboxdrv::run_help_devices()
 {
@@ -168,19 +170,19 @@ Xboxdrv::run_help_devices()
   std::cout << "----------+-----------+---------------------------------" << std::endl;
   for(int i = 0; i < xpad_devices_count; ++i)
   {
-    std::cout << boost::format("   0x%04x |    0x%04x | %s")
-      % int(xpad_devices[i].idVendor)
-      % int(xpad_devices[i].idProduct)
-      % xpad_devices[i].name
+    std::cout << std::format("   {:#04x} |    {:#04x} | {}",
+      int(xpad_devices[i].idVendor),
+      int(xpad_devices[i].idProduct),
+      xpad_devices[i].name)
               << std::endl;
   }
 }
-
+
 void
 Xboxdrv::print_copyright() const
 {
   WordWrap wrap(get_terminal_width());
-  wrap.para("xboxdrv " PACKAGE_VERSION " - http://pingus.seul.org/~grumbel/xboxdrv/");
+  wrap.para("xboxdrv " PACKAGE_VERSION);
   wrap.para("Copyright © 2008-2011 Ingo Ruhnke <grumbel@gmail.com>");
   wrap.para("Licensed under GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>");
   wrap.para("This program comes with ABSOLUTELY NO WARRANTY.");
@@ -201,9 +203,9 @@ Xboxdrv::run_main(const Options& opts)
   XboxdrvMain xboxdrv_main(opts);
   xboxdrv_main.run();
 }
-
+
 void
-Xboxdrv::run_daemon(const Options& opts)
+Xboxdrv::run_daemon(Options& opts)
 {
   if (!opts.quiet)
   {
@@ -212,7 +214,18 @@ Xboxdrv::run_daemon(const Options& opts)
 
   if (opts.usb_debug)
   {
+#if LIBUSB_API_VERSION >= 0x01000106
+    libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, 3);
+#else
     libusb_set_debug(NULL, 3);
+#endif
+  }
+
+  if (opts.get_controller_slot().get_force_feedback())
+  {
+    std::cerr << "Warning: Daemon mode does not support force-feedback, so it has been disabled."
+              << std::endl;
+    opts.get_controller_slot().set_force_feedback(false);
   }
 
   if (!opts.detach)
@@ -323,7 +336,7 @@ Xboxdrv::run_list_enums(uint32_t enums)
     wrap.newline();
   }
 }
-
+
 Xboxdrv::Xboxdrv()
 {
 }
@@ -421,5 +434,5 @@ Xboxdrv::main(int argc, char** argv)
 
   return 0;
 }
-
+
 /* EOF */

@@ -18,7 +18,7 @@
 
 #include "controller.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "log.hpp"
 #include "message_processor.hpp"
@@ -32,7 +32,9 @@ Controller::Controller() :
   m_udev_device(),
   m_led_status(0),
   m_rumble_left(0),
-  m_rumble_right(0)
+  m_rumble_right(0),
+  m_ff_features(),
+  m_num_ff_effects(0)
 {
 }
 
@@ -75,6 +77,36 @@ Controller::set_led(uint8_t status)
 }
 
 void
+Controller::upload(const struct ff_effect& effect)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::erase(int id)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::play(int id)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::stop(int id)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::set_gain(int g)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
 Controller::set_udev_device(udev_device* udev_dev)
 {
   m_udev_device = udev_dev;
@@ -82,7 +114,7 @@ Controller::set_udev_device(udev_device* udev_dev)
 }
 
 void
-Controller::set_message_cb(const boost::function<void(const XboxGenericMsg&)>& msg_cb)
+Controller::set_message_cb(const std::function<void(const XboxGenericMsg&)>& msg_cb)
 {
   m_msg_cb = msg_cb;
 }
@@ -98,7 +130,7 @@ Controller::set_active(bool v)
 {
   if (m_is_active != v)
   {
-    log_debug("activation status: " << v << " " << m_activation_cb);
+    log_debug("activation status: " << v << " " << m_activation_cb.target<void*>());
     m_is_active = v;
     if (m_activation_cb)
     {
@@ -108,7 +140,7 @@ Controller::set_active(bool v)
 }
 
 void
-Controller::set_activation_cb(const boost::function<void ()>& callback)
+Controller::set_activation_cb(const std::function<void ()>& callback)
 {
   m_activation_cb = callback;
 }
@@ -120,7 +152,7 @@ Controller::is_disconnected() const
 }
 
 void
-Controller::set_disconnect_cb(const boost::function<void ()>& callback)
+Controller::set_disconnect_cb(const std::function<void ()>& callback)
 {
   m_disconnect_cb = callback;
 }

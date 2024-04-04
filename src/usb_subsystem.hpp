@@ -20,7 +20,8 @@
 #define HEADER_XBOXDRV_USB_SUBSYSTEM_HPP
 
 #include <libusb.h>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
+#include <string>
 
 #include "xpad_device.hpp"
 
@@ -30,7 +31,7 @@ class Options;
 class USBSubsystem
 {
 private:
-  boost::scoped_ptr<USBGSource> m_usb_gsource;
+  std::shared_ptr<USBGSource> m_usb_gsource;
 
 public:
   USBSubsystem();

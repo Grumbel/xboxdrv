@@ -21,6 +21,8 @@
 
 #include <glib.h>
 #include <map>
+#include <memory>
+#include <string>
 
 #include "axis_event.hpp"
 #include "linux_uinput.hpp"
@@ -53,7 +55,7 @@ public:
   }
 
 private:
-  typedef std::map<uint32_t, boost::shared_ptr<LinuxUinput> > UInputDevs;
+  typedef std::map<uint32_t, std::shared_ptr<LinuxUinput> > UInputDevs;
   UInputDevs m_uinput_devs;
 
   typedef std::map<uint32_t, std::string> DeviceNames;
@@ -93,7 +95,9 @@ public:
 
   void set_device_names(const std::map<uint32_t, std::string>& device_names);
   void set_device_usbids(const std::map<uint32_t, struct input_id>& device_usbids);
-  void set_ff_callback(int device_id, const boost::function<void (uint8_t, uint8_t)>& callback);
+  void set_controller(int device_id, Controller* controller);
+  void enable_force_feedback(int device_id);
+  void set_ff_gain(int device_id, int gain);
 
   /** Device construction functions
       @{*/

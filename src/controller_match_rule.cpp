@@ -18,11 +18,14 @@
 
 #include "controller_match_rule.hpp"
 
-#include <assert.h>
 #include <boost/tokenizer.hpp>
+#include <cassert>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
-
+
 class ControllerMatchRuleProperty : public ControllerMatchRule
 {
 private:
@@ -53,7 +56,7 @@ public:
     }
   }
 };
-
+
 ControllerMatchRuleGroup::ControllerMatchRuleGroup() :
   m_rules()
 {}
@@ -83,7 +86,7 @@ ControllerMatchRuleGroup::match(udev_device* device) const
   }
   return true;
 }
-
+
 bool
 ControllerMatchRule::match(udev_device* device) const
 {
@@ -117,7 +120,7 @@ ControllerMatchRule::match(udev_device* device) const
   }
 #endif
 }
-
+
 ControllerMatchRulePtr
 ControllerMatchRule::from_string(const std::string& lhs,
                                  const std::string& rhs)
@@ -134,7 +137,7 @@ ControllerMatchRule::from_string(const std::string& lhs,
     }
     else
     {
-      boost::shared_ptr<ControllerMatchRuleGroup> group(new ControllerMatchRuleGroup);
+      std::shared_ptr<ControllerMatchRuleGroup> group(new ControllerMatchRuleGroup);
 
       group->add_rule(ControllerMatchRulePtr(new ControllerMatchRuleProperty("ID_VENDOR_ID", args[0])));
       group->add_rule(ControllerMatchRulePtr(new ControllerMatchRuleProperty("ID_MODEL_ID", args[1])));
@@ -183,7 +186,7 @@ ControllerMatchRule::from_string(const std::string& lhs,
     }
     else
     {
-      boost::shared_ptr<ControllerMatchRuleGroup> group(new ControllerMatchRuleGroup);
+      std::shared_ptr<ControllerMatchRuleGroup> group(new ControllerMatchRuleGroup);
 
       group->add_rule(ControllerMatchRulePtr(new ControllerMatchRuleProperty("BUSNUM", args[0])));
       group->add_rule(ControllerMatchRulePtr(new ControllerMatchRuleProperty("DEVNUM", args[1])));
@@ -218,5 +221,5 @@ ControllerMatchRule::from_string(const std::string& lhs,
     raise_exception(std::runtime_error, "'" << lhs << "' not a valid match rule name");
   }
 }
-
+
 /* EOF */

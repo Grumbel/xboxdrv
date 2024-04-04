@@ -19,7 +19,7 @@
 #ifndef HEADER_XBOXDRV_XBOXDRV_THREAD_HPP
 #define HEADER_XBOXDRV_XBOXDRV_THREAD_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <glib.h>
 
 #include "controller_slot_config.hpp"
@@ -29,8 +29,9 @@
 class Options;
 class MessageProcessor;
 class ControllerThread;
+class Controller;
 
-typedef boost::shared_ptr<ControllerThread> ControllerThreadPtr;
+typedef std::shared_ptr<ControllerThread> ControllerThreadPtr;
 
 /** ControllerThread handles a single Controller, reads it messages
     and passes it to the MessageProcessor */
@@ -38,7 +39,7 @@ class ControllerThread // FIXME: find a better name,ControllerLoop?!
 {
 private:
   ControllerPtr m_controller;
-  std::auto_ptr<MessageProcessor> m_processor;
+  std::shared_ptr<MessageProcessor> m_processor;
 
   XboxGenericMsg m_oldrealmsg; /// last data read from the device
 
@@ -48,7 +49,7 @@ private:
   GTimer* m_timer;
 
 public:
-  ControllerThread(ControllerPtr controller, std::auto_ptr<MessageProcessor> processor,
+  ControllerThread(ControllerPtr controller, std::shared_ptr<MessageProcessor> processor,
                    const Options& opts);
   ~ControllerThread();
 

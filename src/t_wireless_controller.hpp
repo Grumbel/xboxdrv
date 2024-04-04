@@ -1,6 +1,6 @@
 /*
 **  Xbox/Xbox360 USB Gamepad Userspace Driver
-**  Copyright (C) 2008 Ingo Ruhnke <grumbel@gmail.com>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,34 +16,31 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_FIRESTORM_DUAL_CONTROLLER_HPP
-#define HEADER_FIRESTORM_DUAL_CONTROLLER_HPP
+#ifndef HEADER_T_WIRELESS_CONTROLLER_HPP
+#define HEADER_T_WIRELESS_CONTROLLER_HPP
 
 #include <libusb.h>
 #include "xboxmsg.hpp"
 #include "usb_controller.hpp"
 
-class FirestormDualController : public USBController
+class TWirelessController : public USBController
 {
-private:
-  bool is_vsb;
-
 public:
-  FirestormDualController(libusb_device* dev, bool is_vsb, bool try_detach);
-  ~FirestormDualController();
+  TWirelessController(libusb_device* dev, bool try_detach);
+  ~TWirelessController();
 
   void set_rumble_real(uint8_t left, uint8_t right);
   void set_led_real(uint8_t status);
 
   bool parse(uint8_t* data, int len, XboxGenericMsg* msg_out);
 
-private:
-  bool parse_default(uint8_t* data, int len, XboxGenericMsg* msg_out);
-  bool parse_vsb(uint8_t* data, int len, XboxGenericMsg* msg_out);
+protected:
+  static int16_t scale_x8to16(uint8_t x);
+  static int16_t scale_y8to16(uint8_t y);
 
 private:
-  FirestormDualController(const FirestormDualController&);
-  FirestormDualController& operator=(const FirestormDualController&);
+  TWirelessController(const TWirelessController&);
+  TWirelessController& operator=(const TWirelessController&);
 };
 
 #endif

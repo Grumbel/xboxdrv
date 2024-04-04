@@ -26,12 +26,12 @@
 struct XPadDevice;
 class Options;
 class Controller;
-
+
 class Xboxdrv
 {
 private:
   void run_main(const Options& opts);
-  void run_daemon(const Options& opts);
+  void run_daemon(Options& opts);
   void run_list_supported_devices();
   void run_list_supported_devices_xpad();
   void run_list_enums(uint32_t enums);
@@ -49,7 +49,7 @@ public:
 private:
   void set_scheduling(const Options& opts);
 };
-
+
 #endif
 
 /* EOF */

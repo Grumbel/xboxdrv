@@ -20,6 +20,7 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <string>
 
 #include "axisfilter/calibration_axis_filter.hpp"
 #include "axisfilter/const_axis_filter.hpp"
@@ -29,7 +30,7 @@
 #include "axisfilter/relative_axis_filter.hpp"
 #include "axisfilter/response_curve_axis_filter.hpp"
 #include "axisfilter/sensitivity_axis_filter.hpp"
-
+
 AxisFilterPtr
 AxisFilter::from_string(const std::string& str)
 {
@@ -79,5 +80,5 @@ AxisFilter::from_string(const std::string& str)
     throw std::runtime_error(out.str());
   }
 }
-
+
 /* EOF */

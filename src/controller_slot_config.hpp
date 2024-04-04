@@ -19,23 +19,24 @@
 #ifndef HEADER_XBOXDRV_CONTROLLER_CONFIG_SET_HPP
 #define HEADER_XBOXDRV_CONTROLLER_CONFIG_SET_HPP
 
-#include <boost/function.hpp>
-
 #include "controller_config.hpp"
 #include "options.hpp"
+
+#include <memory>
 
 class Options;
 class UInput;
 class ControllerSlotConfig;
+class Controller;
 
-typedef boost::shared_ptr<ControllerSlotConfig> ControllerSlotConfigPtr;
+typedef std::shared_ptr<ControllerSlotConfig> ControllerSlotConfigPtr;
 
 class ControllerSlotConfig
 {
 public:
   /** Creates a ControllerSlotConfig from the Options object and connects it to UInput */
   static ControllerSlotConfigPtr create(UInput& uinput, int slot, bool extra_devices,
-                                       const ControllerSlotOptions& opts);
+                                       const ControllerSlotOptions& opts, Controller* controller);
 
 private:
   static void create_modifier(const ControllerOptions& options, std::vector<ModifierPtr>* modifier);
@@ -43,7 +44,7 @@ private:
 private:
   std::vector<ControllerConfigPtr> m_config;
   int m_current_config;
-  boost::function<void (uint8_t, uint8_t)> m_rumble_callback;
+  Controller* m_controller;
 
 public:
   ControllerSlotConfig();
@@ -60,9 +61,6 @@ public:
   ControllerConfigPtr get_config() const;
 
   bool empty() const { return m_config.empty(); }
-
-  void set_rumble(uint8_t strong, uint8_t weak);
-  void set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback);
 
 private:
   ControllerSlotConfig(const ControllerSlotConfig&);

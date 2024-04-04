@@ -19,18 +19,21 @@
 #include "key_axis_event_handler.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"
 #include "uinput.hpp"
-
+
 KeyAxisEventHandler*
 KeyAxisEventHandler::from_string(const std::string& str)
 {
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   tokenizer tokens(str, boost::char_separator<char>(":", "", boost::keep_empty_tokens));
 
-  std::auto_ptr<KeyAxisEventHandler> ev(new KeyAxisEventHandler);
+  std::shared_ptr<KeyAxisEventHandler> ev(new KeyAxisEventHandler);
 
   int j = 0;
   for(tokenizer::iterator i = tokens.begin(); i != tokens.end(); ++i, ++j)
@@ -73,7 +76,7 @@ KeyAxisEventHandler::from_string(const std::string& str)
     throw std::runtime_error("AxisEvent::key_from_string(): at least one argument required: " + str);
   }
 
-  return ev.release();
+  return ev.get();
 }
 
 KeyAxisEventHandler::KeyAxisEventHandler() :
@@ -164,5 +167,5 @@ KeyAxisEventHandler::str() const
   out << m_up_codes.str() << ":" << m_down_codes.str() << ":" << m_threshold;
   return out.str();
 }
-
+
 /* EOF */

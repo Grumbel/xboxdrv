@@ -20,6 +20,7 @@
 #define HEADER_XBOXDRV_CONTROLLER_SLOT_OPTIONS_HPP
 
 #include <map>
+#include <string>
 #include <vector>
 
 #include "controller_options.hpp"
@@ -47,6 +48,9 @@ public:
   void set_ff_device(const std::string& device);
   int  get_ff_device() const;
 
+  void set_rumble_gain(int gain);
+  int  get_rumble_gain() const;
+
   int get_led_status() const { return m_led_status; }
   void set_led_status(int v)  { m_led_status = v; }
 
@@ -56,6 +60,7 @@ private:
   bool m_force_feedback;
   int m_led_status;
   int m_ff_device;
+  int m_rumble_gain;
 };
 
 #endif

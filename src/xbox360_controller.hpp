@@ -28,7 +28,7 @@
 class Chatpad;
 class Headset;
 struct XPadDevice;
-
+
 class Xbox360Controller : public USBController
 {
 private:
@@ -37,8 +37,8 @@ private:
   int endpoint_in;
   int endpoint_out;
 
-  std::auto_ptr<Chatpad> m_chatpad;
-  std::auto_ptr<Headset> m_headset;
+  std::shared_ptr<Chatpad> m_chatpad;
+  std::shared_ptr<Headset> m_headset;
 
   uint8_t m_rumble_left;
   uint8_t m_rumble_right;
@@ -61,7 +61,7 @@ private:
   Xbox360Controller (const Xbox360Controller&);
   Xbox360Controller& operator= (const Xbox360Controller&);
 };
-
+
 #endif
 
 /* EOF */

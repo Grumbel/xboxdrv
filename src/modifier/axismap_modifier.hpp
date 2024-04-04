@@ -19,9 +19,11 @@
 #ifndef HEADER_XBOXDRV_MODIFIER_AXISMAP_MODIFIER_HPP
 #define HEADER_XBOXDRV_MODIFIER_AXISMAP_MODIFIER_HPP
 
+#include <string>
+
 #include "axis_filter.hpp"
 #include "modifier.hpp"
-
+
 struct AxisMapping
 {
   static AxisMapping from_string(const std::string& lhs, const std::string& rhs);
@@ -38,7 +40,7 @@ struct AxisMapping
     filters()
   {}
 };
-
+
 class AxismapModifier : public Modifier
 {
 public:
@@ -56,7 +58,7 @@ public:
 public:
   std::vector<AxisMapping> m_axismap;
 };
-
+
 #endif
 
 /* EOF */

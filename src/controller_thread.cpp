@@ -18,19 +18,23 @@
 
 #include "controller_thread.hpp"
 
+#include <cstring>
 #include <iostream>
-#include <boost/bind.hpp>
+#include <functional>
 #include <glib.h>
+#include <memory>
 
 #include "helper.hpp"
 #include "log.hpp"
 #include "controller.hpp"
 #include "message_processor.hpp"
 
+using namespace std::placeholders;
+
 extern bool global_exit_xboxdrv;
-
+
 ControllerThread::ControllerThread(ControllerPtr controller,
-                                   std::auto_ptr<MessageProcessor> processor,
+                                   std::shared_ptr<MessageProcessor> processor,
                                    const Options& opts) :
   m_controller(controller),
   m_processor(processor),
@@ -42,8 +46,8 @@ ControllerThread::ControllerThread(ControllerPtr controller,
 {
   memset(&m_oldrealmsg, 0, sizeof(m_oldrealmsg));
   m_timeout_id = g_timeout_add(m_timeout, &ControllerThread::on_timeout_wrap, this);
-  m_controller->set_message_cb(boost::bind(&ControllerThread::on_message, this, _1));
-  m_processor->set_ff_callback(boost::bind(&Controller::set_rumble, m_controller.get(), _1, _2));
+  m_controller->set_message_cb(std::bind(&ControllerThread::on_message, this, _1));
+  m_processor->set_controller(m_controller.get());
 }
 
 ControllerThread::~ControllerThread()
@@ -84,5 +88,5 @@ ControllerThread::on_message(const XboxGenericMsg& msg)
     m_processor->send(msg, msec_delta);
   }
 }
-
+
 /* EOF */

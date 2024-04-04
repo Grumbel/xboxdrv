@@ -18,17 +18,20 @@
 
 #include "ini_schema.hpp"
 
+#include <functional>
 #include <sstream>
-
+#include <stdexcept>
+#include <string>
+
 class INIPairSchemaBoolCallback : public INIPairSchema
 {
 private:
-  boost::function<void ()> m_true_callback;
-  boost::function<void ()> m_false_callback;
+  std::function<void ()> m_true_callback;
+  std::function<void ()> m_false_callback;
 
 public:
-  INIPairSchemaBoolCallback(boost::function<void ()> true_callback,
-                            boost::function<void ()> false_callback) :
+  INIPairSchemaBoolCallback(std::function<void ()> true_callback,
+                            std::function<void ()> false_callback) :
     m_true_callback(true_callback),
     m_false_callback(false_callback)
   {}
@@ -65,7 +68,7 @@ public:
     return "<not implemented>";
   }
 };
-
+
 class INIPairSchemaBool : public INIPairSchema
 {
 private:
@@ -105,7 +108,7 @@ private:
   INIPairSchemaBool(const INIPairSchemaBool&);
   INIPairSchemaBool& operator=(const INIPairSchemaBool&);
 };
-
+
 class INIPairSchemaInt : public INIPairSchema
 {
 private:
@@ -129,7 +132,7 @@ private:
   INIPairSchemaInt(const INIPairSchemaInt&);
   INIPairSchemaInt& operator=(const INIPairSchemaInt&);
 };
-
+
 class INIPairSchemaFloat : public INIPairSchema
 {
 private:
@@ -153,7 +156,7 @@ private:
   INIPairSchemaFloat(const INIPairSchemaFloat&);
   INIPairSchemaFloat& operator=(const INIPairSchemaFloat&);
 };
-
+
 class INIPairSchemaString : public INIPairSchema
 {
 private:
@@ -176,14 +179,14 @@ private:
   INIPairSchemaString(const INIPairSchemaString&);
   INIPairSchemaString& operator=(const INIPairSchemaString&);
 };
-
+
 class INIPairSchemaCallback : public INIPairSchema
 {
 private:
-  boost::function<void (const std::string&)> m_callback;
+  std::function<void (const std::string&)> m_callback;
 
 public:
-  INIPairSchemaCallback(boost::function<void (const std::string&)> callback) :
+  INIPairSchemaCallback(std::function<void (const std::string&)> callback) :
     m_callback(callback)
   {}
 
@@ -199,8 +202,8 @@ public:
     return "<not implemented>";
   }
 };
-
-INISchemaSection::INISchemaSection(boost::function<void (const std::string&, const std::string&)> callback) :
+
+INISchemaSection::INISchemaSection(std::function<void (const std::string&, const std::string&)> callback) :
   m_schema(),
   m_callback(callback)
 {
@@ -259,15 +262,15 @@ INISchemaSection::operator()(const std::string& name, std::string* value)
 
 INISchemaSection&
 INISchemaSection::operator()(const std::string& name,
-                             boost::function<void ()> true_callback,
-                             boost::function<void ()> false_callback)
+                             std::function<void ()> true_callback,
+                             std::function<void ()> false_callback)
 {
   add(name, new INIPairSchemaBoolCallback(true_callback, false_callback));
   return *this;
 }
 
 INISchemaSection&
-INISchemaSection::operator()(const std::string& name, boost::function<void (const std::string&)> callback)
+INISchemaSection::operator()(const std::string& name, std::function<void (const std::string&)> callback)
 {
   add(name, new INIPairSchemaCallback(callback));
   return *this;
@@ -295,7 +298,7 @@ INISchemaSection::save(std::ostream& out)
     out << i->first << " = " << i->second->str() << std::endl;
   }
 }
-
+
 INISchema::INISchema() :
   m_sections()
 {
@@ -318,7 +321,7 @@ INISchema::clear()
 
 INISchemaSection&
 INISchema::section(const std::string& name,
-                   boost::function<void (const std::string&, const std::string&)> callback)
+                   std::function<void (const std::string&, const std::string&)> callback)
 {
   Sections::iterator i = m_sections.find(name);
   if (i != m_sections.end())

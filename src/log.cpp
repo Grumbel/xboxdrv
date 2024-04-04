@@ -19,6 +19,7 @@
 #include "log.hpp"
 
 #include <iostream>
+#include <string>
 
 Logger g_logger;
 

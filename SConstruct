@@ -4,7 +4,8 @@ import os
 import subprocess
 import string
 import re
-
+import sys
+
 def build_dbus_glue(target, source, env):
     """
     C++ doesn't allow casting from void* to a function pointer,
@@ -19,11 +20,11 @@ def build_dbus_glue(target, source, env):
     xml = re.sub(r"callback = \(([A-Za-z_]+)\) \(marshal_data \? marshal_data : cc->callback\);",
                  r"union { \1 fn; void* obj; } conv;\n  "
                  "conv.obj = (marshal_data ? marshal_data : cc->callback);\n  "
-                 "callback = conv.fn;", xml)
+                 "callback = conv.fn;", xml.decode('utf-8'))
 
     with open(target[0].get_path(), "w") as f:
         f.write(xml)
-
+
 def build_bin2h(target, source, env):
     """
     Takes a list of files and converts them into a C source that can be included
@@ -67,7 +68,7 @@ def build_bin2h(target, source, env):
 
         fout.write("/* EOF */\n")
 
-
+
 env = Environment(ENV=os.environ, BUILDERS = {
     'DBusGlue' : Builder(action = build_dbus_glue),
     'Bin2H'    : Builder(action = build_bin2h)
@@ -84,6 +85,7 @@ opts.Add('CCFLAGS', 'C Compiler flags')
 opts.Add('CXXFLAGS', 'C++ Compiler flags')
 opts.Add('LINKFLAGS', 'Linker Compiler flags')
 opts.Add('AR', 'Library archiver')
+opts.Add('RANLIB', 'Archive indexer')
 opts.Add('CC', 'C Compiler')
 opts.Add('CXX', 'C++ Compiler')
 opts.Add('BUILD', 'Build type: release, custom, development')
@@ -93,28 +95,6 @@ opts.Update(env)
 Help(opts.GenerateHelpText(env))
 
 env.Append(CPPPATH=["src/"])
-
-if 'BUILD' in env and env['BUILD'] == 'development':
-    env.Append(CXXFLAGS = [ "-O3",
-                            "-g3",
-                            "-ansi",
-                            "-pedantic",
-                            "-Wall",
-                            "-Wextra",
-                            "-Werror",
-                            "-Wnon-virtual-dtor",
-                            "-Weffc++",
-                            # "-Wunreachable-code",
-                            # "-Wconversion",
-                            "-Wold-style-cast",
-                            "-Wshadow",
-                            "-Wcast-qual",
-                            "-Winit-self", # only works with >= -O1
-                            "-Wno-unused-parameter"])
-elif 'BUILD' in env and env['BUILD'] == 'custom':
-    pass
-else:
-    env.Append(CPPFLAGS = ['-g', '-O3', '-Wall', '-ansi', '-pedantic'])
 
 env.ParseConfig(env['PKG_CONFIG'] + " --cflags --libs dbus-glib-1 | sed 's/-I/-isystem/g'")
 env.ParseConfig(env['PKG_CONFIG'] + " --cflags --libs glib-2.0 | sed 's/-I/-isystem/g'")
@@ -129,9 +109,9 @@ f.close()
 env.Append(CPPDEFINES = { 'PACKAGE_VERSION': "'\"%s\"'" % package_version })
 
 conf = Configure(env)
-
+
 if not conf.env['CXX']:
-    print("g++ must be installed!")
+    print('g++ must be installed!')
     Exit(1)
 
 # X11 checks

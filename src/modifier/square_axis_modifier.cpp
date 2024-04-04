@@ -18,11 +18,14 @@
 
 #include "square_axis_modifier.hpp"
 
+#include <algorithm>
 #include <math.h>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
-
+
 namespace {
 
 void squarify_axis(int& x_inout, int& y_inout)
@@ -40,14 +43,14 @@ void squarify_axis(int& x_inout, int& y_inout)
     y *= v;
 
     // Convert values to int
-    x_inout = static_cast<int>(Math::clamp(-32768, static_cast<int>((x < 0) ? x * 32768 : x * 32767), 32767));
-    y_inout = static_cast<int>(Math::clamp(-32768, static_cast<int>((y < 0) ? y * 32768 : y * 32767), 32767));
+    x_inout = static_cast<int>(std::clamp(static_cast<int>((x < 0) ? x * 32768 : x * 32767), -32768, 32767));
+    y_inout = static_cast<int>(std::clamp(static_cast<int>((y < 0) ? y * 32768 : y * 32767), -32768, 32767));
   }
 }
 
 } // namespace
 
-
+
 SquareAxisModifier*
 SquareAxisModifier::from_string(const std::vector<std::string>& args)
 {
@@ -61,7 +64,7 @@ SquareAxisModifier::from_string(const std::vector<std::string>& args)
                                   string2axis(args[1]));
   }
 }
-
+
 SquareAxisModifier::SquareAxisModifier(XboxAxis xaxis, XboxAxis yaxis) :
   m_xaxis(xaxis),
   m_yaxis(yaxis)
@@ -90,5 +93,5 @@ SquareAxisModifier::str() const
       << axis2string(m_yaxis);
   return out.str();
 }
-
+
 /* EOF */

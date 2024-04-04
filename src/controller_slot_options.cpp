@@ -19,6 +19,7 @@
 #include "controller_slot_options.hpp"
 
 #include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
 
@@ -79,6 +80,18 @@ void
 ControllerSlotOptions::set_ff_device(const std::string& device)
 {
   m_ff_device = str2deviceid(device);
+}
+
+int
+ControllerSlotOptions::get_rumble_gain() const
+{
+  return m_rumble_gain;
+}
+
+void
+ControllerSlotOptions::set_rumble_gain(int gain)
+{
+  m_rumble_gain = gain;
 }
 
 /* EOF */

@@ -19,7 +19,9 @@
 #include "axis_event.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <cassert>
 #include <math.h>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "log.hpp"
@@ -31,7 +33,7 @@
 #include "axisevent/key_axis_event_handler.hpp"
 #include "axisevent/rel_axis_event_handler.hpp"
 #include "axisevent/rel_repeat_axis_event_handler.hpp"
-
+
 AxisEventPtr
 AxisEvent::invalid()
 {
@@ -107,7 +109,7 @@ AxisEvent::from_string(const std::string& str)
 
   return ev;
 }
-
+
 AxisEvent::AxisEvent(AxisEventHandler* handler, int min, int max) :
   m_last_raw_value(0),
   m_last_send_value(0),
@@ -173,7 +175,7 @@ AxisEvent::str() const
 {
   return m_handler->str();
 }
-
+
 AxisEventHandler::AxisEventHandler() :
   m_min(-1),
   m_max(+1)
@@ -186,5 +188,5 @@ AxisEventHandler::set_axis_range(int min, int max)
   m_min = min;
   m_max = max;
 }
-
+
 /* EOF */

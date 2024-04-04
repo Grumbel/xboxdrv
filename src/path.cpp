@@ -18,6 +18,8 @@
 
 #include "path.hpp"
 
+#include <string>
+
 namespace path {
 
 std::string dirname(const std::string& filename)

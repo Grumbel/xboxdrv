@@ -20,7 +20,8 @@
 
 #include <stdexcept>
 #include <sstream>
-
+#include <string>
+
 FourWayRestrictorModifier*
 FourWayRestrictorModifier::from_string(const std::vector<std::string>& args)
 {
@@ -34,7 +35,7 @@ FourWayRestrictorModifier::from_string(const std::vector<std::string>& args)
                                          string2axis(args[1]));
   }
 }
-
+
 FourWayRestrictorModifier::FourWayRestrictorModifier(XboxAxis xaxis, XboxAxis yaxis) :
   m_xaxis(xaxis),
   m_yaxis(yaxis)
@@ -65,5 +66,5 @@ FourWayRestrictorModifier::str() const
   out << "4way:" << axis2string(m_xaxis) << ":" << axis2string(m_yaxis);
   return out.str();
 }
-
+
 /* EOF */

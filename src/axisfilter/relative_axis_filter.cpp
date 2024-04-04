@@ -18,11 +18,14 @@
 
 #include "axisfilter/relative_axis_filter.hpp"
 
+#include <algorithm>
 #include <boost/tokenizer.hpp>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
-
+
 RelativeAxisFilter*
 RelativeAxisFilter::from_string(const std::string& str)
 {
@@ -42,7 +45,7 @@ RelativeAxisFilter::from_string(const std::string& str)
 
   return new RelativeAxisFilter(speed);
 }
-
+
 RelativeAxisFilter::RelativeAxisFilter(int speed) :
   m_speed(speed),
   m_float_speed(0.0f),
@@ -55,7 +58,7 @@ void
 RelativeAxisFilter::update(int msec_delta)
 {
   m_state += m_float_speed * m_value * msec_delta / 1000.0f;
-  m_state = Math::clamp(-1.0f, m_state, 1.0f);
+  m_state = std::clamp(m_state, -1.0f, 1.0f);
 }
 
 int
@@ -75,5 +78,5 @@ RelativeAxisFilter::str() const
   out << "relativeaxis:" << m_speed;
   return out.str();
 }
-
+
 /* EOF */

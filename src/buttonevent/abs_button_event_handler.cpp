@@ -18,7 +18,9 @@
 
 #include "abs_button_event_handler.hpp"
 
+#include <cassert>
 #include <sstream>
+#include <string>
 
 #include "uinput.hpp"
 

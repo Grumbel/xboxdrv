@@ -18,11 +18,16 @@
 
 #include "helper.hpp"
 
-#include <assert.h>
-#include <boost/format.hpp>
+#include <algorithm>
+#include <format>
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
+#include <cassert>
+#include <cstring>
+#include <functional>
 #include <stdio.h>
+#include <stdexcept>
+#include <string>
 #include <sys/time.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
@@ -30,7 +35,7 @@
 #include <iostream>
 
 #include "raise_exception.hpp"
-
+
 int hexstr2int(const std::string& str)
 {
   unsigned int value = 0;
@@ -89,7 +94,7 @@ float str2float(std::string const& str)
     throw std::runtime_error(out.str());
   }
 }
-
+
 std::string raw2str(uint8_t* data, int len)
 {
   std::ostringstream out;
@@ -97,11 +102,11 @@ std::string raw2str(uint8_t* data, int len)
       << " data: ";
 
   for(int i = 0; i < len; ++i)
-    out << boost::format("%02x ") % int(data[i]);
+    out << std::format("{:#02x} ", int(data[i]));
 
   return out.str();
 }
-
+
 std::string to_lower(const std::string &str)
 {
   std::string lower_impl = str;
@@ -115,7 +120,7 @@ std::string to_lower(const std::string &str)
 
   return lower_impl;
 }
-
+
 void split_string_at(const std::string& str, char c, std::string* lhs, std::string* rhs)
 {
   std::string::size_type p = str.find(c);
@@ -130,7 +135,7 @@ void split_string_at(const std::string& str, char c, std::string* lhs, std::stri
   }
 }
 
-void process_name_value_string(const std::string& str, const boost::function<void (const std::string&, const std::string&)>& func)
+void process_name_value_string(const std::string& str, const std::function<void (const std::string&, const std::string&)>& func)
 {
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   tokenizer tokens(str, boost::char_separator<char>(",", "", boost::drop_empty_tokens));
@@ -142,7 +147,7 @@ void process_name_value_string(const std::string& str, const boost::function<voi
     func(lhs, rhs);
   }
 }
-
+
 bool is_number(const std::string& str)
 {
   for(std::string::const_iterator i = str.begin(); i != str.end(); ++i)
@@ -150,7 +155,7 @@ bool is_number(const std::string& str)
       return false;
   return true;
 }
-
+
 int to_number(int range, const std::string& str)
 {
   if (str.empty())
@@ -170,14 +175,14 @@ int to_number(int range, const std::string& str)
     }
   }
 }
-
+
 uint32_t get_time()
 {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return tv.tv_sec * 1000 + tv.tv_usec/1000;
 }
-
+
 float to_float_no_range_check(int value, int min, int max)
 {
   // FIXME: '+1' is kind of a hack to
@@ -197,16 +202,15 @@ float to_float_no_range_check(int value, int min, int max)
 
 float to_float(int value, int min, int max)
 {
-  return Math::clamp(-1.0f,
-                     to_float_no_range_check(value, min, max),
-                     1.0f);
+  return std::clamp(to_float_no_range_check(value, min, max),
+                     -1.0f, 1.0f);
 }
 
 int from_float(float value, int min, int max)
 {
   return (value + 1.0f) / 2.0f * static_cast<float>(max - min) + min;
 }
-
+
 int get_terminal_width()
 {
   struct winsize w;
@@ -250,5 +254,5 @@ pid_t spawn_exe(const std::vector<std::string>& args)
 
   return pid;
 }
-
+
 /* EOF */

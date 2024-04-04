@@ -19,6 +19,8 @@
 #include "buttonevent/rel_button_event_handler.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <memory>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"
@@ -27,7 +29,7 @@
 RelButtonEventHandler*
 RelButtonEventHandler::from_string(const std::string& str)
 {
-  std::auto_ptr<RelButtonEventHandler> ev;
+  std::shared_ptr<RelButtonEventHandler> ev;
 
   int idx = 0;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
@@ -51,7 +53,7 @@ RelButtonEventHandler::from_string(const std::string& str)
     }
   }
 
-  return ev.release();
+  return ev.get();
 }
 
 RelButtonEventHandler::RelButtonEventHandler(const UIEvent& code) :

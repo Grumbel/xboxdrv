@@ -18,6 +18,8 @@
 
 #include "udev_subsystem.hpp"
 
+#include <cassert>
+#include <functional>
 #include <stdexcept>
 
 #include "raise_exception.hpp"
@@ -44,7 +46,7 @@ UdevSubsystem::~UdevSubsystem()
 }
 
 void
-UdevSubsystem::set_device_callback(const boost::function<void (udev_device*)>& process_match_cb)
+UdevSubsystem::set_device_callback(const std::function<void (udev_device*)>& process_match_cb)
 {
   assert(process_match_cb);
   assert(!m_process_match_cb);

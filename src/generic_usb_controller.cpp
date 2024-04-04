@@ -19,6 +19,7 @@
 #include "generic_usb_controller.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"
