@@ -25,6 +25,7 @@
 class UInput;
 class Options;
 class ControllerOptions;
+class Controller;
 
 class UInputMessageProcessor : public MessageProcessor
 {
@@ -37,7 +38,7 @@ private:
 
   int m_rumble_gain;
   bool m_rumble_test;
-  boost::function<void (uint8_t, uint8_t)> m_rumble_callback;
+  Controller* m_controller;
 
 public:
   UInputMessageProcessor(UInput& uinput, ControllerSlotConfigPtr config,
@@ -46,7 +47,7 @@ public:
 
   void send(const XboxGenericMsg& msg, int msec_delta);
   void set_rumble(uint8_t lhs, uint8_t rhs);
-  void set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback);
+  virtual void set_controller(Controller* controller);
   void set_config(int num);
   ControllerSlotConfigPtr get_config() const { return m_config; }
 

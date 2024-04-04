@@ -203,7 +203,7 @@ Xboxdrv::run_main(const Options& opts)
 }
 
 void
-Xboxdrv::run_daemon(const Options& opts)
+Xboxdrv::run_daemon(Options& opts)
 {
   if (!opts.quiet)
   {
@@ -217,6 +217,13 @@ Xboxdrv::run_daemon(const Options& opts)
 #else
     libusb_set_debug(NULL, 3);
 #endif
+  }
+
+  if (opts.get_controller_slot().get_force_feedback())
+  {
+    std::cerr << "Warning: Daemon mode does not support force-feedback, so it has been disabled."
+              << std::endl;
+    opts.get_controller_slot().set_force_feedback(false);
   }
 
   if (!opts.detach)

@@ -345,6 +345,12 @@ Options::set_ff_device(const std::string& value)
 }
 
 void
+Options::set_rumble_gain(const std::string& value)
+{
+  get_controller_slot().set_rumble_gain(to_number(255, value));
+}
+
+void
 Options::set_mimic_xpad()
 {
   // BTN_BACK is recognized as mouse button, so we have to disallow

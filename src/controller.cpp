@@ -32,7 +32,9 @@ Controller::Controller() :
   m_udev_device(),
   m_led_status(0),
   m_rumble_left(0),
-  m_rumble_right(0)
+  m_rumble_right(0),
+  m_ff_features(),
+  m_num_ff_effects(0)
 {
 }
 
@@ -72,6 +74,36 @@ Controller::set_led(uint8_t status)
 
     set_led_real(m_led_status);
   }
+}
+
+void
+Controller::upload(const struct ff_effect& effect)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::erase(int id)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::play(int id)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::stop(int id)
+{
+  // not implemented for non-evdev controllers
+}
+
+void
+Controller::set_gain(int g)
+{
+  // not implemented for non-evdev controllers
 }
 
 void

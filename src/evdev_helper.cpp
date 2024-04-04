@@ -295,5 +295,5 @@ std::string rel2str(int v)
     return str.str();
   }
 }
-
+
 /* EOF */
