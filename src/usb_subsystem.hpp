@@ -21,6 +21,7 @@
 
 #include <libusb.h>
 #include <memory>
+#include <string>
 
 #include "xpad_device.hpp"
 

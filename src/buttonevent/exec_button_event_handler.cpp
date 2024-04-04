@@ -20,7 +20,8 @@
 
 #include <boost/tokenizer.hpp>
 #include <errno.h>
-#include <string.h>
+#include <cstring>
+#include <string>
 #include <sys/wait.h>
 
 #include "log.hpp"

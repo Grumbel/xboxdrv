@@ -20,6 +20,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <sstream>
+#include <string>
 
 #include "helper.hpp"
 

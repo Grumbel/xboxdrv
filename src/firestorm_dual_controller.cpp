@@ -20,6 +20,7 @@
 
 #include <sstream>
 #include <boost/format.hpp>
+#include <cstring>
 
 #include "helper.hpp"
 #include "log.hpp"

@@ -22,6 +22,7 @@
 #include <cassert>
 #include <errno.h>
 #include <fstream>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "log.hpp"

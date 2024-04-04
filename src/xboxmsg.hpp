@@ -20,6 +20,7 @@
 #define HEADER_XBOXMSG_HPP
 
 #include <iosfwd>
+#include <string>
 
 enum GamepadType {
   GAMEPAD_UNKNOWN,

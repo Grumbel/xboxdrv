@@ -19,6 +19,7 @@
 #ifndef HEADER_XBOXDRV_MODIFIER_SQUARE_AXIS_MODIFIER_HPP
 #define HEADER_XBOXDRV_MODIFIER_SQUARE_AXIS_MODIFIER_HPP
 
+#include <string>
 #include <vector>
 
 #include "modifier.hpp"

@@ -21,6 +21,8 @@
 
 #include <glib.h>
 #include <map>
+#include <memory>
+#include <string>
 
 #include "axis_event.hpp"
 #include "linux_uinput.hpp"

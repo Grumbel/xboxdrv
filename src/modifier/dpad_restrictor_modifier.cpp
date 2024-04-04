@@ -21,6 +21,7 @@
 #include <boost/tokenizer.hpp>
 #include <cassert>
 #include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
 

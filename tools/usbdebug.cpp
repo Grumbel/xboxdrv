@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <boost/format.hpp>
 #include <signal.h>
 #include <usb.h>

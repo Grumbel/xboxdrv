@@ -21,6 +21,8 @@
 
 #include "ui_event_emitter.hpp"
 
+#include <memory>
+
 class UIKeyEventCollector;
 
 class UIKeyEventEmitter : public UIEventEmitter

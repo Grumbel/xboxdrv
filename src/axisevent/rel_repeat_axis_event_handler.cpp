@@ -22,6 +22,8 @@
 #include <cassert>
 #include <math.h>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"

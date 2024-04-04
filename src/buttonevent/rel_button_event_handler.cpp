@@ -19,6 +19,8 @@
 #include "buttonevent/rel_button_event_handler.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <memory>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"

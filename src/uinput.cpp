@@ -22,8 +22,10 @@
 #include <cassert>
 #include <iostream>
 #include <math.h>
+#include <memory>
 #include <stdexcept>
 #include <stdio.h>
+#include <string>
 
 #include "ui_abs_event_collector.hpp"
 #include "ui_key_event_collector.hpp"

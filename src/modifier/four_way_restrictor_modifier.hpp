@@ -19,6 +19,7 @@
 #ifndef HEADER_XBOXDRV_MODIFIER_FOUR_WAY_RESTRICTOR_MODIFIER_HPP
 #define HEADER_XBOXDRV_MODIFIER_FOUR_WAY_RESTRICTOR_MODIFIER_HPP
 
+#include <string>
 #include <vector>
 
 #include "modifier.hpp"

@@ -22,6 +22,7 @@
 #include <functional>
 #include <cassert>
 #include <stdint.h>
+#include <string>
 #include <vector>
 
 int hexstr2int(const std::string& str);

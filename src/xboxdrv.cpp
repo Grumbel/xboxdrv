@@ -20,12 +20,15 @@
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/format.hpp>
+#include <cstring>
 #include <fmt/format.h>
 #include <errno.h>
 #include <iostream>
 #include <sched.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdexcept>
+#include <string>
 #include <sys/types.h>
 #include <unistd.h>
 

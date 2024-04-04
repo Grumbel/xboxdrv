@@ -19,6 +19,8 @@
 #ifndef HEADER_XBOXDRV_BUTTONFILTER_INVERT_BUTTON_FILTER_HPP
 #define HEADER_XBOXDRV_BUTTONFILTER_INVERT_BUTTON_FILTER_HPP
 
+#include <string>
+
 #include "button_filter.hpp"
 
 class InvertButtonFilter : public ButtonFilter

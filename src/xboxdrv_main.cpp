@@ -26,6 +26,7 @@
 #include <iostream>
 #include <boost/format.hpp>
 #include <functional>
+#include <memory>
 
 #include "controller_factory.hpp"
 #include "evdev_controller.hpp"

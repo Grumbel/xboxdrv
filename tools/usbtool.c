@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <linux/usbdevice_fs.h>
-#include <string.h>
+#include <cstring>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>

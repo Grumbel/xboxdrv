@@ -20,7 +20,7 @@
 
 #include <sstream>
 #include <stdexcept>
-#include <string.h>
+#include <cstring>
 
 #include "usb_helper.hpp"
 #include "raise_exception.hpp"

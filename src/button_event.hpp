@@ -20,6 +20,7 @@
 #define HEADER_XBOXDRV_BUTTON_EVENT_HPP
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "button_filter.hpp"

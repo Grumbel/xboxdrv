@@ -19,6 +19,7 @@
 #include "axisfilter/const_axis_filter.hpp"
 
 #include <sstream>
+#include <string>
 
 #include "helper.hpp"
 

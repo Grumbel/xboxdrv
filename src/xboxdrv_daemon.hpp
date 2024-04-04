@@ -24,6 +24,7 @@ extern "C" {
 }
 #include <memory>
 #include <glib.h>
+#include <string>
 
 #include "controller_slot_config.hpp"
 #include "controller_slot_ptr.hpp"

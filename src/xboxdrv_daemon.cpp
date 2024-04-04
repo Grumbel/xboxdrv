@@ -21,7 +21,10 @@
 #include <functional>
 #include <boost/format.hpp>
 #include <cassert>
+#include <cstring>
 #include <memory>
+#include <stdexcept>
+#include <string>
 #include <fstream>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>

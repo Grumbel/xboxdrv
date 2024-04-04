@@ -20,8 +20,11 @@
 
 #include <boost/format.hpp>
 #include <cassert>
+#include <cstring>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "force_feedback_handler.hpp"

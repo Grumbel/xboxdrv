@@ -22,6 +22,8 @@
 #include <cassert>
 #include <fstream>
 #include <linux/input.h>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "evdev_helper.hpp"

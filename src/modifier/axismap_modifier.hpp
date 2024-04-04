@@ -19,6 +19,8 @@
 #ifndef HEADER_XBOXDRV_MODIFIER_AXISMAP_MODIFIER_HPP
 #define HEADER_XBOXDRV_MODIFIER_AXISMAP_MODIFIER_HPP
 
+#include <string>
+
 #include "axis_filter.hpp"
 #include "modifier.hpp"
 

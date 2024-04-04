@@ -22,6 +22,8 @@
 #include "uinput_config.hpp"
 #include "modifier.hpp"
 
+#include <memory>
+
 class ControllerOptions;
 class ControllerConfig;
 typedef std::shared_ptr<ControllerConfig> ControllerConfigPtr;

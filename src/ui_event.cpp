@@ -19,6 +19,8 @@
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
+#include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
 #include "ui_event.hpp"

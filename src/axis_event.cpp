@@ -21,6 +21,7 @@
 #include <boost/tokenizer.hpp>
 #include <cassert>
 #include <math.h>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "log.hpp"

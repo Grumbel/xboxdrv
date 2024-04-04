@@ -19,6 +19,7 @@
 #include "buttonfilter/const_button_filter.hpp"
 
 #include <sstream>
+#include <string>
 
 #include "helper.hpp"
 

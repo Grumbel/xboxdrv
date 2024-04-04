@@ -19,6 +19,8 @@
 #include "controller_slot_config.hpp"
 
 #include <cassert>
+#include <memory>
+#include <stdexcept>
 
 #include "raise_exception.hpp"
 #include "uinput.hpp"

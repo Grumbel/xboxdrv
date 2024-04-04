@@ -19,6 +19,7 @@
 #include "buttonfilter/delay_button_filter.hpp"
 
 #include <sstream>
+#include <string>
 
 #include "helper.hpp"
 

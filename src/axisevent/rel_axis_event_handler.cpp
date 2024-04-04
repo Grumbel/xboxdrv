@@ -20,6 +20,9 @@
 
 #include <boost/tokenizer.hpp>
 #include <math.h>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"

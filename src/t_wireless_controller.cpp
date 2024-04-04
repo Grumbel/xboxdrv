@@ -18,6 +18,7 @@
 
 #include "t_wireless_controller.hpp"
 
+#include <cstring>
 #include <sstream>
 
 #include "helper.hpp"

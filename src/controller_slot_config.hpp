@@ -22,6 +22,8 @@
 #include "controller_config.hpp"
 #include "options.hpp"
 
+#include <memory>
+
 class Options;
 class UInput;
 class ControllerSlotConfig;
