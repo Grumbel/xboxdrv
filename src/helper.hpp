@@ -22,7 +22,7 @@
 #include <boost/function.hpp>
 #include <stdint.h>
 #include <vector>
-
+
 int hexstr2int(const std::string& str);
 
 bool str2bool(std::string const& str);
@@ -43,7 +43,7 @@ void split_string_at(const std::string& str, char c, std::string* lhs, std::stri
     which case it is handled as (range * int(str)) */
 int to_number(int range, const std::string& str);
 uint32_t get_time();
-
+
 namespace Math {
 template<class T>
 T clamp (const T& low, const T& v, const T& high)
@@ -52,7 +52,7 @@ T clamp (const T& low, const T& v, const T& high)
   return std::max((low), std::min((v), (high)));
 }
 } // namespace Math
-
+
 // Change the sign
 inline int16_t s16_invert(int16_t v)
 {
@@ -69,18 +69,18 @@ inline int16_t scale_8to16(int8_t a)
   else
     return static_cast<int16_t>(a * 32768 / 128);
 }
-
+
 /** converts the arbitary range to [-1,1] */
 float to_float(int value, int min, int max);
 float to_float_no_range_check(int value, int min, int max);
 
 /** converts the range [-1,1] to [min,max] */
 int from_float(float value, int min, int max);
-
+
 int get_terminal_width();
 pid_t spawn_exe(const std::vector<std::string>& args);
 pid_t spawn_exe(const std::string& arg0);
-
+
 #endif
 
 /* EOF */

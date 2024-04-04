@@ -21,7 +21,7 @@
 #include "log.hpp"
 #include "options.hpp"
 #include "controller.hpp"
-
+
 std::ostream& operator<<(std::ostream& out, const struct ff_envelope& envelope)
 {
   out << "Envelope(attack_length:" << envelope.attack_length
@@ -108,7 +108,7 @@ std::ostream& operator<<(std::ostream& out, const struct ff_effect& effect)
 
   return out;
 }
-
+
 ForceFeedbackEffect::ForceFeedbackEffect() :
   delay(),
   length(),
@@ -281,7 +281,7 @@ ForceFeedbackEffect::stop()
   weak_magnitude   = 0;
   strong_magnitude = 0;
 }
-
+
 ForceFeedbackHandler::ForceFeedbackHandler(Controller* controller) :
   gain(0xFFFF),
   max_effects(16),

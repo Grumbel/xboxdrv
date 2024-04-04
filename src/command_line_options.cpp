@@ -39,7 +39,7 @@
 #include "buttonfilter/autofire_button_filter.hpp"
 
 #include "xboxdrv_vfs.hpp"
-
+
 enum {
   OPTION_HELP,
   OPTION_VERBOSE,
@@ -136,7 +136,7 @@ enum {
   OPTION_DAEMON_ON_CONNECT,
   OPTION_DAEMON_ON_DISCONNECT
 };
-
+
 CommandLineParser::CommandLineParser() :
   m_argp(),
   m_ini(),
@@ -145,7 +145,7 @@ CommandLineParser::CommandLineParser() :
 {
   init_argp();
 }
-
+
 void
 CommandLineParser::init_argp()
 {
@@ -325,7 +325,7 @@ CommandLineParser::init_argp()
     .add_text("See README for more documentation and examples.")
     .add_text("Report bugs to Ingo Ruhnke <grumbel@gmail.com>");
 }
-
+
 void
 CommandLineParser::init_ini(Options* opts)
 {
@@ -448,7 +448,7 @@ CommandLineParser::init_ini(Options* opts)
   m_ini.section("evdev-absmap", boost::bind(&CommandLineParser::set_evdev_absmap, this, _1, _2));
   m_ini.section("evdev-keymap", boost::bind(&CommandLineParser::set_evdev_keymap, this, _1, _2));
 }
-
+
 void
 CommandLineParser::parse_args(int argc, char** argv, Options* options)
 {

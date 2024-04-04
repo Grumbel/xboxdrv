@@ -27,7 +27,7 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
+
 void print_usage(int argc, char** argv)
 {
       printf("Usage: %s connect    /dev/bus/usb/${BUS}/${DEV}\n", argv[0]);
@@ -35,7 +35,7 @@ void print_usage(int argc, char** argv)
       printf("       %s reconnect  /dev/bus/usb/${BUS}/${DEV}\n", argv[0]);
       printf("Disconnect or reconnect USB devices\n");
 }
-
+
 int send_usb_cmd(int fd, int cmd)
 {
   struct usbdevfs_ioctl command;
@@ -47,7 +47,7 @@ int send_usb_cmd(int fd, int cmd)
           
   return ioctl(fd, USBDEVFS_IOCTL, &command);  
 }
-
+
 int main(int argc, char** argv)
 {
   if (argc != 3)
@@ -127,5 +127,5 @@ int main(int argc, char** argv)
         }
     }
 }
-
+
 /* EOF */

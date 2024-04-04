@@ -23,7 +23,7 @@
 
 #include "axisfilter/invert_axis_filter.hpp"
 #include "helper.hpp"
-
+
 AxisMapping
 AxisMapping::from_string(const std::string& lhs_, const std::string& rhs)
 {
@@ -69,7 +69,7 @@ AxisMapping::from_string(const std::string& lhs_, const std::string& rhs)
 
   return mapping;
 }
-
+
 AxismapModifier::AxismapModifier() :
   m_axismap()
 {
@@ -171,5 +171,5 @@ AxismapModifier::str() const
   }
   return out.str();
 }
-
+
 /* EOF */

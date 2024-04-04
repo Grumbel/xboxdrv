@@ -35,7 +35,7 @@ int16_t u8_to_s16(uint8_t value)
     return (value-128) * 32767 / 127;
   }
 }
-
+
 std::string gamepadtype_to_string(const GamepadType& type)
 {
   switch (type)
@@ -83,7 +83,7 @@ std::string gamepadtype_to_string(const GamepadType& type)
       assert(!"Unknown gamepad type supplied");
   }
 }
-
+
 
 std::string gamepadtype_to_macro_string(const GamepadType& type)
 {
@@ -106,7 +106,7 @@ std::string gamepadtype_to_macro_string(const GamepadType& type)
       assert(!"Unknown gamepad type supplied");
   }
 }
-
+
 std::ostream& operator<<(std::ostream& out, const GamepadType& type)
 {
   switch (type)
@@ -154,7 +154,7 @@ std::ostream& operator<<(std::ostream& out, const GamepadType& type)
       return out << "unknown" << std::endl;
   }
 }
-
+
 std::ostream& operator<<(std::ostream& out, const XboxGenericMsg& msg)
 {
   switch (msg.type)
@@ -172,7 +172,7 @@ std::ostream& operator<<(std::ostream& out, const XboxGenericMsg& msg)
       return out << "Error: Unhandled XboxGenericMsg type: " << msg.type;
   }
 }
-
+
 std::ostream& operator<<(std::ostream& out, const Playstation3USBMsg& msg)
 {
   out << boost::format("X1:%3d Y1:%3d")
@@ -206,7 +206,7 @@ std::ostream& operator<<(std::ostream& out, const Playstation3USBMsg& msg)
 
   return out;
 }
-
+
 std::ostream& operator<<(std::ostream& out, const Xbox360Msg& msg)
 {
   out << boost::format("X1:%6d Y1:%6d")
@@ -243,7 +243,7 @@ std::ostream& operator<<(std::ostream& out, const Xbox360Msg& msg)
 
   return out;
 }
-
+
 std::ostream& operator<<(std::ostream& out, const XboxMsg& msg)
 {
   out << boost::format(" X1:%6d Y1:%6d  X2:%6d Y2:%6d "
@@ -282,7 +282,7 @@ std::ostream& operator<<(std::ostream& out, const XboxMsg& msg)
 
   return out;
 }
-
+
 int get_button(XboxGenericMsg& msg, XboxButton button)
 {
   switch(msg.type)
@@ -382,7 +382,7 @@ int get_button(XboxGenericMsg& msg, XboxButton button)
   }
   return 0;
 }
-
+
 void set_button(XboxGenericMsg& msg, XboxButton button, bool v)
 {
   switch(msg.type)
@@ -483,7 +483,7 @@ void set_button(XboxGenericMsg& msg, XboxButton button, bool v)
       break;
   }
 }
-
+
 int get_axis(XboxGenericMsg& msg, XboxAxis axis)
 {
   switch(msg.type)
@@ -650,7 +650,7 @@ int get_axis(XboxGenericMsg& msg, XboxAxis axis)
   }
   return 0;
 }
-
+
 float s16_to_float(int16_t value)
 {
   if (value >= 0)
@@ -672,7 +672,7 @@ float u8_to_float(uint8_t value)
   return static_cast<float>(value) / 255.0f * 2.0f - 1.0f;
 }
 
-
+
 int16_t float_to_s16(float v)
 {
   if (v >= 0.0f)
@@ -693,7 +693,7 @@ uint8_t float_to_u8(float v)
 {
   return static_cast<uint8_t>(Math::clamp(0.0f, (v + 1.0f) / 2.0f, 1.0f) * 255.0f);
 }
-
+
 float get_axis_float(XboxGenericMsg& msg, XboxAxis axis)
 {
   switch(msg.type)
@@ -858,7 +858,7 @@ float get_axis_float(XboxGenericMsg& msg, XboxAxis axis)
   }
   return 0;
 }
-
+
 void set_axis_float(XboxGenericMsg& msg, XboxAxis axis, float v)
 {
   switch(msg.type)
@@ -1056,7 +1056,7 @@ void set_axis_float(XboxGenericMsg& msg, XboxAxis axis, float v)
       break;
   }
 }
-
+
 void set_axis(XboxGenericMsg& msg, XboxAxis axis, int v)
 {
   switch(msg.type)
@@ -1254,7 +1254,7 @@ void set_axis(XboxGenericMsg& msg, XboxAxis axis, int v)
       break;
   }
 }
-
+
 XboxButton string2btn(const std::string& str_)
 {
   std::string str = to_lower(str_);
@@ -1302,7 +1302,7 @@ XboxButton string2btn(const std::string& str_)
   else
     raise_exception(std::runtime_error, "couldn't convert string \"" + str + "\" to XboxButton");
 }
-
+
 XboxAxis string2axis(const std::string& str_)
 {
   std::string str = to_lower(str_);
@@ -1350,7 +1350,7 @@ XboxAxis string2axis(const std::string& str_)
   else
     raise_exception(std::runtime_error, "couldn't convert string \"" + str + "\" to XboxAxis");
 }
-
+
 std::string axis2string(XboxAxis axis)
 {
   switch(axis)
@@ -1381,7 +1381,7 @@ std::string axis2string(XboxAxis axis)
   }
   return "unknown";
 }
-
+
 std::string btn2string(XboxButton btn)
 {
   switch (btn)
@@ -1414,7 +1414,7 @@ std::string btn2string(XboxButton btn)
   }
   return "unknown";
 }
-
+
 int get_axis_min(XboxAxis axis)
 {
   switch(axis)
@@ -1472,5 +1472,5 @@ int get_axis_max(XboxAxis axis)
     default: assert(!"never reached");
   }
 }
-
+
 /* EOF */

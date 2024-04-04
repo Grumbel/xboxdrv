@@ -37,13 +37,13 @@ enum GamepadType {
   GAMEPAD_PLAYSTATION3_USB,
   GAMEPAD_GENERIC_USB
 };
-
+
 enum XboxMsgType {
   XBOX_MSG_XBOX,
   XBOX_MSG_XBOX360,
   XBOX_MSG_PS3USB
 };
-
+
 struct Xbox360Msg
 {
   // -------------------------
@@ -89,7 +89,7 @@ struct Xbox360Msg
   unsigned int dummy2      :32;
   unsigned int dummy3      :16;
 } __attribute__((__packed__));
-
+
 struct XboxMsg
 {
   // --------------------------
@@ -127,7 +127,7 @@ struct XboxMsg
   int x2                   :16;
   int y2                   :16;
 } __attribute__((__packed__));
-
+
 struct Playstation3USBMsg
 {
   unsigned int unknown00 :8; // always 01
@@ -211,7 +211,7 @@ struct Playstation3USBMsg
 
   unsigned int rot_z :16; // very low res (3 or 4 bits), neutral at 5 or 6
 } __attribute__((__packed__));
-
+
 struct XboxGenericMsg
 {
   XboxMsgType type;
@@ -221,13 +221,13 @@ struct XboxGenericMsg
     struct Playstation3USBMsg ps3usb;
   };
 };
-
+
 std::ostream& operator<<(std::ostream& out, const GamepadType& type);
 std::ostream& operator<<(std::ostream& out, const Xbox360Msg& msg);
 std::ostream& operator<<(std::ostream& out, const XboxMsg& msg);
 std::ostream& operator<<(std::ostream& out, const Playstation3USBMsg& msg);
 std::ostream& operator<<(std::ostream& out, const XboxGenericMsg& msg);
-
+
 enum XboxButton {
   XBOX_BTN_UNKNOWN,
   XBOX_BTN_START,
@@ -301,7 +301,7 @@ int get_axis_max(XboxAxis axis);
 
 std::string gamepadtype_to_string(const GamepadType& type);
 std::string gamepadtype_to_macro_string(const GamepadType& type);
-
+
 #endif
 
 /* EOF */

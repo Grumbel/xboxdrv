@@ -22,7 +22,7 @@
 #include <sstream>
 
 #include "helper.hpp"
-
+
 DpadRotationModifier*
 DpadRotationModifier::from_string(const std::vector<std::string>& args)
 {
@@ -47,7 +47,7 @@ DpadRotationModifier::from_string(const std::string& value)
 
   return new DpadRotationModifier(degree);
 }
-
+
 DpadRotationModifier::DpadRotationModifier(int dpad_rotation) :
   m_dpad_rotation(dpad_rotation)
 {

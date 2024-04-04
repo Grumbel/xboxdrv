@@ -22,7 +22,7 @@
 
 #include "helper.hpp"
 #include "usb_helper.hpp"
-
+
 struct SaitekP2500Msg
 {
   int dummy :8; // data[0]
@@ -54,7 +54,7 @@ struct SaitekP2500Msg
   unsigned int dpad :4;
 
 } __attribute__((__packed__));
-
+
 SaitekP2500Controller::SaitekP2500Controller(libusb_device* dev, bool try_detach) :
   USBController(dev),
   left_rumble(-1),
@@ -180,5 +180,5 @@ SaitekP2500Controller::parse(uint8_t* data, int len, XboxGenericMsg* msg_out)
     return false;
   }
 }
-
+
 /* EOF */

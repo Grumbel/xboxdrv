@@ -133,7 +133,7 @@ CycleKeyButtonEventHandler::lookup(const std::string& name)
     return it->second;
   }
 }
-
+
 CycleKeyButtonEventHandler::CycleKeyButtonEventHandler(CycleKeySequencePtr sequence,
                                                        Direction direction,
                                                        bool send_press) :

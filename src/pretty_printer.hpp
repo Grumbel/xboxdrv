@@ -20,7 +20,7 @@
 #define HEADER_PRETTY_PRINTER_HPP
 
 #include <string>
-
+
 class PrettyPrinter
 {
 private:
@@ -36,7 +36,7 @@ private:
   PrettyPrinter(const PrettyPrinter&);
   PrettyPrinter& operator=(const PrettyPrinter&);
 };
-
+
 #endif
 
 /* EOF */

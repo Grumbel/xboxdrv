@@ -22,7 +22,7 @@
 #include <libusb.h>
 #include "xboxmsg.hpp"
 #include "usb_controller.hpp"
-
+
 class SaitekP3600Controller : public USBController
 {
 private:
@@ -42,7 +42,7 @@ private:
   SaitekP3600Controller(const SaitekP3600Controller&);
   SaitekP3600Controller& operator=(const SaitekP3600Controller&);
 };
-
+
 #endif
 
 /* EOF */
