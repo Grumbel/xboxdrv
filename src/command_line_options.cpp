@@ -408,8 +408,8 @@ CommandLineParser::init_ini(Options* opts)
     ;
 
   m_ini.section("modifier",     std::bind(&CommandLineParser::set_modifier,     this, _1, _2));
-  m_ini.section("ui-buttonmap", std::bind(&CommandLineParser::set_ui_buttonmap, this, _1, _2));
-  m_ini.section("ui-axismap",   std::bind(&CommandLineParser::set_ui_axismap,   this, _1, _2));
+  m_ini.section("ui-buttonmap", std::bind(&CommandLineParser::set_ui_buttonmap_helper, this, _1, _2));
+  m_ini.section("ui-axismap",   std::bind(&CommandLineParser::set_ui_axismap_helper,   this, _1, _2));
 
   m_ini.section("buttonmap", std::bind(&CommandLineParser::set_buttonmap, this, _1, _2));
   m_ini.section("axismap",   std::bind(&CommandLineParser::set_axismap,   this, _1, _2));
@@ -764,11 +764,11 @@ CommandLineParser::apply_opt(ArgParser::ParsedOption const& opt, Options& opts)
       break;
 
     case OPTION_UI_AXISMAP:
-      process_name_value_string(opt.argument, std::bind(&CommandLineParser::set_ui_axismap, this, _1, _2));
+      process_name_value_string(opt.argument, std::bind(&CommandLineParser::set_ui_axismap_helper, this, _1, _2));
       break;
 
     case OPTION_UI_BUTTONMAP:
-      process_name_value_string(opt.argument, std::bind(&CommandLineParser::set_ui_buttonmap, this, _1, _2));
+      process_name_value_string(opt.argument, std::bind(&CommandLineParser::set_ui_buttonmap_helper, this, _1, _2));
       break;
 
     case OPTION_MOUSE:
@@ -1075,7 +1075,7 @@ CommandLineParser::set_device_name(const std::string& name, const std::string& v
 }
 
 void
-CommandLineParser::set_ui_buttonmap(const std::string& name, const std::string& value)
+CommandLineParser::set_ui_buttonmap_helper(const std::string& name, const std::string& value)
 {
   set_ui_buttonmap(m_options->get_controller_options().uinput.get_btn_map(),
                    name, value);
@@ -1139,7 +1139,7 @@ CommandLineParser::set_ui_buttonmap(ButtonMap& btn_map, const std::string& name,
 }
 
 void
-CommandLineParser::set_ui_axismap(const std::string& name, const std::string& value)
+CommandLineParser::set_ui_axismap_helper(const std::string& name, const std::string& value)
 {
   set_ui_axismap(m_options->get_controller_options().uinput.get_axis_map(),
                  name, value);
