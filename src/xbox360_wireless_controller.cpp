@@ -21,6 +21,7 @@
 #include <sstream>
 #include <boost/format.hpp>
 #include <cassert>
+#include <cstring>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"

@@ -19,7 +19,6 @@
 #ifndef HEADER_XBOXDRV_XBOXDRV_MAIN_HPP
 #define HEADER_XBOXDRV_XBOXDRV_MAIN_HPP
 
-#include <memory>
 #include <libusb.h>
 #include <glib.h>
 #include <memory>

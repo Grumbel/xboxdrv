@@ -21,6 +21,8 @@
 #include <algorithm>
 #include <boost/format.hpp>
 #include <cassert>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 #include "raise_exception.hpp"

@@ -20,6 +20,7 @@
 
 #include <boost/format.hpp>
 #include <cassert>
+#include <memory>
 
 #include "uinput_message_processor.hpp"
 #include "dummy_message_processor.hpp"

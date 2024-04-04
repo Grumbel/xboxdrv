@@ -20,6 +20,7 @@
 #define HEADER_XBOXDRV_CONTROLLER_SLOT_OPTIONS_HPP
 
 #include <map>
+#include <string>
 #include <vector>
 
 #include "controller_options.hpp"

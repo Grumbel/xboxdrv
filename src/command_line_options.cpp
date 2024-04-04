@@ -22,6 +22,8 @@
 #include <fstream>
 #include <iostream>
 #include <functional>
+#include <stdexcept>
+#include <string>
 #include <boost/format.hpp>
 #include <boost/tokenizer.hpp>
 

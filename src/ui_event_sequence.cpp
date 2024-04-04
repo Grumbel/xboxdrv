@@ -19,6 +19,7 @@
 #include "ui_event_sequence.hpp"
 
 #include <boost/tokenizer.hpp>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "ui_event.hpp"

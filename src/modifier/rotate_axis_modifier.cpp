@@ -21,6 +21,7 @@
 #include <math.h>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 

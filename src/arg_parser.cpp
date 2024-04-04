@@ -21,6 +21,8 @@
 #include <cassert>
 #include <stdio.h>
 #include <ostream>
+#include <stdexcept>
+#include <string>
 
 #include "helper.hpp"
 #include "pretty_printer.hpp"

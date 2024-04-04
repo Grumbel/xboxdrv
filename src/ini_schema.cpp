@@ -20,6 +20,8 @@
 
 #include <functional>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 class INIPairSchemaBoolCallback : public INIPairSchema
 {

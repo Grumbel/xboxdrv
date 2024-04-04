@@ -19,6 +19,7 @@
 #include "uinput_config.hpp"
 
 #include <cassert>
+#include <cstring>
 
 #include "helper.hpp"
 #include "uinput.hpp"

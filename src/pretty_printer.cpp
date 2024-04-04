@@ -19,6 +19,7 @@
 #include "pretty_printer.hpp"
 
 #include <iostream>
+#include <string>
 
 PrettyPrinter::PrettyPrinter(int terminal_width_)
   : terminal_width(terminal_width_)

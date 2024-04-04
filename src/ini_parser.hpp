@@ -20,6 +20,7 @@
 #define HEADER_XBOXDRV_INI_PARSER_HPP
 
 #include <sstream>
+#include <string>
 
 class INIBuilder;
 

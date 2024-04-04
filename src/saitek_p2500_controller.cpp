@@ -18,6 +18,7 @@
 
 #include "saitek_p2500_controller.hpp"
 
+#include <cstring>
 #include <sstream>
 
 #include "helper.hpp"

@@ -18,9 +18,11 @@
 
 #include "controller_thread.hpp"
 
+#include <cstring>
 #include <iostream>
 #include <functional>
 #include <glib.h>
+#include <memory>
 
 #include "helper.hpp"
 #include "log.hpp"

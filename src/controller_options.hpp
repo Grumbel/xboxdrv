@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "uinput_options.hpp"
 

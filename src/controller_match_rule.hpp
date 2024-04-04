@@ -19,10 +19,11 @@
 #ifndef HEADER_XBOXDRV_CONTROLLER_MATCH_RULE_HPP
 #define HEADER_XBOXDRV_CONTROLLER_MATCH_RULE_HPP
 
-#include <memory>
 extern "C" {
 #include <libudev.h>
 }
+
+#include <memory>
 #include <string>
 #include <vector>
 

@@ -20,6 +20,7 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <string>
 
 #include "axisfilter/calibration_axis_filter.hpp"
 #include "axisfilter/const_axis_filter.hpp"

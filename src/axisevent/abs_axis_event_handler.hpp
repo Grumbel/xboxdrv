@@ -21,6 +21,8 @@
 
 #include "axis_event.hpp"
 
+#include <string>
+
 #include "ui_event_emitter.hpp"
 
 class AbsAxisEventHandler : public AxisEventHandler

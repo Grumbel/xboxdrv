@@ -21,6 +21,7 @@
 
 #include <map>
 #include <functional>
+#include <string>
 
 class INIPairSchema
 {

@@ -23,6 +23,7 @@
 //#include <dbus/dbus-glib-binding.h>
 #include <dbus/dbus.h>
 #include <sstream>
+#include <string>
 #include <stdexcept>
 
 #include "raise_exception.hpp"

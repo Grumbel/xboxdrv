@@ -20,6 +20,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <sstream>
+#include <string>
 
 ButtonMapping
 ButtonMapping::from_string(const std::string& lhs, const std::string& rhs)

@@ -20,6 +20,7 @@
 #define HEADER_EVDEV_HELPER_HPP
 
 #include <X11/Xlib.h>
+#include <string>
 
 #include "enum_box.hpp"
 #include "ui_event.hpp"

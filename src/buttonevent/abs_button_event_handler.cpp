@@ -20,6 +20,7 @@
 
 #include <cassert>
 #include <sstream>
+#include <string>
 
 #include "uinput.hpp"
 

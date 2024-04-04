@@ -20,6 +20,7 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
 

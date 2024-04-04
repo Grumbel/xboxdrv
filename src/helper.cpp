@@ -23,8 +23,11 @@
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
+#include <cstring>
 #include <functional>
 #include <stdio.h>
+#include <stdexcept>
+#include <string>
 #include <sys/time.h>
 #include <sys/ioctl.h>
 #include <unistd.h>

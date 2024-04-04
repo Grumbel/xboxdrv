@@ -19,6 +19,7 @@
 #ifndef HEADER_COMMAND_LINE_OPTIONS_HPP
 #define HEADER_COMMAND_LINE_OPTIONS_HPP
 
+#include <string>
 #include <vector>
 
 #include "arg_parser.hpp"

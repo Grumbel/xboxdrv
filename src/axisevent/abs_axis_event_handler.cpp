@@ -20,6 +20,8 @@
 
 #include <boost/tokenizer.hpp>
 #include <cassert>
+#include <stdexcept>
+#include <string>
 
 #include "evdev_helper.hpp"
 #include "uinput.hpp"

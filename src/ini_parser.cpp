@@ -19,6 +19,7 @@
 #include "ini_parser.hpp"
 
 #include <stdexcept>
+#include <string>
 
 #include "ini_builder.hpp"
 

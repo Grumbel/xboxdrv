@@ -20,6 +20,7 @@
 #define HEADER_XBOXDRV_BUTTONEVENT_CYCLE_KEY_BUTTON_EVENT_HANDLER_HPP
 
 #include <map>
+#include <string>
 
 #include "button_event.hpp"
 #include "ui_event_sequence.hpp"

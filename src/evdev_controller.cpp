@@ -24,7 +24,9 @@
 #include <err.h>
 #include <fcntl.h>
 #include <iostream>
-#include <string.h>
+#include <stdexcept>
+#include <string>
+#include <cstring>
 #include <stdio.h>
 
 #include "evdev_helper.hpp"

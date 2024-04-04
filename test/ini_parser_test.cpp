@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include "ini_parser.hpp"
 #include "ini_builder.hpp"

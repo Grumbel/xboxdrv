@@ -19,6 +19,7 @@
 #ifndef HEADER_XBOXDRV_UI_EVENT_SEQUENCE_HPP
 #define HEADER_XBOXDRV_UI_EVENT_SEQUENCE_HPP
 
+#include <string>
 #include <vector>
 
 #include "ui_event.hpp"

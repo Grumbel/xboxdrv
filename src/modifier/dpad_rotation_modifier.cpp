@@ -20,6 +20,7 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <string>
 
 #include "helper.hpp"
 

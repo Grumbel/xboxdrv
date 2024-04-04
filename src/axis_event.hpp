@@ -20,6 +20,7 @@
 #define HEADER_XBOXDRV_AXIS_EVENT_HPP
 
 #include <memory>
+#include <string>
 
 #include "axis_filter.hpp"
 #include "ui_event.hpp"

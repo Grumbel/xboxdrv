@@ -20,7 +20,7 @@
 
 #include <boost/format.hpp>
 #include <sstream>
-#include <string.h>
+#include <cstring>
 
 #include "log.hpp"
 #include "usb_helper.hpp"

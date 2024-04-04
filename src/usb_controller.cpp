@@ -20,6 +20,9 @@
 
 #include <boost/format.hpp>
 #include <cassert>
+#include <cstring>
+#include <stdexcept>
+#include <string>
 
 #include "log.hpp"
 #include "raise_exception.hpp"

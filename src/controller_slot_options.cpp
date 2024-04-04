@@ -19,6 +19,7 @@
 #include "controller_slot_options.hpp"
 
 #include <stdexcept>
+#include <string>
 
 #include "raise_exception.hpp"
 

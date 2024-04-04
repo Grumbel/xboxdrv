@@ -19,7 +19,7 @@
 #include "select.hpp"
 
 #include <errno.h>
-#include <string.h>
+#include <cstring>
 #include <stdexcept>
 
 #include "raise_exception.hpp"

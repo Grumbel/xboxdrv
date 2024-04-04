@@ -21,6 +21,8 @@
 
 #include "ini_builder.hpp"
 
+#include <string>
+
 class INISchema;
 
 class INISchemaBuilder : public INIBuilder

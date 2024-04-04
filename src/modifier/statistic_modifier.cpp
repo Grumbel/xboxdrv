@@ -20,6 +20,7 @@
 
 #include <boost/format.hpp>
 #include <iostream>
+#include <string>
 
 #include "../xboxmsg.hpp"
 
