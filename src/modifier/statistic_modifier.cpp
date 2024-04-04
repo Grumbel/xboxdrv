@@ -18,7 +18,7 @@
 
 #include "statistic_modifier.hpp"
 
-#include <boost/format.hpp>
+#include <format>
 #include <iostream>
 #include <string>
 
@@ -47,13 +47,12 @@ StatisticModifier::print_stats()
   std::cout << "Button Press Statistics\n"
             << "=======================\n\n";
 
-  std::cout << boost::format("%12s | %5d") % "Name" % "Count" << std::endl;
+  std::cout << std::format("{:12s} | {:6s}\n", "Name", "Count");
   std::cout << "-------------+---------" << std::endl;
   for(int btn = 1; btn < XBOX_BTN_MAX; ++btn)
   {
-    std::cout << boost::format("%12s : %5d")
-      % btn2string(static_cast<XboxButton>(btn)) % m_press_count[btn]
-              << std::endl;
+    std::cout << std::format("{:12s} | {:5d}\n",
+      btn2string(static_cast<XboxButton>(btn)), m_press_count[btn]);
   }
 }
 

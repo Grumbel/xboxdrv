@@ -21,7 +21,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/format.hpp>
 #include <cstring>
-#include <fmt/format.h>
+#include <format>
 #include <errno.h>
 #include <iostream>
 #include <sched.h>
@@ -84,24 +84,24 @@ Xboxdrv::run_list_controller()
           {
             for(int wid = 0; wid < 4; ++wid)
             {
-              std::cout << boost::format(" %2d |  %2d |   0x%04x |    0x%04x | %s (Port: %s)")
-                % id
-                % wid
-                % int(xpad_devices[i].idVendor)
-                % int(xpad_devices[i].idProduct)
-                % xpad_devices[i].name
-                % wid
+              std::cout << std::format(" {:2d} |  {:2d} |   {:#04x} |    {:#04x} | {} (Port: {})",
+                id,
+                wid,
+                int(xpad_devices[i].idVendor),
+                int(xpad_devices[i].idProduct),
+                xpad_devices[i].name,
+                wid)
                         << std::endl;
             }
           }
           else
           {
-            std::cout << boost::format(" %2d |  %2d |   0x%04x |    0x%04x | %s")
-              % id
-              % 0
-              % int(xpad_devices[i].idVendor)
-              % int(xpad_devices[i].idProduct)
-              % xpad_devices[i].name
+            std::cout << std::format(" {:2d} |  {:2d} |   {:#04x} |    {:#04x} | {}",
+              id,
+              0,
+              int(xpad_devices[i].idVendor),
+              int(xpad_devices[i].idProduct),
+              xpad_devices[i].name)
                       << std::endl;
           }
           id += 1;
@@ -122,11 +122,11 @@ Xboxdrv::run_list_supported_devices()
 {
   for(int i = 0; i < xpad_devices_count; ++i)
   {
-    std::cout << boost::format("%s 0x%04x 0x%04x %s\n")
-      % gamepadtype_to_string(xpad_devices[i].type)
-      % int(xpad_devices[i].idVendor)
-      % int(xpad_devices[i].idProduct)
-      % xpad_devices[i].name;
+    std::cout << std::format("{} {:#04x} {:#04x} {}\n",
+      gamepadtype_to_string(xpad_devices[i].type),
+      int(xpad_devices[i].idVendor),
+      int(xpad_devices[i].idProduct),
+      xpad_devices[i].name);
   }
 }
 
@@ -155,11 +155,11 @@ Xboxdrv::run_list_supported_devices_xpad()
 
   for(int i = 0; i < xpad_devices_count; ++i)
   {
-    std::cout << boost::format("{ 0x%04x, 0x%04x, \"%s\", %s },\n")
-      % int(sorted_devices[i].idVendor)
-      % int(sorted_devices[i].idProduct)
-      % sorted_devices[i].name
-      % gamepadtype_to_macro_string(sorted_devices[i].type);
+    std::cout << std::format("{{ {:#04x}, {:#04x}, \"{}\", {} }},\n",
+      int(sorted_devices[i].idVendor),
+      int(sorted_devices[i].idProduct),
+      sorted_devices[i].name,
+      gamepadtype_to_macro_string(sorted_devices[i].type));
   }
 }
 
@@ -170,10 +170,10 @@ Xboxdrv::run_help_devices()
   std::cout << "----------+-----------+---------------------------------" << std::endl;
   for(int i = 0; i < xpad_devices_count; ++i)
   {
-    std::cout << boost::format("   0x%04x |    0x%04x | %s")
-      % int(xpad_devices[i].idVendor)
-      % int(xpad_devices[i].idProduct)
-      % xpad_devices[i].name
+    std::cout << std::format("   {:#04x} |    {:#04x} | {}",
+      int(xpad_devices[i].idVendor),
+      int(xpad_devices[i].idProduct),
+      xpad_devices[i].name)
               << std::endl;
   }
 }

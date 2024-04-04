@@ -19,7 +19,7 @@
 #include "options.hpp"
 
 #include <functional>
-#include <boost/format.hpp>
+#include <format>
 #include <boost/tokenizer.hpp>
 #include <cassert>
 #include <memory>
@@ -444,8 +444,8 @@ Options::find_generic_usb_spec(int vendor_id_, int product_id_) const
     }
   }
 
-  raise_exception(std::runtime_error, "no matching GenericUSBSpec found for "
-                  << boost::format("%04x:%04x") % static_cast<int>(vendor_id_) % static_cast<int>(product_id_));
+  raise_exception(std::runtime_error,
+                  std::format("no matching GenericUSBSpec found for {:#04x}:{:#04x}", static_cast<int>(vendor_id_), static_cast<int>(product_id_)));
 }
 
 void
