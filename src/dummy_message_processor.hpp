@@ -28,7 +28,7 @@ public:
   DummyMessageProcessor();
 
   void send(const XboxGenericMsg& msg, int msec_delta);
-  void set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback);
+  virtual void set_controller(Controller* controller);
 
 private:
   DummyMessageProcessor(const DummyMessageProcessor&);

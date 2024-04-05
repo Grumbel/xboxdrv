@@ -20,24 +20,41 @@
 
 #include <boost/format.hpp>
 #include <errno.h>
+#include <err.h>
 #include <fcntl.h>
 #include <iostream>
 #include <string.h>
+#include <stdio.h>
 
 #include "evdev_helper.hpp"
 #include "helper.hpp"
 #include "log.hpp"
 
+
+#define STRINGIFY_(x) #x
+#define STRINGIFY(x) STRINGIFY_(x)
+
+#define ioctl_x(fd, request, ...) errno_check(ioctl(fd, request, __VA_ARGS__), __FILE__, __LINE__, STRINGIFY(ioctl(fd, request, __VA_ARGS__)));
+
 #define BITS_PER_LONG (sizeof(long) * 8)
-#define NBITS(x) ((((x)-1)/BITS_PER_LONG)+1)
+#define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+#define BITS_TO_LONGS(nr)	DIV_ROUND_UP(nr, BITS_PER_LONG)
 #define OFF(x)  ((x)%BITS_PER_LONG)
 #define BIT(x)  (1UL<<OFF(x))
 #define LONG(x) ((x)/BITS_PER_LONG)
 #define test_bit(bit, array)	((array[LONG(bit)] >> OFF(bit)) & 1)
 
+static void errno_check(int status, char const *file, int line, char const *expr)
+{
+  if (status < 0)
+  {
+    warn("%s:%d: %s", file, line, expr);
+  }
+}
+
 EvdevController::EvdevController(const std::string& filename,
                                  const EvdevAbsMap& absmap,
-                                 const std::map<int, XboxButton>& keymap,
+                                 const std::map<int, UIActionPtr>& keymap,
                                  bool grab,
                                  bool debug) :
   m_fd(-1),
@@ -51,10 +68,11 @@ EvdevController::EvdevController(const std::string& filename,
   m_event_buffer(),
   m_msg()
 {
-  memset(&m_msg, 0, sizeof(m_msg));
-  m_msg.type = XBOX_MSG_XBOX360;
+  XboxGenericMsg msg;
+  memset(&msg, 0, sizeof(XboxGenericMsg));
+  msg.type = XBOX_MSG_XBOX360;
 
-  m_fd = open(filename.c_str(), O_RDONLY | O_NONBLOCK);
+  m_fd = open(filename.c_str(), O_RDWR | O_NONBLOCK);
 
   if (m_fd == -1)
   {
@@ -63,7 +81,7 @@ EvdevController::EvdevController(const std::string& filename,
 
   { // Get the human readable name
     char c_name[1024] = "unknown";
-    ioctl(m_fd, EVIOCGNAME(sizeof(c_name)), c_name);
+    ioctl_x(m_fd, EVIOCGNAME(sizeof(c_name)), c_name);
     m_name = c_name;
     log_debug("name: " << m_name);
   }
@@ -78,36 +96,30 @@ EvdevController::EvdevController(const std::string& filename,
     }
   }
 
-  { // Read in how many btn/abs/rel the device has
-    unsigned long bit[EV_MAX][NBITS(KEY_MAX)];
-    memset(bit, 0, sizeof(bit));
-    ioctl(m_fd, EVIOCGBIT(0, EV_MAX), bit[0]);
+  { // Read in how many btn/abs/rel/ff the device has
+    unsigned long abs_bit[BITS_TO_LONGS(ABS_CNT)] = { 0 };
+    unsigned long rel_bit[BITS_TO_LONGS(REL_CNT)] = { 0 };
+    unsigned long key_bit[BITS_TO_LONGS(KEY_CNT)] = { 0 };
+    unsigned long  ff_bit[BITS_TO_LONGS( FF_CNT)] = { 0 };
 
-    unsigned long abs_bit[NBITS(ABS_MAX)];
-    unsigned long rel_bit[NBITS(REL_MAX)];
-    unsigned long key_bit[NBITS(KEY_MAX)];
+    ioctl_x(m_fd, EVIOCGBIT(EV_ABS, sizeof(abs_bit)), abs_bit);
+    ioctl_x(m_fd, EVIOCGBIT(EV_REL, sizeof(rel_bit)), rel_bit);
+    ioctl_x(m_fd, EVIOCGBIT(EV_KEY, sizeof(key_bit)), key_bit);
+    ioctl_x(m_fd, EVIOCGBIT(EV_FF,  sizeof( ff_bit)),  ff_bit);
 
-    memset(abs_bit, 0, sizeof(abs_bit));
-    memset(rel_bit, 0, sizeof(rel_bit));
-    memset(key_bit, 0, sizeof(key_bit));
-
-    ioctl(m_fd, EVIOCGBIT(EV_ABS, ABS_MAX), abs_bit);
-    ioctl(m_fd, EVIOCGBIT(EV_REL, REL_MAX), rel_bit);
-    ioctl(m_fd, EVIOCGBIT(EV_KEY, KEY_MAX), key_bit);
-
-    for(int i = 0; i < ABS_MAX; ++i)
+    for(int i = 0; i < ABS_CNT; ++i)
     {
       if (test_bit(i, abs_bit))
       {
         struct input_absinfo absinfo;
-        ioctl(m_fd, EVIOCGABS(i), &absinfo);
+        ioctl_x(m_fd, EVIOCGABS(i), &absinfo);
 
         log_debug(boost::format("abs: %-20s min: %6d max: %6d") % abs2str(i) % absinfo.minimum % absinfo.maximum);
         m_absinfo[i] = absinfo;
       }
     }
 
-    for(int i = 0; i < REL_MAX; ++i)
+    for(int i = 0; i < REL_CNT; ++i)
     {
       if (test_bit(i, rel_bit))
       {
@@ -115,13 +127,29 @@ EvdevController::EvdevController(const std::string& filename,
       }
     }
 
-    for(int i = 0; i < KEY_MAX; ++i)
+    for(int i = 0; i < KEY_CNT; ++i)
     {
       if (test_bit(i, key_bit))
       {
         log_debug("key: " << key2str(i));
       }
     }
+
+    for(int i = 0; i < FF_CNT; ++i)
+    {
+      if (test_bit(i, ff_bit))
+      {
+        std::cout.setf(std::ios::hex);
+        log_debug("ff: 0x" << i);
+        std::cout.unsetf(std::ios::hex);
+        m_ff_features.push_back(i);
+      }
+    }
+  }
+
+  if (ioctl(m_fd, EVIOCGEFFECTS, &m_num_ff_effects) < 0)
+  {
+    perror("EVIOCGEFFECTS");
   }
 
   { // start g_io_channel
@@ -161,8 +189,60 @@ EvdevController::set_led_real(uint8_t status)
   // not implemented
 }
 
+void
+EvdevController::upload(const struct ff_effect& effect)
+{
+  struct ff_effect cpy = effect;
+  cpy.id = -1;
+  if (ioctl(m_fd, EVIOCSFF, &cpy) < 0) {
+    perror("force-feedback: uploading event");
+  }
+}
+
+void
+EvdevController::erase(int id)
+{
+  if (ioctl(m_fd, EVIOCRMFF, id) < 0) {
+    perror("force-feedback: erasing event");
+  }
+}
+
+static void write_event(int fd, int code, int value) {
+    struct input_event event;
+    memset(&event, 0, sizeof(event));
+    event.type = EV_FF;
+    event.code = code;
+    event.value = value;
+
+    if (write(fd, (const void*) &event, sizeof(event)) < 0) {
+      perror("force-feedback: sending event");
+    }
+}
+
+void
+EvdevController::play(int id)
+{
+   write_event(m_fd, id, 1);
+}
+
+void
+EvdevController::stop(int id)
+{
+  write_event(m_fd, id, 0);
+}
+
+void
+EvdevController::set_gain(int gain)
+{
+  if (std::find(m_ff_features.begin(), m_ff_features.end(), FF_GAIN) != m_ff_features.end())
+  {
+    log_debug("FF_GAIN is supported");
+    write_event(m_fd, FF_GAIN, gain);
+  }
+}
+
 bool
-EvdevController::parse(const struct input_event& ev, XboxGenericMsg& msg_inout) const
+EvdevController::parse(const struct input_event& ev, XboxGenericMsg &msg_inout) const
 {
   if (m_debug)
   {
@@ -202,7 +282,7 @@ EvdevController::parse(const struct input_event& ev, XboxGenericMsg& msg_inout) 
         KeyMap::const_iterator it = m_keymap.find(ev.code);
         if (it != m_keymap.end())
         {
-          set_button(msg_inout, it->second, ev.value);
+          it->second->parse(msg_inout, ev);
           return true;
         }
         else

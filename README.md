@@ -1,6 +1,14 @@
 Xbox/Xbox360 USB Gamepad Driver for Userspace
 =============================================
 
+This fork merges in [a fixes fork by chewi](https://github.com/chewi/xboxdrv), and [a pull request by rhn](https://github.com/xboxdrv/xboxdrv/pull/101) that extends evdev event mappings to allow absolute axes and multiple buttons.
+
+On top of that, it adds proper rumble support for any evdev controllers that natively support it, by passing any force-feedback commands through to the input device. The `--rumble-gain` option is known to work, although it serves only as a default that programs are able to override. Force-feedback is not supported when running in daemon mode.
+
+TODO: Make simulated force-feedback for non-evdev controllers work again.
+
+---
+
 Xboxdrv is a Xbox/Xbox360 gamepad driver for Linux that works in
 userspace. It is an alternative to the xpad kernel driver and has
 support for Xbox1 gamepads, Xbox360 USB gamepads and Xbox360 wireless

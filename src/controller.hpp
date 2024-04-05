@@ -26,6 +26,7 @@
 
 extern "C" {
 #include <libudev.h>
+struct ff_effect;
 }
 
 class MessageProcessor;
@@ -45,6 +46,9 @@ protected:
   uint8_t m_rumble_left;
   uint8_t m_rumble_right;
 
+  std::vector<uint16_t> m_ff_features;
+  int m_num_ff_effects;
+
 public:
   Controller();
   virtual ~Controller();
@@ -56,6 +60,14 @@ public:
 
   virtual void set_rumble_real(uint8_t left, uint8_t right) =0;
   virtual void set_led_real(uint8_t status) =0;
+
+  virtual void upload(const struct ff_effect& effect);
+  virtual void erase(int id);
+
+  virtual void play(int id);
+  virtual void stop(int id);
+
+  virtual void set_gain(int g);
 
   /** Wireless Controller start out inactive when they are not synced
       with their receiver and become active after the sync. Regular
@@ -81,6 +93,9 @@ public:
   udev_device* get_udev_device() const;
 
   void submit_msg(const XboxGenericMsg& msg);
+
+  const std::vector<uint16_t>& get_ff_features() { return m_ff_features; }
+  int get_num_ff_effects() { return m_num_ff_effects; }
 
 private:
   Controller (const Controller&);

@@ -25,6 +25,7 @@
 #include "evdev_helper.hpp"
 #include "force_feedback_handler.hpp"
 #include "raise_exception.hpp"
+#include "controller.hpp"
 
 LinuxUinput::LinuxUinput(DeviceType device_type, const std::string& name_,
                          const struct input_id& usbid_) :
@@ -40,10 +41,10 @@ LinuxUinput::LinuxUinput(DeviceType device_type, const std::string& name_,
   rel_bit(false),
   abs_bit(false),
   led_bit(false),
-  ff_bit(false),
   m_ff_handler(0),
-  m_ff_callback(),
-  needs_sync(true)
+  m_controller(),
+  needs_sync(true),
+  m_force_feedback_enabled(false)
 {
   log_debug(name << " " << usbid.vendor << ":" << usbid.product);
 
@@ -165,23 +166,32 @@ LinuxUinput::add_ff(uint16_t code)
   if (!ff_lst[code])
   {
     ff_lst[code] = true;
-
-    if (!ff_bit)
-    {
-      ioctl(m_fd, UI_SET_EVBIT, EV_FF);
-      ff_bit = true;
-      assert(m_ff_handler == 0);
-      m_ff_handler = new ForceFeedbackHandler();
-    }
-
     ioctl(m_fd, UI_SET_FFBIT, code);
   }
 }
 
 void
-LinuxUinput::set_ff_callback(const boost::function<void (uint8_t, uint8_t)>& callback)
+LinuxUinput::set_controller(Controller* controller)
 {
-  m_ff_callback = callback;
+  m_controller = controller;
+}
+
+void
+LinuxUinput::enable_force_feedback()
+{
+  assert(m_controller);
+  assert(m_ff_handler == NULL);
+  m_force_feedback_enabled = true;
+
+  ioctl(m_fd, UI_SET_EVBIT, EV_FF);
+  m_ff_handler = new ForceFeedbackHandler(m_controller);
+}
+
+void
+LinuxUinput::set_ff_gain(int gain)
+{
+  assert(m_ff_handler);
+  m_ff_handler->set_gain(gain);
 }
 
 void
@@ -227,6 +237,16 @@ LinuxUinput::finish()
       break;
   }
 
+  if (m_force_feedback_enabled)
+  {
+    log_debug("force-feedback is enabled in LinuxUinput");
+
+    for (int i = 0; i < m_controller->get_ff_features().size(); ++i)
+    {
+      add_ff(m_controller->get_ff_features()[i]);
+    }
+  }
+
   strncpy(user_dev.name, name.c_str(), UINPUT_MAX_NAME_SIZE);
   user_dev.id.version = usbid.version;
   user_dev.id.bustype = usbid.bustype;
@@ -235,9 +255,9 @@ LinuxUinput::finish()
 
   log_debug("'" << user_dev.name << "' " << user_dev.id.vendor << ":" << user_dev.id.product);
 
-  if (ff_bit)
+  if (m_force_feedback_enabled)
   {
-    user_dev.ff_effects_max = m_ff_handler->get_max_effects();
+    user_dev.ff_effects_max = m_controller->get_num_ff_effects();
   }
 
   {
@@ -316,6 +336,7 @@ LinuxUinput::sync()
 void
 LinuxUinput::update(int msec_delta)
 {
+#if 0
   if (ff_bit)
   {
     assert(m_ff_handler);
@@ -330,6 +351,7 @@ LinuxUinput::update(int msec_delta)
                     static_cast<unsigned char>(m_ff_handler->get_weak_magnitude()   / 128));
     }
   }
+#endif
 }
 
 gboolean

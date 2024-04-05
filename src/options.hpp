@@ -88,7 +88,8 @@ public:
   EvdevAbsMap evdev_absmap;
   bool evdev_grab;
   bool evdev_debug;
-  std::map<int, XboxButton> evdev_keymap;
+  typedef boost::shared_ptr<UIAction> UIActionPtr;
+  std::map<int, UIActionPtr> evdev_keymap;
 
   // controller options
   typedef std::map<int, ControllerSlotOptions> ControllerSlots;
@@ -208,6 +209,7 @@ public:
   void set_dpad_only();
   void set_force_feedback(const std::string& value);
   void set_ff_device(const std::string& value);
+  void set_rumble_gain(const std::string& value);
   void set_mimic_xpad();
   void set_mimic_xpad_wireless();
 

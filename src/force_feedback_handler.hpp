@@ -19,8 +19,11 @@
 #ifndef HEADER_FF_HANDLER_HPP
 #define HEADER_FF_HANDLER_HPP
 
+#include <boost/function.hpp>
 #include <linux/input.h>
 #include <map>
+
+class Controller;
 
 class ForceFeedbackEffect
 {
@@ -91,9 +94,10 @@ private:
 
   int weak_magnitude;
   int strong_magnitude;
+  Controller* m_controller;
 
 public:
-  ForceFeedbackHandler();
+  ForceFeedbackHandler(Controller* controller);
   ~ForceFeedbackHandler();
 
   int get_max_effects();
